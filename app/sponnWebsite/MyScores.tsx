@@ -1,8 +1,9 @@
+import React from 'react';
 import LargeScreenSection from '@/app/components/LargeScreenSection';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 
-export default function MyScores() {
+const MyScores: React.FC = () => {
 
   return (
     <section id="myScores" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">   
@@ -19,12 +20,9 @@ export default function MyScores() {
               <TypewriterEffect text='coming soon' />
             </p>
           </SlideFadeIn>
-          
-          <SlideFadeIn direction="left">
-            
-          </SlideFadeIn>
 
         </LargeScreenSection>
     </section>
   )
 }
+export default MyScores;
