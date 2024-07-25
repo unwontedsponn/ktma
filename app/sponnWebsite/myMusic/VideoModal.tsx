@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 
-const VideoModal = ({ onClose, videoId }) => {
+interface VideoModalProps {
+  onClose: () => void;
+  videoId: string | null;
+}
+
+const VideoModal: React.FC<VideoModalProps> = ({ onClose, videoId }) => {
   useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
