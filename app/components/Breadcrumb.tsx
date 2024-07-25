@@ -1,6 +1,12 @@
 import React from 'react';
 
-export default function Breadcrumb ({ currentIndex, itemCount, onBreadcrumbClick }) {
+interface BreadcrumbProps {
+  currentIndex: number;
+  itemCount: number;
+  onBreadcrumbClick?: (index: number) => void;
+}
+
+const Breadcrumb: React.FC<BreadcrumbProps> = ({ currentIndex, itemCount, onBreadcrumbClick }) => {
   return (
     <div className="flex justify-center space-x-2 mt-2">
       {Array.from({ length: itemCount }, (_, index) => (
@@ -14,3 +20,5 @@ export default function Breadcrumb ({ currentIndex, itemCount, onBreadcrumbClick
     </div>
   );
 };
+
+export default Breadcrumb;
