@@ -1,13 +1,16 @@
-import { useEffect } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 
-export default function Modal({ onClose, children }) {
+interface ModalProps {
+  onClose: () => void;
+  children: ReactNode;
+}
+
+const Modal: React.FC<ModalProps> = ({ onClose, children }) => {
   
   // Close the modal when the user presses the Escape key
   useEffect(() => {
-    const handleEscape = (event) => {
-      if (event.key === 'Escape') {
-        onClose();
-      }
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
@@ -26,3 +29,4 @@ export default function Modal({ onClose, children }) {
     </div>
   );
 }
+export default Modal
