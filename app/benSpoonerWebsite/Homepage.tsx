@@ -1,9 +1,10 @@
+import React from 'react';
 import Image from 'next/image';
 import LargeScreenSection from '@/app/components/LargeScreenSection';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
 
-export default function Homepage() {
+const Homepage: React.FC = () => {
 
   const words = ["things", "websites", "music", "books", "films", "games", "sketches"];
 
@@ -35,7 +36,7 @@ export default function Homepage() {
               alt= "homepage picture"
               width= {500}
               height= {500}
-              priority= 'priority'
+              priority
             />
           </SlideFadeIn>
 
@@ -43,3 +44,4 @@ export default function Homepage() {
     </section>
   )
 }
+export default Homepage;
