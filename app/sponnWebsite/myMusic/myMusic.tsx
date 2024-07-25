@@ -1,11 +1,38 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import LargeScreenSection from '@/app/components/LargeScreenSection';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import Albums from './Albums';
 
-export default function MyMusic() {
-  const albums = [
+interface Track {
+  url: string;
+  title: string;
+}
+
+interface Transcription {
+  src: string;
+  title: string;
+}
+
+interface Media {
+  src: string;
+  title: string;
+}
+
+interface Album {
+  src: string;
+  alt: string;
+  title: string;
+  albumType: string;
+  summary: string;
+  tracks: Track[];
+  transcription?: Transcription[] | false;
+  shortFilm?: Media[] | false;
+  game?: Media[] | false;
+}
+
+const MyMusic: React.FC = () => {
+  const albums: Album[] = [
     {
       src: '/images/sponnAlbumArtwork/lwf.jpg',
       alt: 'Left Where Found',
@@ -18,9 +45,9 @@ export default function MyMusic() {
         { url: '/sponnMusic/lwf/Moment Before.wav', title: 'Moment Before' },
       ],
       transcription: [
-        { src: 'https://www.youtube.com/watch?v=Cz-0kuzMMbg&ab_channel=BenSpooner', title: 'Ablaze' },        
-        { src: 'https://www.youtube.com/watch?v=dGM3eX_edB0&ab_channel=BenSpooner', title: 'Forget Me' },        
-        { src: 'https://www.youtube.com/watch?v=y0ucm2FSpao&ab_channel=BenSpooner', title: 'Moment Before' },        
+        { src: 'https://www.youtube.com/watch?v=Cz-0kuzMMbg&ab_channel=BenSpooner', title: 'Ablaze' },
+        { src: 'https://www.youtube.com/watch?v=dGM3eX_edB0&ab_channel=BenSpooner', title: 'Forget Me' },
+        { src: 'https://www.youtube.com/watch?v=y0ucm2FSpao&ab_channel=BenSpooner', title: 'Moment Before' },
       ],
       shortFilm: false,
       game: false,
@@ -35,10 +62,10 @@ export default function MyMusic() {
         { url: '/sponnMusic/wwf/when we fell.wav', title: 'When We Fell' },
       ],
       transcription: [
-        { src: 'https://www.youtube.com/watch?v=sYrvUKESY2A&ab_channel=BenSpooner', title: 'When We Fell' },                
+        { src: 'https://www.youtube.com/watch?v=sYrvUKESY2A&ab_channel=BenSpooner', title: 'When We Fell' },
       ],
       shortFilm: [
-        { src: 'https://www.youtube.com/watch?v=XenuFH6qTdM&t=111s&ab_channel=BenSpooner', title: 'When We Fell' },                
+        { src: 'https://www.youtube.com/watch?v=XenuFH6qTdM&t=111s&ab_channel=BenSpooner', title: 'When We Fell' },
       ],
       game: false,
     },
@@ -48,18 +75,18 @@ export default function MyMusic() {
       title: 'As Time Goes By',
       albumType: 'E.P',
       summary: '',
-      tracks: [      
+      tracks: [
         { url: '/sponnMusic/atgb/All Along.wav', title: 'All Along' },
         { url: '/sponnMusic/atgb/Within.wav', title: 'Within' },
         { url: '/sponnMusic/atgb/So It Goes.wav', title: 'So It Goes' },
       ],
       transcription: [
-        { src: 'https://www.youtube.com/watch?v=PXaL5VfRFKc&ab_channel=BenSpooner', title: 'All Along' },        
-        { src: 'https://www.youtube.com/watch?v=kBSpMXkw6EA&ab_channel=BenSpooner', title: 'Within' },        
-        { src: 'https://www.youtube.com/watch?v=rEK0MSwtFlo&ab_channel=BenSpooner', title: 'So It Goes' }, 
+        { src: 'https://www.youtube.com/watch?v=PXaL5VfRFKc&ab_channel=BenSpooner', title: 'All Along' },
+        { src: 'https://www.youtube.com/watch?v=kBSpMXkw6EA&ab_channel=BenSpooner', title: 'Within' },
+        { src: 'https://www.youtube.com/watch?v=rEK0MSwtFlo&ab_channel=BenSpooner', title: 'So It Goes' },
       ],
       shortFilm: [
-        { src: 'https://www.youtube.com/watch?v=DRqjaJgaO_E&ab_channel=BenSpooner', title: 'So It Goes' },                
+        { src: 'https://www.youtube.com/watch?v=DRqjaJgaO_E&ab_channel=BenSpooner', title: 'So It Goes' },
       ],
       game: false,
     },
@@ -73,10 +100,10 @@ export default function MyMusic() {
         { url: '/sponnMusic/tnt/this now this.wav', title: 'Thank You and Good Night' },
       ],
       transcription: [
-        { src: 'https://www.youtube.com/watch?v=0lQIO4b-g9w&ab_channel=BenSpooner', title: 'This Now This' },                
+        { src: 'https://www.youtube.com/watch?v=0lQIO4b-g9w&ab_channel=BenSpooner', title: 'This Now This' },
       ],
       shortFilm: [
-        { src: 'https://www.youtube.com/watch?v=1zlcipBv_ME&t=154s&ab_channel=BenSpooner', title: 'This Now This' },                
+        { src: 'https://www.youtube.com/watch?v=1zlcipBv_ME&t=154s&ab_channel=BenSpooner', title: 'This Now This' },
       ],
       game: false,
     },
@@ -95,10 +122,10 @@ export default function MyMusic() {
         { url: '/sponnMusic/ktma/6. Twilight.wav', title: 'Twilight' },
       ],
       transcription: [
-        { src: 'https://www.youtube.com/watch?v=8JiFKQNVny0&ab_channel=BenSpooner', title: 'For The Taking' },                
+        { src: 'https://www.youtube.com/watch?v=8JiFKQNVny0&ab_channel=BenSpooner', title: 'For The Taking' },
       ],
       shortFilm: false,
-      game: [{ src: 'https://sponn.itch.io/keep-the-music-alive', title: 'KTMA' }],  
+      game: [{ src: 'https://sponn.itch.io/keep-the-music-alive', title: 'KTMA' }],
     },
     {
       src: '/images/sponnAlbumArtwork/lwr.jpg',
@@ -125,9 +152,9 @@ export default function MyMusic() {
     },
   ];
 
-  const [currentAlbumIndex, setCurrentAlbumIndex] = useState(0);
-  const [activeView, setActiveView] = useState('listen'); // New state to track the active view
-  const [filteredAlbums, setFilteredAlbums] = useState(albums);
+  const [currentAlbumIndex, setCurrentAlbumIndex] = useState<number>(0);
+  const [activeView, setActiveView] = useState<string>('listen'); // New state to track the active view
+  const [filteredAlbums, setFilteredAlbums] = useState<Album[]>(albums);
 
   useEffect(() => {
     // Reset index when changing views
@@ -138,8 +165,7 @@ export default function MyMusic() {
 
   return (
     <section id="myMusic" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
-
-      <LargeScreenSection paddingX='px-32'>
+      <LargeScreenSection paddingX="px-32">
         {/* Left Column - Text */}
         <div className="flex flex-col w-2/3">
           <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none text-11xl">
@@ -170,4 +196,6 @@ export default function MyMusic() {
       </LargeScreenSection>
     </section>
   );
-}
+};
+
+export default MyMusic;

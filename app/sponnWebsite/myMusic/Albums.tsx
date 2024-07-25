@@ -1,18 +1,53 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Modal from './Modal';
 import Breadcrumb from '@/app/components/Breadcrumb';
-import VideoModal from './VideoModal'; // Import the new VideoModal component
+import VideoModal from './VideoModal';
 
-const Albums = ({ currentAlbumIndex, setCurrentAlbumIndex, albums, className }) => {
+interface Track {
+  url: string;
+  title: string;
+}
+
+interface Transcription {
+  src: string;
+  title: string;
+}
+
+interface Media {
+  src: string;
+  title: string;
+}
+
+interface Album {
+  src: string;
+  alt: string;
+  title: string;
+  albumType: string;
+  summary: string;
+  tracks: Track[];
+  transcription?: Transcription[] | false;
+  shortFilm?: Media[] | false;
+  game?: Media[] | false;
+}
+
+interface AlbumsProps {
+  currentAlbumIndex: number;
+  setCurrentAlbumIndex: React.Dispatch<React.SetStateAction<number>>;
+  albums: Album[];
+  className?: string;
+  setActiveView: React.Dispatch<React.SetStateAction<string>>;
+  activeView: string;
+}
+
+const Albums: React.FC<AlbumsProps> = ({ currentAlbumIndex, setCurrentAlbumIndex, albums, className, setActiveView, activeView }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentTrack, setCurrentTrack] = useState(null);
+  const [currentTrack, setCurrentTrack] = useState<Track | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5); // Default volume at 50%
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [currentVideoId, setCurrentVideoId] = useState(null);
-  const [activeView, setActiveView] = useState('listen'); // Move this state here
-  const audioRef = useRef(null); // Initialize as null
+  const [currentVideoId, setCurrentVideoId] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const currentAlbum = albums[currentAlbumIndex];
 
@@ -37,7 +72,7 @@ const Albums = ({ currentAlbumIndex, setCurrentAlbumIndex, albums, className }) 
     setActiveView('listen'); // Reset to the default view
   };
 
-  const togglePlayPause = (track) => {
+  const togglePlayPause = (track: Track) => {
     if (audioRef.current) {
       if (currentTrack === track) {
         if (audioRef.current.paused) {
@@ -76,7 +111,7 @@ const Albums = ({ currentAlbumIndex, setCurrentAlbumIndex, albums, className }) 
     };
   }, [volume]);
 
-  const openVideoModal = (videoId) => {
+  const openVideoModal = (videoId: string) => {
     setCurrentVideoId(videoId);
     setIsVideoModalOpen(true);
   };
@@ -183,54 +218,57 @@ const Albums = ({ currentAlbumIndex, setCurrentAlbumIndex, albums, className }) 
               {/* Watch the Transcriptions */}
               {activeView === 'transcriptions' && currentAlbum.transcription && (
                 <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
-                  {currentAlbum.transcription.map((transcription, index) => (
-                    <div key={index} className="my-2 flex items-center justify-between">
-                      <h3 className="text-lg">{`- ${transcription.title}`}</h3>
-                      <button
-                        onClick={() => openVideoModal(transcription.src.split('v=')[1].split('&')[0])}
-                        className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
-                      >
-                        Watch Video
-                      </button>
-                    </div>
-                  ))}
+                  {Array.isArray(currentAlbum.transcription) &&
+                    currentAlbum.transcription.map((transcription, index) => (
+                      <div key={index} className="my-2 flex items-center justify-between">
+                        <h3 className="text-lg">{`- ${transcription.title}`}</h3>
+                        <button
+                          onClick={() => openVideoModal(transcription.src.split('v=')[1].split('&')[0])}
+                          className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
+                        >
+                          Watch Video
+                        </button>
+                      </div>
+                    ))}
                 </div>
               )}
 
               {/* Watch the Short Films */}
               {activeView === 'shortFilms' && currentAlbum.shortFilm && (
                 <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
-                  {currentAlbum.shortFilm.map((shortFilm, index) => (
-                    <div key={index} className="my-2 flex items-center justify-between">
-                      <h3 className="text-lg">{`- ${shortFilm.title}`}</h3>
-                      <button
-                        onClick={() => openVideoModal(shortFilm.src.split('v=')[1].split('&')[0])}
-                        className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
-                      >
-                        Watch Video
-                      </button>
-                    </div>
-                  ))}
+                  {Array.isArray(currentAlbum.shortFilm) &&
+                    currentAlbum.shortFilm.map((shortFilm, index) => (
+                      <div key={index} className="my-2 flex items-center justify-between">
+                        <h3 className="text-lg">{`- ${shortFilm.title}`}</h3>
+                        <button
+                          onClick={() => openVideoModal(shortFilm.src.split('v=')[1].split('&')[0])}
+                          className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
+                        >
+                          Watch Video
+                        </button>
+                      </div>
+                    ))}
                 </div>
               )}
 
-              {/*Play the Game */}
+              {/* Play the Game */}
               {activeView === 'games' && currentAlbum.game && (
                 <div className="overflow-y-auto" style={{ maxHeight: '10rem' }}>
-                  {currentAlbum.game.map((game, index) => (
-                    <div key={index} className="my-2 flex items-center justify-between">
-                      <h3 className="text-lg">{`- ${game.title}`}</h3>
-                      <button
-                        onClick={() => {
-                          console.log(`Opening game URL: ${game.src}`);
-                          window.open(game.src, '_blank');
-                        }}
-                        className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
-                      >
-                        Play Game
-                      </button>
-                    </div>
-                  ))}
+                  {Array.isArray(currentAlbum.game) &&
+                    currentAlbum.game.map((game, index) => (
+                      <div key={index} className="my-2 flex items-center justify-between">
+                        <h3 className="text-lg">{`- ${game.title}`}</h3>
+                        <button
+                          onClick={() => {
+                            console.log(`Opening game URL: ${game.src}`);
+                            window.open(game.src, '_blank');
+                          }}
+                          className="mr-2 text-xs bg-black text-white px-4 py-2 hover:bg-white hover:outline hover:text-black font-gopher-mono mr-2"
+                        >
+                          Play Game
+                        </button>
+                      </div>
+                    ))}
                 </div>
               )}
             </div>
