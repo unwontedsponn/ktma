@@ -25,7 +25,7 @@ const AboutMe: React.FC = () => {
           <SlideFadeIn direction="up">
             <div className="pt-6 pr-2 text-right font-gopher-mono text-sm text-dark">
               <p>
-                Hello there! I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack JavaScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+                Hello there! I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack Typescript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
               </p>
               <p className="pt-2"><span className="font-gopher-mono-semi">Extra Links:</span> 
                 <a href="https://github.com/unwontedsponn" className="hover:underline"> GitHub</a> |
