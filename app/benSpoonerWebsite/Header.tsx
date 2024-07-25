@@ -1,16 +1,16 @@
 "use client";
+import React, { useState, useEffect } from 'react';
 import Arrow from '@/app/components/Arrow';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Contact from '../Contact';
 
-export default function Header() {
-  const [showModal, setShowModal] = useState(false);
+const Header: React.FC = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
   const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
     // Get the height of the header element
-    const headerHeight = document.querySelector('#header').offsetHeight;
+    const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
     // Set a custom CSS property (--header-height) to the header's height
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
@@ -49,7 +49,7 @@ export default function Header() {
     };
   }, []);
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
@@ -62,10 +62,9 @@ export default function Header() {
         <div className="flex justify-center items-center w-full mx-auto px-4 py-2">
           <div className="sm:w-full max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
             <div className="flex justify-between items-center">
-              
               <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">                
                 <div className="flex items-center font-gopher-mono-semi">                 
-                 <Link href="/sponnWebsite">
+                  <Link href="/sponnWebsite">
                     <Arrow direction="left" width={20} height={20} />
                   </Link>                  
                   <div className="flex flex-col w-full text-center xl:text-right px-2">
@@ -115,4 +114,6 @@ export default function Header() {
       <Contact showModal={showModal} setShowModal={setShowModal} />
     </>
   );
-}
+};
+
+export default Header;

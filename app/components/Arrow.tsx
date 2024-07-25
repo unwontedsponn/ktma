@@ -1,6 +1,16 @@
-export default function Arrow( { direction, onClick, width, height } ) {
+import React from 'react';
+
+interface ArrowProps {
+  direction: 'left' | 'right';
+  onClick?: () => void;
+  width: number;
+  height: number;
+}
+
+const Arrow: React.FC<ArrowProps> = ({ direction, onClick, width, height }) => {
   // Determine the arrow path based on the direction prop
   const pathD = direction === 'left' ? "M30 10 L10 25 L30 40" : "M20 10 L40 25 L20 40";
+
   // Optionally, you could add more customization options like color and strokeWidth as props
 
   return (
@@ -11,3 +21,5 @@ export default function Arrow( { direction, onClick, width, height } ) {
     </div>
   );
 };
+
+export default Arrow;
