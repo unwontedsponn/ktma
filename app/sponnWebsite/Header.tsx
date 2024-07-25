@@ -1,20 +1,21 @@
-"use client"
+"use client";
+import React, { useState, useEffect } from 'react';
 import Arrow from '@/app/components/Arrow';
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Contact from '../Contact';
 
-export default function Header() {
-  const [showModal, setShowModal] = useState(false);
+const Header: React.FC = () => {
+  const [showModal, setShowModal] = useState<boolean>(false);
   const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
     // Get the height of the header element
-    const headerHeight = document.querySelector('#header').offsetHeight;
+    const headerElement = document.querySelector<HTMLDivElement>('#header');
+    const headerHeight = headerElement?.offsetHeight || 0;
     // Set a custom CSS property (--header-height) to the header's height
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    // Rest of this useEffect is for the Intersecrtion Observer to add underlines
+    // Intersection Observer to add underlines
     const sections = ['sponnHomepage', 'myMusic', 'myScores'];
     const observerOptions = {
       root: null,
@@ -49,7 +50,7 @@ export default function Header() {
     };
   }, []);
 
-  const scrollToSection = (sectionId) => {
+  const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
@@ -64,10 +65,10 @@ export default function Header() {
             <div className="flex justify-between items-center">
               
               <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">
-               <div className="flex items-center font-gopher-mono-semi">                 
-                 <Link href="/">
+                <div className="flex items-center font-gopher-mono-semi">
+                  <Link href="/">
                     <Arrow direction="left" width={20} height={20} />
-                  </Link>                  
+                  </Link>
                   <div className="flex flex-col w-full text-center xl:text-right px-2">
                     <Link
                       href="/sponnWebsite"
@@ -80,25 +81,25 @@ export default function Header() {
                   </div>
                   <Link href="/">
                     <Arrow direction="right" width={20} height={20} />
-                  </Link>                  
+                  </Link>
                 </div>
               </div>
 
-              <div className="flex space-x-4 font-gopher-mono">                
-                <div                      
+              <div className="flex space-x-4 font-gopher-mono">
+                <div
                   id="myMusicNav"
                   className="hidden sm:block md:border-l-2 border-custom-border-color pl-6"
                   onClick={() => scrollToSection('myMusic')}
                 >
                   myMusic
                 </div>
-                <div                      
+                <div
                   id="myScoresNav"
                   className="hidden sm:block border-l-2 border-custom-border-color pl-6"
                   onClick={() => scrollToSection('myScores')}
                 >
                   myScores
-                </div>                  
+                </div>
                 <button
                   id="contactNav"
                   className="sm:border-l-2 border-custom-border-color pl-6"
@@ -115,4 +116,5 @@ export default function Header() {
       <Contact showModal={showModal} setShowModal={setShowModal} />
     </>
   );
-}
+};
+export default Header;
