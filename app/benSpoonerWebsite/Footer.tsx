@@ -48,7 +48,7 @@ const Footer: React.FC = () => {
   const togglePlayPause = () => setIsPlaying(!isPlaying);
 
   return (
-    <div id="footer" className="fixed inset-x-0 bottom-0 hidden lg:flex justify-center items-center pb-4">
+    <div id="footer" className="fixed inset-x-0 bottom-0 flex justify-center items-center pb-4">
       <div className="max-w-screen-md flex justify-center items-center space-x-12 md:space-x-14 text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
         <div id="listen" className="md:pl-14">listenNow:</div>
         <div id="green-and-pine-footer" className="border-x-2 border-custom-border-color px-4 md:px-14">
