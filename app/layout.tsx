@@ -1,3 +1,4 @@
+import React, { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Inter } from "next/font/google";
@@ -10,7 +11,11 @@ export const metadata = {
   description: "Providing a selection of my projects.",
 };
 
-export default function RootLayout({ children }) {
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body className={inter.className}>{
@@ -21,3 +26,4 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+export default RootLayout;
