@@ -46,3 +46,4 @@ const MyBook: React.FC = () => {
   </section>
   );
 }
+export default MyBook;

@@ -1,4 +1,5 @@
 "use client"
+import React from 'react';
 import Header from './Header';
 import Sponn from './Sponn';
 import MyMusic from './myMusic/myMusic';
@@ -6,7 +7,7 @@ import MyScores from './MyScores';
 import Footer from './Footer';
 import MobileWebsite from '@/app/MobileWebsite';
 
-export default function Home() {
+const Home: React.FC = () => {
 
   return (
     <main className="background-light flex justify-center">
@@ -27,3 +28,4 @@ export default function Home() {
     </main>
   );
 }
+export default Home;
