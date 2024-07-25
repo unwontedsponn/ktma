@@ -1,14 +1,15 @@
 "use client"
+import React from 'react';
 import LargeScreenSection from '../components/LargeScreenSection';
 import BookComponent from '@/app/components/BookComponent';
 import SlideFadeIn from '../components/SlideFadeIn';
 
-export default function MyBook() {
+const MyBook: React.FC = () => {
 
   return (
       <section id="myBook" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
         
-        <LargeScreenSection id="book" paddingX='px-32'>     
+        <LargeScreenSection paddingX='px-32'>     
           {/* Left Column */}
           <div className="flex flex-col">       
             <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none text-11xl"><h1 className="opacity-40">myBook</h1></SlideFadeIn>
