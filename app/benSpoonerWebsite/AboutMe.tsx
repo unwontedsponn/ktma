@@ -1,9 +1,10 @@
+import React from 'react';
 import LargeScreenSection from '../components/LargeScreenSection';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import Image from 'next/image';
 
-export default function AboutMe() {
+const AboutMe: React.FC = () => {
 
   return (
     <section id="aboutMe" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -53,3 +54,5 @@ export default function AboutMe() {
     </section>
   );
 }
+
+export default AboutMe;

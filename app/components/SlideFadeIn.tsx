@@ -1,7 +1,20 @@
+import React, { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
-export default function SlideFadeIn({ children, direction = 'left', delay = 0.2, className }) {
+interface SlideFadeInProps {
+  children: ReactNode;
+  direction?: 'left' | 'right' | 'up' | 'down'; // Optional, default is 'left'
+  delay?: number; // Optional, default is 0.2
+  className?: string; // Optional
+}
+
+const SlideFadeIn: React.FC<SlideFadeInProps> = ({ 
+  children, 
+  direction = 'left', 
+  delay = 0.2, 
+  className = '' 
+}) => {
   const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
 
   let initialX = 0;
@@ -31,7 +44,7 @@ export default function SlideFadeIn({ children, direction = 'left', delay = 0.2,
       x: 0,
       y: 0,
       opacity: 1,
-      transition: { type: "spring", stiffness: 100, delay: delay },
+      transition: { type: 'spring', stiffness: 100, delay: delay },
     },
   };
 
@@ -46,4 +59,6 @@ export default function SlideFadeIn({ children, direction = 'left', delay = 0.2,
       {children}
     </motion.div>
   );
-}
+};
+
+export default SlideFadeIn;
