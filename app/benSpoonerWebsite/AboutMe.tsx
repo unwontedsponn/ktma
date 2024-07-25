@@ -1,5 +1,4 @@
 import React from 'react';
-import LargeScreenSection from '../components/LargeScreenSection';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import Image from 'next/image';
@@ -9,7 +8,7 @@ const AboutMe: React.FC = () => {
   return (
     <section id="aboutMe" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
 
-      <LargeScreenSection paddingX='px-32'>
+      <div className="flex flex-row justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">      
         
         {/* Left Column */}
         <div className="flex flex-col w-2/3">       
@@ -23,7 +22,7 @@ const AboutMe: React.FC = () => {
           </SlideFadeIn>
               
           <SlideFadeIn direction="up">
-            <div className="pt-6 pr-2 text-right font-gopher-mono text-sm text-dark">
+            <div className="pt-6 md:pr-2 text-right font-gopher-mono text-sm text-dark">
               <p>
                 Hello there! I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack Typescript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
               </p>
@@ -39,7 +38,7 @@ const AboutMe: React.FC = () => {
         </div>
                           
         {/* Right Column */}
-        <SlideFadeIn className="w-1/3" direction="right"> 
+        <SlideFadeIn className="w-1/3 hidden xl:block" direction="right"> 
           <Image 
             src="/images/piano.png"            
             alt="Piano"
@@ -49,7 +48,7 @@ const AboutMe: React.FC = () => {
           />
         </SlideFadeIn>
 
-      </LargeScreenSection>
+      </div>
 
     </section>
   );

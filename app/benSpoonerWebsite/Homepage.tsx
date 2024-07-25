@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import LargeScreenSection from '@/app/components/LargeScreenSection';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
 
