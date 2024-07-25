@@ -1,7 +1,11 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-export default function TypewriterEffect({ text }) {
+interface TypewriterEffectProps {
+    text: string;
+}
+
+const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text }) => {
     const [typingEffect, setTypingEffect] = useState('');
     const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 }); // Consider using triggerOnce: true if you want the effect to run only once
 
@@ -27,3 +31,4 @@ export default function TypewriterEffect({ text }) {
         </span>
     );
 }
+export default TypewriterEffect;
