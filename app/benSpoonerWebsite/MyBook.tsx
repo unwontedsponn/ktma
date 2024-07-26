@@ -12,7 +12,7 @@ const MyBook: React.FC = () => {
         <div className="flex flex-row justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
         
           {/* Left Column */}
-          <div className="flex flex-col">       
+          <div className="sm:flex flex-col hidden">       
             <SlideFadeIn direction="left" className="hidden md:block color-blue font-gopher-mono-semi leading-none text-11xl"><h1 className="opacity-40">myBook</h1></SlideFadeIn>
 
             <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl md:pl-32 tracking-largep whitespace-nowrap"><p className="">Beginner To Composer...</p></SlideFadeIn>
@@ -42,8 +42,8 @@ const MyBook: React.FC = () => {
           </div>
                           
           {/* Right Column */}
-          <BookComponent width={3000} height={3000} direction="right" minWidth='min-w-7xl'/>
-        </div>
+          <BookComponent width={3000} height={3000} direction="right"/>
+        </div>        
   </section>
   );
 }

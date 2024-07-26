@@ -8,12 +8,10 @@ import Breadcrumb from './Breadcrumb';
 interface BookComponentProps {
   width: number;
   height: number;
-  direction: 'left' | 'right' | 'up' | 'down';
-  minWidth: string;
-  maxWidth?: string;
+  direction: 'left' | 'right' | 'up' | 'down';  
 }
 
-const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction, minWidth, maxWidth }) => {
+const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction }) => {
   const bookPages = [
     '/myBookPages/page1.png',
     '/myBookPages/page2.png',
@@ -50,7 +48,7 @@ const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction,
   };
 
   return (
-    <div ref={ref} className={`hidden xl:flex ${minWidth} ${maxWidth}`}>
+    <div ref={ref} className={`sm:hidden xl:flex`}>
       <div className="flex flex-col w-full text-center xl:text-right px-2">
         <SlideFadeIn className="border-3 border-thick-border-gray" direction={direction}>
           <div onClick={nextPage} className="cursor-pointer">
