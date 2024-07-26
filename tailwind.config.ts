@@ -26,6 +26,9 @@ const config: Config = {
         '11xl': '11rem',
         '12xl': '12rem',
         '10vw': '10vw',
+        '20vw': '20vw',
+        '60vw': '60vw',
+        '70vw': '70vw',
       },
       letterSpacing: {
         mediumphomepage: '0.27rem', // or '0.017em' to be closer to how Tailwind defines these values
