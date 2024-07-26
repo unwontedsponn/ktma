@@ -50,11 +50,17 @@ const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction,
   };
 
   return (
-    <div ref={ref} className={`flex ${minWidth} ${maxWidth}`}>
+    <div ref={ref} className={`hidden xl:flex ${minWidth} ${maxWidth}`}>
       <div className="flex flex-col w-full text-center xl:text-right px-2">
         <SlideFadeIn className="border-3 border-thick-border-gray" direction={direction}>
           <div onClick={nextPage} className="cursor-pointer">
-            <Image src={bookPages[currentPage]} alt="My Book" width={width} height={height} />
+            <Image 
+              src={bookPages[currentPage]} 
+              alt="My Book" 
+              width={width} 
+              height={height}
+              priority
+            />
           </div>
         </SlideFadeIn>
         <SlideFadeIn direction="left">
