@@ -16,16 +16,16 @@ const AboutMe: React.FC = () => {
             <h1 className="opacity-40">aboutMe</h1>
           </SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap hidden sm:block">
+          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap hidden md:block">
             <p className=""><TypewriterEffect text="A little bit about me..." /></p>
           </SlideFadeIn>
               
           <SlideFadeIn direction="up">
-            <div className="pt-6 md:pr-2 text-justify md:text-right font-gopher-mono text-3xl sm:text-sm text-dark max-w-3xl px-24 sm:px-10 md:px-0">
+            <div className="pt-6 md:pr-2 text-justify md:text-right font-gopher-mono text-3xl md:text-sm text-dark max-w-3xl px-24 md:px-0">
               <p>
-                <span className="hidden sm:block">Hello there! </span>I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack Typescript developer. I specialize in sound and tech projects<span className="sm:hidden">.</span> <span className="hidden sm:block">using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.</span>
+                <span className="hidden md:block">Hello there! </span>I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack Typescript developer. I specialize in sound and tech projects<span className="sm:hidden">.</span> <span className="hidden md:block">using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.</span>
               </p>
-              <p className="pt-2 hidden sm:block"><span className="font-gopher-mono-semi">Extra Links:</span> 
+              <p className="pt-2 hidden md:block"><span className="font-gopher-mono-semi">Extra Links:</span> 
                 <a href="https://github.com/unwontedsponn" className="hover:underline"> GitHub</a> |
                 <a href="https://www.linkedin.com/in/ben-spooner-12aab937/" className="hover:underline"> LinkedIn</a> |
                 <a href="https://sponn.itch.io/keep-the-music-alive" className="hover:underline"> KTMA</a> |

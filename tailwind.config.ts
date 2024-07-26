@@ -22,9 +22,10 @@ const config: Config = {
       },
       fontSize: {
         '2xs': ['0.60rem', '0.8rem'], // Font size and Line height
-        '10xl': '10rem', // Not yet used
+        '10xl': '10rem',
         '11xl': '11rem',
-        '12xl': '12rem', // Not yet used
+        '12xl': '12rem',
+        '10vw': '10vw',
       },
       letterSpacing: {
         mediumphomepage: '0.27rem', // or '0.017em' to be closer to how Tailwind defines these values

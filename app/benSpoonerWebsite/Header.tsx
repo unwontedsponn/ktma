@@ -60,7 +60,7 @@ const Header: React.FC = () => {
     <>
       <section id="header" className="fixed top-0 left-0 right-0 z-10 pt-4 text-lg">
         <div className="flex justify-center items-center w-full mx-auto px-4 py-2">
-          <div className="sm:w-full max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
+          <div className="md:w-full max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
             <div className="flex justify-between items-center">
               <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">                
                 <div className="flex items-center font-gopher-mono-semi">                 
@@ -86,21 +86,21 @@ const Header: React.FC = () => {
               <div className="flex space-x-4 font-gopher-mono">                
                 <div
                   id="aboutMeNav"
-                  className="hidden sm:block md:border-l-2 border-custom-border-color pl-6"
+                  className="hidden md:block md:border-l-2 border-custom-border-color pl-6"
                   onClick={() => scrollToSection('aboutMe')}
                 >
                   aboutMe
                 </div>
                 <div
                   id="myBookNav"
-                  className="hidden sm:block border-l-2 border-custom-border-color pl-6"
+                  className="hidden md:block border-l-2 border-custom-border-color pl-6"
                   onClick={() => scrollToSection('myBook')}
                 >
                   myBook
                 </div>                
                 <button
                   id="contactNav"
-                  className="sm:border-l-2 border-custom-border-color pl-6"
+                  className="md:border-l-2 border-custom-border-color pl-6"
                   onClick={toggleModal}
                 >
                   contactMe
