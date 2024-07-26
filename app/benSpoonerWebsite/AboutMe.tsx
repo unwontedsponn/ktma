@@ -8,21 +8,20 @@ const AboutMe: React.FC = () => {
   return (
     <section id="aboutMe" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
 
-      <div className="flex flex-row justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">      
+      <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">      
         
         {/* Left Column */}
-        <div className="flex flex-col w-2/3">       
-          <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none text-11xl">
+        <div className="flex flex-col">       
+          <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none text-11xl hidden md:block">
             <h1 className="opacity-40">aboutMe</h1>
           </SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl pl-32 tracking-largep whitespace-nowrap">
+          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap hidden sm:block">
             <p className=""><TypewriterEffect text="A little bit about me..." /></p>
-            {/* <p className=""><TypewriterEffect text="musician & javascript developer" /></p> */}
           </SlideFadeIn>
               
           <SlideFadeIn direction="up">
-            <div className="pt-6 md:pr-2 text-right font-gopher-mono text-sm text-dark">
+            <div className="pt-6 md:pr-2 text-right font-gopher-mono text-sm text-dark max-w-3xl px-32 sm:px-10 md:px-0">
               <p>
                 Hello there! I&apos;m <span className='font-gopher-mono-semi'>Ben Spooner</span>, a 34-year-old musician and full stack Typescript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
               </p>
@@ -38,13 +37,14 @@ const AboutMe: React.FC = () => {
         </div>
                           
         {/* Right Column */}
-        <SlideFadeIn className="w-1/3 hidden xl:block" direction="right"> 
+        <SlideFadeIn className="hidden xl:block" direction="right"> 
           <Image 
             src="/images/piano.png"            
             alt="Piano"
             width={500}
             height={500}            
             className="opacity-10"
+            priority
           />
         </SlideFadeIn>
 
