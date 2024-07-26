@@ -25,10 +25,6 @@ const config: Config = {
         '10xl': '10rem',
         '11xl': '11rem',
         '12xl': '12rem',
-        '10vw': '10vw',
-        '20vw': '20vw',
-        '60vw': '60vw',
-        '70vw': '70vw',
       },
       letterSpacing: {
         mediumphomepage: '0.27rem', // or '0.017em' to be closer to how Tailwind defines these values
@@ -54,10 +50,21 @@ const config: Config = {
   },
   plugins: [
     plugin(function ({ addUtilities, theme }) {
+
+      // This allows me to use vw
+      const vwUtilities: Record<string, { [key: string]: string }> = {};
+      for (let i = 1; i <= 20; i++) {
+        vwUtilities[`.text-${i}vw`] = { fontSize: `${i}vw` };
+        vwUtilities[`.max-w-${i}vw`] = { maxWidth: `${i}vw` };
+        vwUtilities[`.min-w-${i}vw`] = { minWidth: `${i}vw` };
+        vwUtilities[`.w-${i}vw`] = { width: `${i}vw` };
+      }
+      addUtilities(vwUtilities);
+
       addUtilities({
         '.scroll-snap-y': {
           scrollSnapType: 'y mandatory',
-        }, // Custom utility for text decoration color
+        },
         '.text-decoration-custom': {
           textDecorationColor: theme('colors.custom', '#c15564'), // Fallback to #c15564 if not found in theme
         },

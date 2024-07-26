@@ -14,11 +14,11 @@ const Homepage: React.FC = () => {
       
         {/* Left Column */}
         <div id="title-div" className="flex flex-col">   
-          <SlideFadeIn direction="down" className="hidden md:block text-sm pl-36 color-green font-gopher-mono-semi tracking-mediumphomepage"><p>I like to get things done</p></SlideFadeIn>         
+          <SlideFadeIn direction="down" className="hidden md:block text-sm md:pl-36 color-green font-gopher-mono-semi tracking-mediumphomepage"><p>I like to get things done</p></SlideFadeIn>         
 
           <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none text-20vw md:text-10xl"><p className="opacity-40">Hello,</p></SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="hidden md:block text-4xl max-w-2xl color-dark-blue font-gopher-mono underline tracking-largep text-decoration-color pl-24"><p>and I like making... </p><RotatingWords words={words} /></SlideFadeIn>
+          <SlideFadeIn direction="right" className="hidden md:block text-4xl max-w-2xl color-dark-blue font-gopher-mono underline tracking-largep text-decoration-color md:pl-24"><p>and I like making... </p><RotatingWords words={words} /></SlideFadeIn>
 
           <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none text-20vw md:text-11xl pb-0"><p className="opacity-40">I&apos;m Ben</p></SlideFadeIn>
 
