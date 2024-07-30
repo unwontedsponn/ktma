@@ -12,11 +12,11 @@ const AboutMe: React.FC = () => {
         
         {/* Left Column */}
         <div className="flex flex-col">       
-          <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none max-w-3xl px-24 md:px-0 text-15vw md:text-11xl">
+          <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none hidden md:block text-11xl">
             <h1 className="opacity-40">aboutMe</h1>
           </SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap hidden md:block">
+          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color text-4vw md:text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap">
             <p className=""><TypewriterEffect text="A little bit about me..." /></p>
           </SlideFadeIn>
               
