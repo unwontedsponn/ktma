@@ -47,21 +47,12 @@ const MyBook: React.FC = () => {
                   
       </div>    
       {/* Image and Links for Mobile */}
-      <div className="flex flex-col justify-center items-center md:hidden h-full">
-        <SlideFadeIn className="border-3 border-thick-border-gray max-w-sm mx-auto mb-4">
-          <Image
-            src='/myBookPages/page1.png'
-            alt="homepage picture"                
-            width={3000}
-            height={3000}
-            priority
-            className="w-full h-auto"
-          />
-        </SlideFadeIn>
+      <div className="flex flex-col justify-center items-center md:hidden h-full space-y-2">        
+        <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-4vw"><p><TypewriterEffect text="BUY MY BOOK NOW" /></p></SlideFadeIn>
         
         {/* Buy Now Links */}
         <SlideFadeIn direction="up" className={`flex flex-col items-center w-full w-auto text-sm font-gopher-mono`}>
-          <p className="bold color-dark">BUY NOW</p>                
+          <p className="bold color-dark">Beginner To Composer In 14 Days</p>                
           <a 
               href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
               target="_blank" 

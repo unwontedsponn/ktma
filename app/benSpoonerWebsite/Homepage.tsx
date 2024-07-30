@@ -11,13 +11,13 @@ const Homepage: React.FC = () => {
   return (
     <section id="homepage" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">         
 
-      <div className="hidden md:flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">
+      <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">
       
         {/* Left Column */}
         <div id="title-div" className="flex flex-col">   
           <SlideFadeIn direction="down" className="hidden md:block text-sm md:pl-36 color-green font-gopher-mono-semi tracking-mediumphomepage"><p>I like to get things done</p></SlideFadeIn>         
 
-          <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none hidden md:block text-10xl"><p className="opacity-40">Hello,</p></SlideFadeIn>
+          <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-none text-20vw md:text-10xl"><p className="opacity-40">Hello,</p></SlideFadeIn>
 
           <SlideFadeIn direction="right" className="hidden md:block text-4xl max-w-2xl color-dark-blue font-gopher-mono underline tracking-largep text-decoration-color md:pl-24"><p>and I like making... </p><RotatingWords words={words} /></SlideFadeIn>
 
@@ -39,16 +39,7 @@ const Homepage: React.FC = () => {
             priority
           />
         </SlideFadeIn>      
-      </div>   
-
-      {/* Image for Mobile */}
-      <div style={{ width: '90vw', height: 'auto' }} className="max-w-md mx-auto flex items-center justify-center h-full md:hidden my-auto border-3 border-thick-border-gray">
-        <Image
-          src={homepagePic}
-          alt="Homepage picture"            
-          priority
-        />
-      </div>
+      </div>         
     </section>
   )
 }
