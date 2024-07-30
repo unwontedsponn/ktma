@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import homepagePic from '/public/images/homepage-pic.jpeg';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
 
@@ -10,7 +11,7 @@ const Homepage: React.FC = () => {
   return (
     <section id="homepage" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">         
 
-      <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">
+      <div className="hidden md:flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">
       
         {/* Left Column */}
         <div id="title-div" className="flex flex-col">   
@@ -25,21 +26,7 @@ const Homepage: React.FC = () => {
           <SlideFadeIn direction="up" className="hidden md:block pl-28 text-dark-500 font-gopher-mono tracking-smallphomepage text-xs max-w-2xl">
             {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
             <span className="italic">getting things done</span>
-          </SlideFadeIn>
-
-          {/* Image for Mobile */}
-          <SlideFadeIn className="md:hidden border-3 border-thick-border-gray">
-            <div className="w-full max-w-sm mx-auto">
-              <Image
-                src='/images/homepage-pic.jpeg'
-                alt="homepage picture"                
-                width={500}
-                height={500}
-                priority
-                className="w-full h-auto"
-              />
-            </div>
-          </SlideFadeIn>
+          </SlideFadeIn>          
         </div>
 
         {/* Right Column */}
@@ -52,7 +39,18 @@ const Homepage: React.FC = () => {
             priority
           />
         </SlideFadeIn>      
-      </div>                                    
+      </div>   
+
+      {/* Image for Mobile */}
+      <div className="md:hidden flex flex-col justify-center gap-x-8 px-10 items-center h-screen overflow-hidden">
+        <SlideFadeIn className="max-w-md border-3 border-thick-border-gray">
+          <Image
+            src={homepagePic}
+            alt="homepage picture"
+            priority                                    
+          />   
+        </SlideFadeIn>                          
+      </div>      
     </section>
   )
 }
