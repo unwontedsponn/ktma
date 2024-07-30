@@ -33,16 +33,16 @@ const Homepage: React.FC = () => {
         <SlideFadeIn className="hidden xl:block max-w-sm border-3 border-thick-border-gray" direction="right"> 
           <Image
             src='/images/homepage-pic.jpeg'
-            alt= "homepage picture"
-            width= {500}
-            height= {500}
+            alt="homepage picture"
+            width={500}
+            height={500}
             priority
           />
         </SlideFadeIn>      
       </div>   
 
       {/* Image for Mobile */}
-      <div style={{ width: '70vw', height: 'auto' }} className="max-w-md mx-auto md:hidden my-auto border-3 border-thick-border-gray">
+      <div style={{ width: '90vw', height: 'auto' }} className="max-w-md mx-auto flex items-center justify-center h-full md:hidden my-auto border-3 border-thick-border-gray">
         <Image
           src={homepagePic}
           alt="Homepage picture"            
