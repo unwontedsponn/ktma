@@ -42,15 +42,13 @@ const Homepage: React.FC = () => {
       </div>   
 
       {/* Image for Mobile */}
-      <div className="md:hidden flex flex-col justify-center gap-x-8 px-10 items-center h-screen overflow-hidden">
-        <SlideFadeIn className="max-w-md border-3 border-thick-border-gray">
-          <Image
-            src={homepagePic}
-            alt="homepage picture"
-            priority                                    
-          />   
-        </SlideFadeIn>                          
-      </div>      
+      <div style={{ width: '70vw', height: 'auto' }} className="max-w-md mx-auto md:hidden my-auto border-3 border-thick-border-gray">
+        <Image
+          src={homepagePic}
+          alt="Homepage picture"            
+          priority
+        />
+      </div>
     </section>
   )
 }
