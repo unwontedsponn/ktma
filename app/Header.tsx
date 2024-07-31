@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Arrow from '@/app/components/Arrow';
 import Link from 'next/link';
-import Contact from '../Contact';
+import Contact from './Contact';
 
 const Header: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);

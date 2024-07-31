@@ -1,9 +1,9 @@
 "use client"
-import Header from './benSpoonerWebsite/Header';
-import Homepage from './benSpoonerWebsite/Homepage';
-import AboutMe from './benSpoonerWebsite/AboutMe';
-import MyBook from './benSpoonerWebsite/MyBook';
-import Footer from './benSpoonerWebsite/Footer';
+import Header from './Header';
+import Homepage from './Homepage';
+import AboutMe from './AboutMe';
+import MyBook from './MyBook';
+import Footer from './Footer';
 
 export default function Home() {
 

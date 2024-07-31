@@ -3,7 +3,7 @@ import React from 'react';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
 import Image from 'next/image';
-import SlideFadeIn from '../components/SlideFadeIn';
+import SlideFadeIn from './components/SlideFadeIn';
 
 const MyBook: React.FC = () => {
 
