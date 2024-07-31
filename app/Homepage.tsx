@@ -1,6 +1,5 @@
 import React from 'react';
 import Image from 'next/image';
-import homepagePic from '/public/images/homepage-pic.jpeg';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from './components/RotatingWords';
 
