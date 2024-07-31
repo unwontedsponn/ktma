@@ -60,7 +60,7 @@ const Header: React.FC = () => {
     <>
       <section id="header" className="fixed top-0 left-0 right-0 z-10 pt-4 text-lg">
         <div className="flex justify-center items-center w-full mx-auto px-4 py-2">
-          <div className="md:w-full max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
+          <div className="md:w-full md:mx-20 max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
             <div className="flex justify-between items-center">
               <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">                
                 <div className="flex items-center font-gopher-mono-semi">                                                 
