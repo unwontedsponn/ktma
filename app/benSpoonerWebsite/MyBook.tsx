@@ -48,7 +48,7 @@ const MyBook: React.FC = () => {
       </div>    
       {/* Image and Links for Mobile */}
       <div className="flex flex-col justify-center items-center md:hidden h-full space-y-2">        
-        <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-4vw"><p>BUY MY BOOK NOW"</p></SlideFadeIn>
+        <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-4vw"><p>BUY MY BOOK NOW</p></SlideFadeIn>
         
         {/* Buy Now Links */}
         <SlideFadeIn direction="up" className={`flex flex-col items-center w-full w-auto text-sm font-gopher-mono`}>
