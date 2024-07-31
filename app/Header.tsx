@@ -63,10 +63,7 @@ const Header: React.FC = () => {
           <div className="md:w-full max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
             <div className="flex justify-between items-center">
               <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">                
-                <div className="flex items-center font-gopher-mono-semi">                 
-                  <Link href="/sponnWebsite">
-                    <Arrow direction="left" width={20} height={20} hide='hidden md:block'/>
-                  </Link>                  
+                <div className="flex items-center font-gopher-mono-semi">                                                 
                   <div className="flex flex-col w-full text-center xl:text-right px-2">
                     <Link
                       href="/"
@@ -76,10 +73,7 @@ const Header: React.FC = () => {
                     >
                       benSpooner
                     </Link>
-                  </div>
-                  <Link href="/sponnWebsite">
-                    <Arrow direction="right" width={20} height={20} hide='hidden md:block'/>
-                  </Link>                  
+                  </div>                  
                 </div>
               </div>
 
