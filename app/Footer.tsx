@@ -53,6 +53,16 @@ const Footer: React.FC = () => {
     }
   }, [isPlaying, currentSongIndex]);
 
+  useEffect(() => {
+    const adjustFooterHeight = () => {
+      const footerHeight = document.querySelector<HTMLDivElement>('#footer')?.offsetHeight || 0;
+      document.documentElement.style.setProperty('--footer-height', `${footerHeight}px`);
+    };
+    adjustFooterHeight(); // Call initially and on resize
+    window.addEventListener('resize', adjustFooterHeight);
+    return () => window.removeEventListener('resize', adjustFooterHeight);
+  }, []);
+
   const handleSongEnd = () => {
     setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
   };
