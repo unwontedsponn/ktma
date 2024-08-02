@@ -1,62 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+
+type Song = {
+  id: number;
+  title: string;
+  file: string;
+};
+
+const songs: Song[] = [
+  { id: 0, title: 'Room of My Own', file: 'Room Of My Own.wav' },
+  { id: 1, title: 'Ra Ma', file: 'Ra Ma.wav' },
+  { id: 2, title: 'Nature Show', file: 'Nature Show.wav' },
+  { id: 3, title: 'I Can\'t Sleep', file: 'I Can\'t Sleep.wav' },
+];
 
 const Footer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [audio] = useState<HTMLAudioElement | undefined>(() => {
-    if (typeof Audio !== 'undefined') {
-      const newAudio = new Audio('./audio/room of my own.mp3');
-      newAudio.volume = 0.5;
-      return newAudio;
+  const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
+  const [responsiveText, setResponsiveText] = useState<string>('listen to green and pine');
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      // Remove event listener from previous audio element
+      audioRef.current.removeEventListener('ended', handleSongEnd);
+      audioRef.current.pause();
     }
-    return undefined;
-  });
 
-  const [responsiveText, setResponsiveText] = useState<string>(isPlaying ? "'Room of My Own'" : 'greenAndPine');
+    const newAudio = new Audio(`/audio/green-and-pine/${songs[currentSongIndex].file}`);
+    newAudio.volume = 0.5;
+    audioRef.current = newAudio;
 
-  // Toggle play/pause based on isPlaying state and cleanup audio
-  useEffect(() => {
-    if (audio) {
-      isPlaying ? audio.play() : audio.pause();
+    if (isPlaying) {
+      newAudio.play();
     }
-    return () => audio?.pause(); // Cleanup to pause audio when component unmounts
-  }, [isPlaying, audio]);
 
-  useEffect(() => {
-    const adjustFooterHeight = () => {
-      const footerHeight = document.querySelector<HTMLDivElement>('#footer')?.offsetHeight || 0;
-      document.documentElement.style.setProperty('--footer-height', `${footerHeight}px`);
-    };
-    adjustFooterHeight(); // Call initially and on resize
-    window.addEventListener('resize', adjustFooterHeight);
-    return () => window.removeEventListener('resize', adjustFooterHeight);
-  }, []);
-
-  useEffect(() => {
-    const updateResponsiveText = () => {
-      const baseText = isPlaying ? "'Room of My Own'" : 'greenAndPine';
-      setResponsiveText(window.innerWidth <= 768 ? baseText : `Now Playing: ${baseText}`);
-    };
-
-    updateResponsiveText();
-    window.addEventListener('resize', updateResponsiveText);
+    // Event listener for when the song ends
+    newAudio.addEventListener('ended', handleSongEnd);
 
     return () => {
-      window.removeEventListener('resize', updateResponsiveText);
+      newAudio.removeEventListener('ended', handleSongEnd);
     };
-  }, [isPlaying]); // Include isPlaying in the dependency array to update text when it changes
+  }, [currentSongIndex]);
 
-  const togglePlayPause = () => setIsPlaying(!isPlaying);
+  useEffect(() => {
+    if (isPlaying) {
+      audioRef.current?.play();
+    } else {
+      audioRef.current?.pause();
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (isPlaying) {
+      setResponsiveText(songs[currentSongIndex].title);
+    } else {
+      setResponsiveText('listen to green and pine');
+    }
+  }, [isPlaying, currentSongIndex]);
+
+  const handleSongEnd = () => {
+    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
+  };
+
+  const togglePlayPause = () => {
+    if (audioRef.current) {
+      setIsPlaying(!isPlaying);
+    }
+  };
 
   return (
     <div id="footer" className="fixed inset-x-0 bottom-0 flex justify-center items-center pb-4">
-      <div className="max-w-screen-md flex justify-center items-center space-x-12 md:space-x-14 text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
-        <div id="listen" className="md:pl-14">listenNow:</div>
-        <div id="green-and-pine-footer" className="border-x-2 border-custom-border-color px-4 md:px-14">
+      <div className="max-w-screen-md flex justify-between items-center text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
+        <div id="green-and-pine-footer" className="px-4 md:px-14 border-r-2 border-custom-border-color">
           <span className={isPlaying ? 'flashing-text' : ''}>{responsiveText}</span>
         </div>
-        <button id="play-footer" onClick={togglePlayPause} className="md:pr-14">
-          {isPlaying ? 'pause' : 'play'}
-        </button>
+        <div className="flex space-x-4 md:space-x-6 px-4 md:px-14">
+          <button onClick={togglePlayPause} className="footer-buttons">
+            {isPlaying ? 'pause' : 'play'}
+          </button>
+        </div>
       </div>
     </div>
   );

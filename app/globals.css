@@ -75,7 +75,7 @@ html {scroll-behavior: smooth;}
 * :Hover and Text decoration
 */
 /*--------------------------------------------------------------------------------------------------------------------*/
-#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myMusicNav:hover, #myScoresNav:hover, #contactNav:hover, #play-footer:hover {
+#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myMusicNav:hover, #myScoresNav:hover, #contactNav:hover, .footer-buttons:hover {
   color: #e39ba6;
   text-decoration: underline;
   text-decoration-color: #c15564;
