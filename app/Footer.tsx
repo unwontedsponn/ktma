@@ -30,9 +30,7 @@ const Footer: React.FC = () => {
     newAudio.volume = 0.5;
     audioRef.current = newAudio;
 
-    if (isPlaying) {
-      newAudio.play();
-    }
+    if (isPlaying) newAudio.play();
 
     // Event listener for when the song ends
     newAudio.addEventListener('ended', handleSongEnd);
@@ -43,11 +41,8 @@ const Footer: React.FC = () => {
   }, [currentSongIndex]);
 
   useEffect(() => {
-    if (isPlaying) {
-      audioRef.current?.play();
-    } else {
-      audioRef.current?.pause();
-    }
+    if (isPlaying) audioRef.current?.play(); 
+    else audioRef.current?.pause();    
   }, [isPlaying]);
 
   useEffect(() => {
@@ -68,6 +63,10 @@ const Footer: React.FC = () => {
     }
   };
 
+  const skipToNext = () => {
+    setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
+  };
+
   return (
     <div id="footer" className="fixed inset-x-0 bottom-0 flex justify-center items-center pb-4">
       <div className="max-w-screen-md flex justify-between items-center text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
@@ -78,6 +77,11 @@ const Footer: React.FC = () => {
           <button onClick={togglePlayPause} className="footer-buttons">
             {isPlaying ? 'pause' : 'play'}
           </button>
+          {isPlaying && (
+            <button onClick={skipToNext} className="footer-buttons">
+              next
+            </button>
+          )}
         </div>
       </div>
     </div>
