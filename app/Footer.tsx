@@ -17,17 +17,12 @@ const Footer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [currentSongIndex, setCurrentSongIndex] = useState<number>(0);
   const [responsiveText, setResponsiveText] = useState<string>('listen to green and pine');
+  const [volume, setVolume] = useState<number>(0.5); // State for volume
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    if (audioRef.current) {
-      // Remove event listener from previous audio element
-      audioRef.current.removeEventListener('ended', handleSongEnd);
-      audioRef.current.pause();
-    }
-
     const newAudio = new Audio(`/audio/green-and-pine/${songs[currentSongIndex].file}`);
-    newAudio.volume = 0.5;
+    newAudio.volume = volume; // Set initial volume
     audioRef.current = newAudio;
 
     if (isPlaying) newAudio.play();
@@ -37,8 +32,15 @@ const Footer: React.FC = () => {
 
     return () => {
       newAudio.removeEventListener('ended', handleSongEnd);
+      newAudio.pause();
     };
   }, [currentSongIndex]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+    }
+  }, [volume]);
 
   useEffect(() => {
     if (isPlaying) audioRef.current?.play(); 
@@ -77,13 +79,17 @@ const Footer: React.FC = () => {
     setCurrentSongIndex((prevIndex) => (prevIndex + 1) % songs.length);
   };
 
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVolume(parseFloat(e.target.value));
+  };
+
   return (
     <div id="footer" className="fixed inset-x-0 bottom-0 flex justify-center items-center pb-4">
       <div className="max-w-screen-md flex justify-between items-center text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
         <div id="green-and-pine-footer" className="px-4 md:px-14 border-r-2 border-custom-border-color">
           <span className={isPlaying ? 'flashing-text' : ''}>{responsiveText}</span>
         </div>
-        <div className="flex space-x-4 md:space-x-6 px-4 md:px-14">
+        <div className="flex space-x-4 md:space-x-6 px-4 md:px-14 items-center">
           <button onClick={togglePlayPause} className="footer-buttons">
             {isPlaying ? 'pause' : 'play'}
           </button>
@@ -92,6 +98,15 @@ const Footer: React.FC = () => {
               next
             </button>
           )}
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="footer-volume-slider"
+          />
         </div>
       </div>
     </div>
