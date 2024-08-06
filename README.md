@@ -1,2 +1,2 @@
 <!-- TO DO -->
-- Why isn't BUY MY BOOK NOW visible on my mobile?
+Adding a shopping cart. When someone clicks on add book to cart, I want the shopping cart to have a number 1 next to it, and 2 if they click twice... This is the aim at least.
