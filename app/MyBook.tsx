@@ -8,6 +8,7 @@ import SlideFadeIn from './components/SlideFadeIn';
 const MyBook: React.FC = () => {    
   const { cartCount, setCartCount } = useGlobalContext();
   const addToCart = () => setCartCount(cartCount + 1);
+  const removeFromCart = () => setCartCount(cartCount - 1);
 
   return (
     <section id="myBook" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -27,25 +28,29 @@ const MyBook: React.FC = () => {
           </SlideFadeIn>
 
           {/* Buy Now Links */}
-          <SlideFadeIn direction="up" className={`flex flex-col w-full w-auto mt-4 text-sm font-gopher-mono`}>
+          <SlideFadeIn direction="up" className={`flex flex-col mt-4 text-sm font-gopher-mono`}>
             <p className="bold color-dark">BUY NOW</p>                
-            <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>              
-              <span className="hidden xl:inline">- </span><span className="underline color-green"
-              onClick={addToCart}>              
-                Add To Cart</span>
+            <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>
+              <span className="hidden xl:inline">- </span>
+              <span
+                className="inline underline color-green"
+                onClick={cartCount === 0 ? addToCart : removeFromCart}
+              >
+                {cartCount === 0 ? 'Add To Cart' : 'Remove From Cart'}
+              </span>
             </div>
             <a 
               href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
               target="_blank" 
               rel="noopener noreferrer"
-              className='hover:font-gopher-mono-semi'>           
+              className='inline hover:font-gopher-mono-semi'>           
                 <span className="hidden xl:inline">- </span><span className="underline color-green">Amazon↑</span>
             </a>
             <a 
               href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 
               target="_blank" 
               rel="noopener noreferrer"
-              className='hover:font-gopher-mono-semi'>      
+              className='inline hover:font-gopher-mono-semi'>      
                 <span className="hidden xl:inline">- </span><span className="underline color-green">Apple Books↑</span>
             </a>
           </SlideFadeIn>
@@ -61,12 +66,7 @@ const MyBook: React.FC = () => {
         
         {/* Buy Now Links */}
         <SlideFadeIn direction="up" className={`flex flex-col items-center w-full w-auto text-sm font-gopher-mono`}>
-          <p className="bold color-dark">Beginner To Composer In 14 Days</p>                
-          <a 
-            href=""    
-          >                         
-            <span className="underline color-green">Amazon↑</span>
-          </a>
+          <p className="bold color-dark">Beginner To Composer In 14 Days</p>                          
           <a 
             href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
             target="_blank" 
