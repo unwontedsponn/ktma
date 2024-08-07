@@ -5,7 +5,7 @@ import BookComponent from '@/app/components/BookComponent';
 import Image from 'next/image';
 import SlideFadeIn from './components/SlideFadeIn';
 
-const MyBook: React.FC = () => {
+const MyBook: React.FC = () => {  
 
   return (
     <section id="myBook" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -27,17 +27,22 @@ const MyBook: React.FC = () => {
           {/* Buy Now Links */}
           <SlideFadeIn direction="up" className={`flex flex-col w-full w-auto mt-4 text-sm font-gopher-mono`}>
             <p className="bold color-dark">BUY NOW</p>                
+            <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>              
+              <span className="hidden xl:inline">- </span><span className="underline color-green">Add To Cart</span>
+            </div>
             <a 
-                href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
-                target="_blank" 
-                rel="noopener noreferrer">
-                    <span className="hidden xl:inline">- </span><span className="underline color-green">Amazon↑</span>
+              href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className='hover:font-gopher-mono-semi'>           
+                <span className="hidden xl:inline">- </span><span className="underline color-green">Amazon↑</span>
             </a>
             <a 
-                href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 
-                target="_blank" 
-                rel="noopener noreferrer">
-                    <span className="hidden xl:inline">- </span><span className="underline color-green">Apple Books↑</span>
+              href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className='hover:font-gopher-mono-semi'>      
+                <span className="hidden xl:inline">- </span><span className="underline color-green">Apple Books↑</span>
             </a>
           </SlideFadeIn>
         </div>
@@ -46,7 +51,7 @@ const MyBook: React.FC = () => {
         <BookComponent width={3000} height={3000} direction="right"/>
                   
       </div>    
-      {/* Image and Links for Mobile */}
+      {/* Image and Links for Mobile -------------------------------------------------------------------------------------------------------------*/}
       <div className="flex flex-col justify-center items-center md:hidden h-full space-y-2">        
         <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-4vw"><p>BUY MY BOOK NOW</p></SlideFadeIn>
         
@@ -54,10 +59,15 @@ const MyBook: React.FC = () => {
         <SlideFadeIn direction="up" className={`flex flex-col items-center w-full w-auto text-sm font-gopher-mono`}>
           <p className="bold color-dark">Beginner To Composer In 14 Days</p>                
           <a 
-              href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
-              target="_blank" 
-              rel="noopener noreferrer">
-                  <span className="underline color-green">Amazon↑</span>
+            href=""    
+          >                         
+            <span className="underline color-green">Amazon↑</span>
+          </a>
+          <a 
+            href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
+            target="_blank" 
+            rel="noopener noreferrer">
+              <span className="underline color-green">Amazon↑</span>
           </a>
           <a 
               href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 

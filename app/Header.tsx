@@ -6,6 +6,8 @@ import Contact from './Contact';
 
 const Header: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [cartCount, setCartCount] = useState<number>(0);
+
   const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
@@ -93,21 +95,22 @@ const Header: React.FC = () => {
                   myBook
                 </div>   
                 
-                {/* Shopping Cart Icon */}
+                {/* Shopping Cart Icon */}                
                 <div
-                  id='myScoresNav'
-                  className="hidden md:block border-l-2 border-custom-border-color pl-6"
-                >
-                  myScores                  
-                </div>
-
-                <div
-                  id='trolley'
+                  id='cart'
                   className="hidden md:block border-l-2 border-custom-border-color pl-6"
                 >                  
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#c15564">
-                    <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                  </svg>
+                  {cartCount === 0 ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#c15564">
+                      <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                    </svg>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#c15564">
+                      <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+                      <circle cx="18" cy="6" r="4" fill="#c15564"/>
+                      <text x="18" y="7" font-family="Arial" font-size="4" fill="white" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">1</text>
+                    </svg>
+                  )}
                 </div>
              
                 <button
