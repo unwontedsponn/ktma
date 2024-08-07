@@ -105,7 +105,8 @@ const Header: React.FC = () => {
                           <circle className='cart-icon-circle' cx="18" cy="6" r="6" fill="#c15564"/>
                           <text x="18" y="7" fontFamily="Gopher Mono" fontSize="8" fill="white" textAnchor="middle" alignmentBaseline="middle" dominantBaseline="middle">{cartCount}</text>
                         </>
-                      )}                   
+                      )}       
+                      <line x1="2" y1="22" x2="22" y2="22" stroke="#c15564" strokeWidth="3" className="cart-underline" />            
                     </svg>                                                     
                 </div>
              

@@ -87,6 +87,9 @@ html {scroll-behavior: smooth;}
 
 #cart:hover .cart-icon {fill: #c15564;}
 
+.cart-underline {opacity: 0;}
+#cart:hover .cart-underline {opacity: 1;}
+
 
 /**
 * Custom styles for the volume slider 

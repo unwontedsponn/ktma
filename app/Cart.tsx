@@ -25,8 +25,13 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
           &times;
         </span>
         <p className="font-gopher-mono-semi">Shopping Cart Items: </p>
-        <p className="font-gopher-mono"><span>- </span>Beginner To Composer In 14 Days PDF Book <span>£10</span></p>
-        <button className="border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-50">BUY</button>
+        <p className="font-gopher-mono">
+          <span>- </span>
+          Beginner To Composer In 14 Days PDF Book
+          <span> £10</span>
+          <span> REMOVE</span>
+        </p>
+        <button className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">BUY</button>
       </div>
     </div>
   );

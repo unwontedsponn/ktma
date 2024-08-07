@@ -26,10 +26,33 @@ const AboutMe: React.FC = () => {
                 ...I&apos;m Ben, a 34-year-old musician and full stack JS/TS developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. <span className="hidden md:block">My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.</span>
               </p>
               <p className="pt-2 hidden md:block"><span className="font-gopher-mono-semi">Extra Links:</span> 
-                <a href="https://github.com/unwontedsponn" className="hover:underline"> GitHub</a> |
-                <a href="https://www.linkedin.com/in/ben-spooner-12aab937/" className="hover:underline"> LinkedIn</a> |
-                <a href="https://sponn.itch.io/keep-the-music-alive" className="hover:underline"> KTMA</a> |
-                <a href="https://medium.com/@benspooner" className="hover:underline"> Blog</a>
+                <a 
+                  href="https://github.com/unwontedsponn" 
+                  className="hover:underline"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  > GitHub
+                </a> | 
+                <a 
+                  href="https://www.linkedin.com/in/ben-spooner-12aab937/" className="hover:underline"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  > LinkedIn
+                </a> | 
+                <a 
+                  href="https://sponn.itch.io/keep-the-music-alive" 
+                  className="hover:underline"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  > KTMA
+                </a> |
+                <a 
+                  href="https://medium.com/@benspooner" 
+                  className="hover:underline"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  > Blog
+                </a>
               </p>
             </div>            
           </SlideFadeIn>              
