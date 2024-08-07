@@ -16,7 +16,7 @@ export default function Contact({ showModal, setShowModal }: ContactProps) {
       className={`fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-40 ${showModal ? 'block' : 'hidden'}`} // Modal overlay styles
     >
       <div 
-        className="modal-content bg-white m-auto p-5 border border-gray-200 w-4/5 md:w-1/2 lg:w-1/3 rounded shadow-lg" // Modal content styles
+        className="modal-content bg-white m-auto p-5 border-3 border-thick-border-gray w-4/5 md:w-1/2 lg:w-1/3 shadow-lg" // Modal content styles
       >
         <span 
           className="close text-gray-400 float-right text-3xl font-bold hover:text-black focus:text-black cursor-pointer" // Close button styles
