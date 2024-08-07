@@ -8,7 +8,9 @@ import Cart from './Cart';
 const Header: React.FC = () => {
   const { cartCount } = useGlobalContext();
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [showCartModal, setShowCartModal] = useState<boolean>(false);
   const toggleModal = () => setShowModal(!showModal);
+  const toggleCartModal = () => setShowCartModal(!showCartModal);
 
   useEffect(() => {
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
@@ -94,7 +96,7 @@ const Header: React.FC = () => {
                 <div
                   id='cart'
                   className="hidden md:block border-l-2 border-custom-border-color pl-6 hover:cursor-pointer hover:"
-                  onClick={toggleModal}
+                  onClick={toggleCartModal}
                 >                                    
                     <svg className="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#3f423e">
                       <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
@@ -121,7 +123,7 @@ const Header: React.FC = () => {
         </div>
       </section>
       <Contact showModal={showModal} setShowModal={setShowModal} />
-      <Cart showModal={showModal} setShowModal={setShowModal} />
+      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} />
     </>
   );
 };
