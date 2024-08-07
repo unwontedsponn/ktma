@@ -1,33 +1,29 @@
-"use client";
+"use client"
 import React, { useState, useEffect } from 'react';
-import Arrow from '@/app/components/Arrow';
+import { useGlobalContext } from './contexts/GlobalContext';
 import Link from 'next/link';
 import Contact from './Contact';
 
 const Header: React.FC = () => {
+  const { cartCount } = useGlobalContext();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [cartCount, setCartCount] = useState<number>(0);
-
   const toggleModal = () => setShowModal(!showModal);
 
   useEffect(() => {
-    // Get the height of the header element
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
-    // Set a custom CSS property (--header-height) to the header's height
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    // Rest of this useEffect is for the Intersection Observer to add underlines
     const sections = ['homepage', 'aboutMe', 'myBook'];
     const observerOptions = {
       root: null,
       rootMargin: '0px',
-      threshold: 0.5, // Adjust this threshold as needed
+      threshold: 0.5,
     };
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         const navElement = document.getElementById(`${entry.target.id}Nav`);
-        if (navElement) { // Check if navElement exists
+        if (navElement) {
           if (entry.isIntersecting) navElement.classList.add('underline-nav');
           else navElement.classList.remove('underline-nav');
         }
@@ -53,9 +49,7 @@ const Header: React.FC = () => {
 
   const scrollToSection = (sectionId: string) => {
     const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-    }
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -99,18 +93,16 @@ const Header: React.FC = () => {
                 <div
                   id='cart'
                   className="hidden md:block border-l-2 border-custom-border-color pl-6"
-                >                  
-                  {cartCount === 0 ? (
+                >                                    
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#c15564">
                       <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#c15564">
-                      <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                      <circle cx="18" cy="6" r="4" fill="#c15564"/>
-                      <text x="18" y="7" font-family="Arial" font-size="4" fill="white" text-anchor="middle" alignment-baseline="middle" dominant-baseline="middle">1</text>
-                    </svg>
-                  )}
+                      {cartCount > 0 && (
+                        <>
+                          <circle cx="18" cy="6" r="6" fill="#c15564"/>
+                          <text x="18" y="7" fontFamily="Gopher Mono" fontSize="8" fill="white" textAnchor="middle" alignmentBaseline="middle" dominantBaseline="middle">{cartCount}</text>
+                        </>
+                      )}                   
+                    </svg>                                                     
                 </div>
              
                 <button

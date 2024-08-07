@@ -1,11 +1,13 @@
 "use client"
 import React from 'react';
+import { useGlobalContext } from './contexts/GlobalContext';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
-import Image from 'next/image';
 import SlideFadeIn from './components/SlideFadeIn';
 
-const MyBook: React.FC = () => {  
+const MyBook: React.FC = () => {    
+  const { cartCount, setCartCount } = useGlobalContext();
+  const addToCart = () => setCartCount(cartCount + 1);
 
   return (
     <section id="myBook" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -28,7 +30,9 @@ const MyBook: React.FC = () => {
           <SlideFadeIn direction="up" className={`flex flex-col w-full w-auto mt-4 text-sm font-gopher-mono`}>
             <p className="bold color-dark">BUY NOW</p>                
             <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>              
-              <span className="hidden xl:inline">- </span><span className="underline color-green">Add To Cart</span>
+              <span className="hidden xl:inline">- </span><span className="underline color-green"
+              onClick={addToCart}>              
+                Add To Cart</span>
             </div>
             <a 
               href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
@@ -76,8 +80,7 @@ const MyBook: React.FC = () => {
                   <span className="underline color-green">Apple Books↑</span>
           </a>
         </SlideFadeIn>
-      </div>
-      
+      </div>    
   </section>
   );
 }
