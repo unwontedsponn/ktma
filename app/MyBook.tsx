@@ -7,8 +7,12 @@ import SlideFadeIn from './components/SlideFadeIn';
 
 const MyBook: React.FC = () => {    
   const { cartCount, setCartCount } = useGlobalContext();
-  const addToCart = () => setCartCount(cartCount + 1);
-  const removeFromCart = () => setCartCount(cartCount - 1);
+  const addToCart = () => {
+    setCartCount(cartCount + 1);
+  }
+  const removeFromCart = () => {
+    setCartCount(cartCount - 1);
+  }
 
   return (
     <section id="myBook" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
