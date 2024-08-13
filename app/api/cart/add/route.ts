@@ -3,16 +3,14 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
     try {
-        const { bookId, userId, quantity } = await request.json();
-        if (!bookId || !userId || !quantity) throw new Error('Book ID, User ID, and Quantity are required');
-
-        const bookName = "Beginner to Composer in 14 Days"; // Hardcoding for example
+        const { bookId, userId } = await request.json();
+        if (!bookId || !userId) throw new Error('Book ID and User ID are required');
 
         const result = await sql`
-        INSERT INTO Cart (BookId, UserId, BookName, Quantity)
-        VALUES (${bookId}, ${userId}, ${bookName}, ${quantity})
+        INSERT INTO Cart (BookId, UserId)
+        VALUES (${bookId}, ${userId})
         ON CONFLICT (BookId, UserId) 
-        DO UPDATE SET Quantity = Cart.Quantity + ${quantity};`;
+        DO NOTHING;`;
 
         return NextResponse.json({ result }, { status: 200 });
     } catch (error) {
