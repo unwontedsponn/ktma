@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import { getOrCreateGuestUserId } from './utils/userUtils';
 import { useGlobalContext } from './contexts/GlobalContext';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
@@ -11,14 +12,13 @@ const MyBook: React.FC = () => {
   const addToCart = async () => {
     setCartCount(cartCount + 1);
 
-    const bookId = "someBookId"; // Replace with actual book ID
-    const userId = "someUserId"; // Replace with actual user ID
-    const quantity = 1;          // Or whatever quantity is needed
+    const bookId = "Beginner To Composer In 14 Days Book";
+    const userId = getOrCreateGuestUserId();
 
     const response = await fetch('/api/cart/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bookId, userId, quantity }),
+      body: JSON.stringify({ bookId, userId }),
     });
 
     const data = await response.json();
@@ -28,9 +28,9 @@ const MyBook: React.FC = () => {
   const removeFromCart = async () => {
     setCartCount(cartCount - 1);
 
-    const bookId = "someBookId"; // Replace with actual book ID
-    const userId = "someUserId"; // Replace with actual user ID
-
+    const bookId = "Beginner To Composer In 14 Days Book";
+    const userId = getOrCreateGuestUserId();
+    
     const response = await fetch(`/api/cart/remove?bookId=${bookId}&userId=${userId}`, {
       method: 'DELETE',
     });
