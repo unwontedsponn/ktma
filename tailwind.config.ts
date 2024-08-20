@@ -35,6 +35,7 @@ const config: Config = {
         'thick-border-gray': '#3f423e',
         hoverPink: '#e39ba6',
         'custom-border-color': 'rgba(172, 221, 251, 0.4)',
+        darkPink: '#c15564'
       },
       borderWidth: {
         '3': '3px', // Adds a 'border-3' utility

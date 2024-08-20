@@ -1,10 +1,17 @@
 "use client";
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { getOrCreateGuestUserId } from '../utils/userUtils'; // Import your utility function
+import { getOrCreateGuestUserId } from '../utils/userUtils';
+
+interface CartItem {
+  itemId: string;
+  price: number;
+}
 
 interface GlobalState {
   cartCount: number;
   setCartCount: (count: number) => void;
+  cartItems: CartItem[];
+  setCartItems: (items: CartItem[]) => void;
   userId: string;
 }
 
@@ -12,16 +19,29 @@ const GlobalContext = createContext<GlobalState | undefined>(undefined);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [cartCount, setCartCount] = useState(0);
-  const [userId, setUserId] = useState<string>(''); // Initializing userId with an empty string
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [userId, setUserId] = useState<string>(''); 
 
   useEffect(() => {
     // Fetch or create the userId when the provider mounts
     const id = getOrCreateGuestUserId();
     setUserId(id);
-  }, []); // Runs only once when the component mounts
+
+    // Load cart from local storage if available
+    const savedCartItems = JSON.parse(localStorage.getItem('cartItems') || '[]');
+    if (savedCartItems.length > 0) {
+      setCartItems(savedCartItems);
+      setCartCount(savedCartItems.length);
+    }
+  }, []); 
+
+  useEffect(() => {
+    // Update local storage whenever cartItems changes
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }, [cartItems]);
 
   return (
-    <GlobalContext.Provider value={{ cartCount, setCartCount, userId }}>
+    <GlobalContext.Provider value={{ cartCount, setCartCount, cartItems, setCartItems, userId }}>
       {children}
     </GlobalContext.Provider>
   );
