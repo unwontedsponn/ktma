@@ -13,10 +13,10 @@ const MyBook: React.FC = () => {
     setCartCount(cartCount + 1);
 
     const itemId = "Beginner To Composer In 14 Days Book";
-    const price = 10.00; // The price of the book
+    const price = 10.00;
     const userId = getOrCreateGuestUserId();
 
-    const response = await fetch('/api/cart/add', {
+    const response = await fetch('/api/cart/post', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itemId, price, userId }),

@@ -17,20 +17,25 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal, userId }) 
 
   // Fetch cart items when the component mounts or showCartModal changes
   useEffect(() => {
-    if (showCartModal) {
-      fetchCartItems();
-    }
+    if (showCartModal) fetchCartItems();
   }, [showCartModal]);
 
   const fetchCartItems = async () => {
     try {
       const response = await fetch(`/api/cart/get?userId=${userId}`);
       const data = await response.json();
+      
+      // Log the userId and itemId for each item in the cart
+      data.forEach((item: { price: number; userId: string; itemId: string }) => {
+        console.log(`User ID: ${item.userId}, Item ID: ${item.itemId}, Price: ${item.price}`);
+      });
+  
       setCartItems(data);
     } catch (error) {
       console.error('Failed to fetch cart items:', error);
     }
   };
+  
 
   const removeItemFromCart = async (itemId: string) => {
     try {

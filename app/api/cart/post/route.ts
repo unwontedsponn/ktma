@@ -6,9 +6,7 @@ export async function POST(request: Request) {
         // Extract itemId, price, and userId from the request body
         const { itemId, price, userId } = await request.json();
 
-        if (!itemId || !price || !userId) {
-            throw new Error('Item ID, Price, and User ID are required');
-        }
+        if (!itemId || !price || !userId) throw new Error('Item ID, Price, and User ID are required');        
 
         const result = await sql`
         INSERT INTO Cart (itemid, price, userid)
