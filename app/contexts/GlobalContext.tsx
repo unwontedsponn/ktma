@@ -49,8 +49,6 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
 export const useGlobalContext = () => {
   const context = useContext(GlobalContext);
-  if (!context) {
-    throw new Error('useGlobalContext must be used within a GlobalProvider');
-  }
+  if (!context) throw new Error('useGlobalContext must be used within a GlobalProvider');
   return context;
 };
