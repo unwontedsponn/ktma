@@ -12,13 +12,14 @@ const MyBook: React.FC = () => {
   const addToCart = async () => {
     setCartCount(cartCount + 1);
 
-    const bookId = "Beginner To Composer In 14 Days Book";
+    const itemId = "Beginner To Composer In 14 Days Book";
+    const price = 10.00; // The price of the book
     const userId = getOrCreateGuestUserId();
 
     const response = await fetch('/api/cart/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ bookId, userId }),
+      body: JSON.stringify({ itemId, price, userId }),
     });
 
     const data = await response.json();
@@ -28,10 +29,10 @@ const MyBook: React.FC = () => {
   const removeFromCart = async () => {
     setCartCount(cartCount - 1);
 
-    const bookId = "Beginner To Composer In 14 Days Book";
+    const itemId = "Beginner To Composer In 14 Days Book";
     const userId = getOrCreateGuestUserId();
     
-    const response = await fetch(`/api/cart/remove?bookId=${bookId}&userId=${userId}`, {
+    const response = await fetch(`/api/cart/delete?itemId=${itemId}&userId=${userId}`, {
       method: 'DELETE',
     });
 

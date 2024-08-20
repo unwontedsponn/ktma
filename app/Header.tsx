@@ -1,14 +1,14 @@
-"use client"
 import React, { useState, useEffect } from 'react';
-import { useGlobalContext } from './contexts/GlobalContext';
+import { useGlobalContext } from './contexts/GlobalContext'; // Import your global context
 import Link from 'next/link';
 import Contact from './Contact';
 import Cart from './Cart';
 
 const Header: React.FC = () => {
-  const { cartCount } = useGlobalContext();
+  const { cartCount, userId } = useGlobalContext(); // Assuming userId is available in the global context
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showCartModal, setShowCartModal] = useState<boolean>(false);
+
   const toggleModal = () => setShowModal(!showModal);
   const toggleCartModal = () => setShowCartModal(!showCartModal);
 
@@ -124,7 +124,7 @@ const Header: React.FC = () => {
         </div>
       </section>
       <Contact showModal={showModal} setShowModal={setShowModal} />
-      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} />
+      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} userId={userId} />
     </>
   );
 };

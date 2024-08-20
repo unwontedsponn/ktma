@@ -5,19 +5,19 @@ export async function DELETE(request: Request) {
     try {        
         const url = new URL(request.url);
                 
-        const bookId = url.searchParams.get('bookId');
+        const itemId = url.searchParams.get('itemId');
         const userId = url.searchParams.get('userId');
                 
-        if (!bookId || !userId) throw new Error('Book ID and User ID are required');
+        if (!itemId || !userId) throw new Error('Item ID and User ID are required');
         
         const result = await sql`
         DELETE FROM Cart
-        WHERE BookId = ${bookId} AND UserId = ${userId};`;
+        WHERE itemid = ${itemId} AND userid = ${userId};`;
         
         return NextResponse.json({ message: 'Item removed from cart' }, { status: 200 });
     } 
     catch (error) {        
         if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
-        else return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
+        return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
     }
 }
