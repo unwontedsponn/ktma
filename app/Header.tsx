@@ -5,7 +5,7 @@ import Contact from './Contact';
 import Cart from './Cart';
 
 const Header: React.FC = () => {
-  const { cartCount, userId } = useGlobalContext(); // Assuming userId is available in the global context
+  const { cartCount } = useGlobalContext();
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showCartModal, setShowCartModal] = useState<boolean>(false);
 
@@ -124,7 +124,7 @@ const Header: React.FC = () => {
         </div>
       </section>
       <Contact showModal={showModal} setShowModal={setShowModal} />
-      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} userId={userId} />
+      <Cart showCartModal={showCartModal} setShowCartModal={setShowCartModal} />
     </>
   );
 };
