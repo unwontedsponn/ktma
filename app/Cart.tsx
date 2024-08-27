@@ -1,7 +1,16 @@
 "use client";
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';  // Update: useRouter to handle navigation
+import { useEffect, useState } from 'react';
 import { useGlobalContext } from './contexts/GlobalContext';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import CheckoutForm from './components/CheckoutForm';
+
+const stripePromise = loadStripe(
+  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || (() => {
+    throw new Error('Stripe publishable key is not defined in environment variables.');
+  })()
+);
+
 
 interface CartItem {
   itemId: string;
@@ -15,11 +24,8 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
-  const router = useRouter(); // Use router to handle navigation
-
-  useEffect(() => {
-    if (showCartModal) fetchCartItems();
-  }, [showCartModal]);
+  const [showCheckout, setShowCheckout] = useState(false); // Track whether to show checkout form
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   const fetchCartItems = async () => {
     try {
@@ -49,21 +55,39 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     }
   };
 
-  const closeModal = () => setShowCartModal(false);
-
-  const handleBuyItems = () => {
+  const handleBuyItems = async () => {
     // Calculate the total amount
     const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-  
-    // Manually build the query string
-    const queryString = new URLSearchParams({
-      totalAmount: totalAmount.toString(),
-      items: JSON.stringify(cartItems),
-    }).toString();
-  
-    // Navigate to the checkout page with the query string
-    router.push(`/checkout?${queryString}`);
-  };  
+
+    try {
+      // Create the payment intent
+      const response = await fetch('/api/stripe/payment-intent/post', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: totalAmount * 100, // Amount in cents
+          userId,
+        }),
+      });
+
+      const data = await response.json();
+      setClientSecret(data.clientSecret); // Store the client secret
+      setShowCheckout(true); // Show checkout form
+    } catch (error) {
+      console.error('Failed to create payment intent:', error);
+    }
+  };
+
+  const closeModal = () => {
+    setShowCheckout(false); // Reset checkout form
+    setShowCartModal(false); // Close the modal
+  };
+
+  useEffect(() => {
+    if (showCartModal) fetchCartItems();
+  }, [showCartModal]);
 
   return (
     <div
@@ -77,31 +101,40 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
         >
           &times;
         </span>
-        <div className="space-y-2">
-          <p className="font-gopher-mono-semi text-xl">Shopping Cart Items:</p>
-          {cartItems.length > 0 ? (
-            cartItems.map((item) => (
-              <div key={item.itemId} className="font-gopher-mono">
-                <span>- {item.itemId}</span>
-                <span> £{item.price} </span>
-                <span
-                  className="hover:cursor-pointer hover:opacity-50 text-darkPink font-gopher-mono-semi"
-                  onClick={() => removeItemFromCart(item.itemId)}
+        {!showCheckout ? (
+          <div className="space-y-2">
+            <p className="font-gopher-mono-semi text-xl">Shopping Cart Items:</p>
+            {cartItems.length > 0 ? (
+              <>
+                {cartItems.map((item) => (
+                  <div key={item.itemId} className="font-gopher-mono">
+                    <span>- {item.itemId}</span>
+                    <span> £{item.price} </span>
+                    <span
+                      className="hover:cursor-pointer hover:opacity-50 text-darkPink font-gopher-mono-semi"
+                      onClick={() => removeItemFromCart(item.itemId)}
+                    >
+                      X
+                    </span>
+                  </div>
+                ))}
+                {/* Conditionally render the BUY ITEMS button only if there are items in the cart */}
+                <button
+                  className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
+                  onClick={handleBuyItems}
                 >
-                  X
-                </span>
-              </div>
-            ))
-          ) : (
-            <p className="font-gopher-mono">No items in the cart.</p>
-          )}
-          <button
-            className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
-            onClick={handleBuyItems}
-          >
-            BUY ITEMS
-          </button>
-        </div>
+                  BUY ITEMS
+                </button>
+              </>
+            ) : (
+              <p className="font-gopher-mono">No items in the cart.</p>
+            )}
+          </div>
+        ) : (
+          <Elements stripe={stripePromise}>
+            <CheckoutForm clientSecret={clientSecret} closeModal={closeModal} />
+          </Elements>
+        )}
       </div>
     </div>
   );
