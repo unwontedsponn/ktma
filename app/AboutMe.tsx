@@ -6,7 +6,7 @@ import Image from 'next/image';
 const AboutMe: React.FC = () => {
 
   return (
-    <section id="aboutMe" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
+    <section id="aboutMe" className="flex flex-col w-full h-screen pt-[var(--header-height)] pb-[var(--footer-height)] overflow-hidden">
 
       <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">      
         

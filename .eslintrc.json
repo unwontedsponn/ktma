@@ -27,6 +27,6 @@
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "tailwindcss/no-custom-classname": "off",
-    "tailwindcss/classnames-order": "warn"
+    "tailwindcss/classnames-order": "off"
   }
 }
