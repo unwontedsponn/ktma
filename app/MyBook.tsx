@@ -16,7 +16,7 @@ const MyBook: React.FC = () => {
   useEffect(() => {
     const itemInCart = cartItems.some(item => item.itemId === itemId);
     setInCart(itemInCart);
-  }, [cartItems, itemId]);
+  }, [cartItems, itemId, setInCart]);
 
   const addToCart = async () => {
     const response = await fetch('/api/cart/post', {

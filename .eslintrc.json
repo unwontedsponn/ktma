@@ -26,6 +26,7 @@
     // Add your custom rules here
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "tailwindcss/no-custom-classname": "off"
+    "tailwindcss/no-custom-classname": "off",
+    "tailwindcss/classnames-order": "warn"
   }
 }

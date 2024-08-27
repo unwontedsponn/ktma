@@ -1,4 +1,5 @@
 "use client"
+import React from 'react';
 
 // Define the Props interface
 interface ContactProps {
