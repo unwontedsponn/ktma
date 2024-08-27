@@ -1,4 +1,3 @@
-// To handle Stripe webhook events, such as confirming that payment was successful and triggering order fulfillment (e.g., sending the PDF).
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { clearUserCart } from '@/app/utils/cart';
@@ -11,13 +10,14 @@ const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get('stripe-signature') as string;
-  const body = await req.text();  // Get raw body for verification
+  const body = await req.text();
 
   let event;
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret as string);
   } catch (err: any) {
+    console.error('Webhook signature verification failed.', err);
     return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
   }
 
@@ -25,10 +25,16 @@ export async function POST(req: NextRequest) {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
     const userId = paymentIntent.metadata.userId;
 
-    // Clear the user's cart in the database
-    await clearUserCart(userId);
+    console.log('Payment succeeded for user:', userId);
 
-    // TODO: Trigger PDF delivery to the user
+    try {
+      // Attempt to clear the user's cart
+      await clearUserCart(userId);
+      console.log('Cart cleared for user:', userId);
+    } catch (err) {
+      console.error('Failed to clear the cart:', err);
+      return NextResponse.json({ error: 'Failed to clear the cart' }, { status: 500 });
+    }
   }
 
   return NextResponse.json({ received: true });

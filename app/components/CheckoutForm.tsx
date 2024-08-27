@@ -1,7 +1,8 @@
-// components/CheckoutForm.tsx
+// CheckoutForm.tsx
 
 import { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import { useGlobalContext } from '../contexts/GlobalContext';
 
 interface CheckoutFormProps {
   clientSecret: string | null;
@@ -13,6 +14,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const { setCartItems, setCartCount } = useGlobalContext(); // Destructure global context functions
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -35,7 +38,12 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       setError(error.message || 'Payment failed');
       setIsProcessing(false);
     } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+      // Clear the client-side cart after successful payment
+      setCartItems([]);
+      setCartCount(0);
+      
       alert('Payment successful! Thank you for your purchase.');
+
       closeModal(); // Close the modal after successful payment
     }
   };
