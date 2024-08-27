@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';  // Update: useRouter to handle navigation
 import { useGlobalContext } from './contexts/GlobalContext';
 
 interface CartItem {
@@ -14,6 +15,7 @@ interface CartProps {
 
 const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
+  const router = useRouter(); // Use router to handle navigation
 
   useEffect(() => {
     if (showCartModal) fetchCartItems();
@@ -22,10 +24,10 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const fetchCartItems = async () => {
     try {
       const response = await fetch(`/api/cart/get?userId=${userId}`);
-      const data = await response.json();        
+      const data = await response.json();
 
       const mappedData: CartItem[] = data.map((item: { price: number; userid: string; itemid: string }) => ({
-        itemId: item.itemid, 
+        itemId: item.itemid,
         price: item.price,
       }));
 
@@ -36,7 +38,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     }
   };
 
-  const removeItemFromCart = async (itemId: string) => {    
+  const removeItemFromCart = async (itemId: string) => {
     try {
       await fetch(`/api/cart/delete?itemId=${itemId}&userId=${userId}`, { method: 'DELETE' });
       const newCartItems = cartItems.filter(item => item.itemId !== itemId);
@@ -49,13 +51,27 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
   const closeModal = () => setShowCartModal(false);
 
+  const handleBuyItems = () => {
+    // Calculate the total amount
+    const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+  
+    // Manually build the query string
+    const queryString = new URLSearchParams({
+      totalAmount: totalAmount.toString(),
+      items: JSON.stringify(cartItems),
+    }).toString();
+  
+    // Navigate to the checkout page with the query string
+    router.push(`/checkout?${queryString}`);
+  };  
+
   return (
-    <div 
-      id="myModal" 
+    <div
+      id="myModal"
       className={`fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-40 ${showCartModal ? 'block' : 'hidden'}`}
     >
       <div className="modal-content bg-white m-auto p-5 border-3 border-thick-border-gray w-4/5 md:w-1/2 lg:w-1/3 shadow-lg">
-        <span 
+        <span
           className="close text-gray-400 float-right text-3xl font-bold hover:text-black focus:text-black cursor-pointer"
           onClick={closeModal}
         >
@@ -66,8 +82,8 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <div key={item.itemId} className="font-gopher-mono">
-                <span>- {item.itemId}</span>                
-                <span> £{item.price} </span>                
+                <span>- {item.itemId}</span>
+                <span> £{item.price} </span>
                 <span
                   className="hover:cursor-pointer hover:opacity-50 text-darkPink font-gopher-mono-semi"
                   onClick={() => removeItemFromCart(item.itemId)}
@@ -79,7 +95,10 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
           ) : (
             <p className="font-gopher-mono">No items in the cart.</p>
           )}
-          <button className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
+          <button
+            className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
+            onClick={handleBuyItems}
+          >
             BUY ITEMS
           </button>
         </div>
