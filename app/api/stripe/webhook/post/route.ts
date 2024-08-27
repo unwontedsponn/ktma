@@ -1,8 +1,7 @@
-// Webhook Handler
 // To handle Stripe webhook events, such as confirming that payment was successful and triggering order fulfillment (e.g., sending the PDF).
-
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { clearUserCart } from '@/app/utils/cart';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
@@ -23,9 +22,13 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === 'payment_intent.succeeded') {
-    const paymentIntent = event.data.object;
-    // Fulfill the purchase, e.g., send the PDF to the user
-    console.log('Payment succeeded:', paymentIntent);
+    const paymentIntent = event.data.object as Stripe.PaymentIntent;
+    const userId = paymentIntent.metadata.userId;
+
+    // Clear the user's cart in the database
+    await clearUserCart(userId);
+
+    // TODO: Trigger PDF delivery to the user
   }
 
   return NextResponse.json({ received: true });
