@@ -90,7 +90,10 @@ const Header: React.FC = () => {
                 <div
                   id="myBookNav"
                   className="hidden md:block border-l-2 border-custom-border-color pl-6"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => scrollToSection('myBook')}
+                  onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook')}}
                 >
                   myBook
                 </div>   
