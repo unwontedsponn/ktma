@@ -11,7 +11,6 @@ const stripePromise = loadStripe(
   })()
 );
 
-
 interface CartItem {
   itemId: string;
   price: number;
@@ -123,6 +122,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
                     >
                       X
                     </span>
+
                   </div>
                 ))}
                 {/* Conditionally render the BUY ITEMS button only if there are items in the cart */}
