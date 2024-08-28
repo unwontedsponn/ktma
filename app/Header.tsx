@@ -57,13 +57,13 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <section id="header" className="fixed top-0 left-0 right-0 z-10 pt-4 text-lg">
-        <div className="flex justify-center items-center w-full mx-auto px-4 py-2">
-          <div className="md:w-full md:mx-20 max-w-screen-xl mx-auto border-b-2 border-custom-border-color pb-4">
-            <div className="flex justify-between items-center">
-              <div className="flex flex-row border-r-2 border-custom-border-color pr-6 items-center">                
+      <section id="header" className="fixed inset-x-0 top-0 z-10 pt-4 text-lg">
+        <div className="flex items-center justify-center w-full mx-auto px-4 py-2">
+          <div className="mx-auto md:mx-20 w-full md:w-full max-w-screen-xl border-b-2 border-custom-border-color pb-4">
+            <div className="flex items-center justify-between">
+              <div className="flex flex-row items-center border-r-2 border-custom-border-color pr-6">
                 <div className="flex items-center font-gopher-mono-semi">                                                 
-                  <div className="flex flex-col w-full text-center xl:text-right px-2">
+                  <div className="flex flex-col w-full px-2 text-center xl:text-right">
                     <Link
                       href="/"
                       className="font-gopher-mono-semi"
@@ -80,7 +80,10 @@ const Header: React.FC = () => {
                 <div
                   id="aboutMeNav"
                   className="hidden md:block md:border-l-2 border-custom-border-color pl-6"
+                  role="button"
+                  tabIndex={0}
                   onClick={() => scrollToSection('aboutMe')}
+                  onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe');}}
                 >
                   aboutMe
                 </div>

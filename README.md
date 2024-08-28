@@ -3,3 +3,7 @@ Adding a shopping cart. When someone clicks on add book to cart, I want the shop
 
 Tailwind correct class order:
 Layout > Flexbox & Grid > Positioning > Spacing > Sizing > Typography > Backgrounds > Borders > Effects > Transforms > Interactivity.
+
+Check for ESLint errors in the terminal
+npx eslint .
+npm run lint
