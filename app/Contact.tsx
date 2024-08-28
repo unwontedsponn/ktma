@@ -14,17 +14,21 @@ export default function Contact({ showModal, setShowModal }: ContactProps) {
   return (
     <div 
       id="myModal" 
-      className={`fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-40 ${showModal ? 'block' : 'hidden'}`} // Modal overlay styles
+      className={`fixed inset-0 z-10 bg-black/40 ${showModal ? 'block' : 'hidden'}`} // Modal overlay styles
     >
       <div 
-        className="modal-content bg-white m-auto p-5 border-3 border-thick-border-gray w-4/5 md:w-1/2 lg:w-1/3 shadow-lg" // Modal content styles
+        className="modal-content m-auto w-4/5 md:w-1/2 lg:w-1/3 p-5 border-3 border-thick-border-gray bg-white shadow-lg" // Modal content styles
       >
-        <span 
-          className="close text-gray-400 float-right text-3xl font-bold hover:text-black focus:text-black cursor-pointer" // Close button styles
+        <span
+          className="float-right text-3xl font-bold text-gray-400 cursor-pointer hover:text-black focus:text-black close"
+          role="button"
+          tabIndex={0}
           onClick={closeModal}
+          onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') closeModal();}}
         >
           &times;
         </span>
+
         <p className="font-gopher-mono">Drop me an email at: <span className="font-bold">benpaulspooner@gmail.com</span></p>
       </div>
     </div>
