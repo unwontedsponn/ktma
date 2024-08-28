@@ -8,24 +8,24 @@ const AboutMe: React.FC = () => {
   return (
     <section id="aboutMe" className="flex flex-col w-full h-screen pt-[var(--header-height)] pb-[var(--footer-height)] overflow-hidden">
 
-      <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">      
+      <div className="flex flex-row items-center justify-center h-screen overflow-hidden gap-x-8 px-0">
         
         {/* Left Column */}
         <div className="flex flex-col">       
-          <SlideFadeIn direction="left" className="color-blue font-gopher-mono-semi leading-none hidden md:block text-11xl">
+        <SlideFadeIn direction="left" className="hidden md:block text-11xl leading-none font-gopher-mono-semi color-blue">
             <h1 className="opacity-40">aboutMe</h1>
           </SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color hidden text-4xl px-10 md:px-0 md:pl-32 tracking-largep whitespace-nowrap">
+          <SlideFadeIn direction="right" className="hidden text-4xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 md:pl-32 color-dark-blue text-decoration-color">
             <p className=""><TypewriterEffect text="A little bit about me..." /></p>
           </SlideFadeIn>
               
           <SlideFadeIn direction="up">
-            <div className="pt-6 md:pr-2 text-right font-gopher-mono text-3vw md:text-sm text-dark max-w-3xl px-24 md:px-0">
+            <div className="pt-6 px-24 md:px-0 md:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
               <p>
                 ...I&apos;m Ben, a 34-year-old musician and full stack JS/TS developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. <span className="hidden md:block">My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.</span>
               </p>
-              <p className="pt-2 hidden md:block"><span className="font-gopher-mono-semi">Extra Links:</span> 
+              <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Extra Links:</span>
                 <a 
                   href="https://github.com/unwontedsponn" 
                   className="hover:underline"
