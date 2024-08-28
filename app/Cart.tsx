@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useGlobalContext } from './contexts/GlobalContext';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
@@ -27,8 +27,9 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const [showCheckout, setShowCheckout] = useState(false); // Track whether to show checkout form
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  const fetchCartItems = async () => {
+  const fetchCartItems = useCallback(async () => {
     try {
+      // Define an async function inside useCallback
       const response = await fetch(`/api/cart/get?userId=${userId}`);
       const data = await response.json();
 
@@ -42,7 +43,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     } catch (error) {
       console.error('Failed to fetch cart items:', error);
     }
-  };
+  }, [userId, setCartItems, setCartCount]); // Ensure to include all dependencies
 
   const removeItemFromCart = async (itemId: string) => {
     try {
@@ -87,17 +88,20 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
   useEffect(() => {
     if (showCartModal) fetchCartItems();
-  }, [showCartModal]);
+  }, [showCartModal, fetchCartItems]);
 
   return (
     <div
       id="myModal"
-      className={`fixed z-10 left-0 top-0 w-full h-full bg-black bg-opacity-40 ${showCartModal ? 'block' : 'hidden'}`}
+      className={`fixed inset-0 z-10 bg-black/40 ${showCartModal ? 'block' : 'hidden'}`}
     >
       <div className="modal-content bg-white m-auto p-5 border-3 border-thick-border-gray w-4/5 md:w-1/2 lg:w-1/3 shadow-lg">
         <span
-          className="close text-gray-400 float-right text-3xl font-bold hover:text-black focus:text-black cursor-pointer"
+          className="float-right text-3xl font-bold text-gray-400 cursor-pointer hover:text-black focus:text-black close"
+          role="button"
+          tabIndex={0}
           onClick={closeModal}
+          onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') closeModal();}}
         >
           &times;
         </span>
