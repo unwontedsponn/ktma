@@ -1,18 +1,9 @@
 "use client";
 import React, { useEffect, useState, useCallback } from 'react';
 import { useGlobalContext } from './contexts/GlobalContext';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './components/CheckoutForm';
-
-const isLiveMode = process.env.NODE_ENV === 'production';
-const stripePublishableKey = isLiveMode 
-  ? process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY 
-  : process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY;
-
-  const stripePromise = typeof window !== 'undefined' && loadStripe(stripePublishableKey || (() => {
-    throw new Error('Stripe publishable key is not defined in environment variables.');
-  })());  
 
 interface CartItem {
   itemId: string;
@@ -28,6 +19,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
   const [showCheckout, setShowCheckout] = useState(false); // Track whether to show checkout form
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null);
 
   const fetchCartItems = useCallback(async () => {
     try {
@@ -93,6 +85,19 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     if (showCartModal) fetchCartItems();
   }, [showCartModal, fetchCartItems]);
 
+  useEffect(() => {
+    // Only run on the client
+    if (typeof window !== 'undefined') {
+      const isLiveMode = process.env.NODE_ENV === 'production';
+      const stripePublishableKey = isLiveMode 
+        ? process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY 
+        : process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY;
+
+      if (stripePublishableKey) setStripePromise(loadStripe(stripePublishableKey));
+      else console.error('Stripe publishable key is not defined in environment variables.');
+    }
+  }, []);
+
   return (
     <div
       id="myModal"
@@ -142,9 +147,11 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
             )}
           </div>
         ) : (
-          <Elements stripe={stripePromise}>
-            <CheckoutForm clientSecret={clientSecret} closeModal={closeModal} />
-          </Elements>
+          stripePromise && (
+            <Elements stripe={stripePromise}>
+              <CheckoutForm clientSecret={clientSecret} closeModal={closeModal} />
+            </Elements>
+          )
         )}
       </div>
     </div>
