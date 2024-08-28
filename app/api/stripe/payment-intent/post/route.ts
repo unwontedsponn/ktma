@@ -20,7 +20,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
   } 
-  catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  catch (error) {
+    // Assume the error is of type Error
+    const message = (error as Error).message || 'An unknown error occurred';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
