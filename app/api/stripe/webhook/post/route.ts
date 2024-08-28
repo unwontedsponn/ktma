@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { clearUserCart } from '@/app/utils/cart';
+import { clearUserCart } from '@/app/utils/clearUserCart';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
   apiVersion: '2024-06-20',
@@ -28,14 +28,18 @@ export async function POST(req: NextRequest) {
 
     console.log('Payment succeeded for user:', userId);
 
-    try {
-      // Attempt to clear the user's cart
-      await clearUserCart(userId);
-      console.log('Cart cleared for user:', userId);
-    } catch (error) {
-      const message = (error as Error).message || 'Failed to clear the cart';
-      console.error('Failed to clear the cart:', message);
-      return NextResponse.json({ error: message }, { status: 500 });
+    if (userId) {
+      try {
+        // Attempt to clear the user's cart
+        await clearUserCart(userId);
+        console.log('Cart cleared for user:', userId);
+      } catch (error) {
+        const message = (error as Error).message || 'Failed to clear the cart';
+        console.error('Failed to clear the cart:', message);
+        return NextResponse.json({ error: message }, { status: 500 });
+      }
+    } else {
+      console.error('No userId in payment intent metadata');
     }
   }
 
