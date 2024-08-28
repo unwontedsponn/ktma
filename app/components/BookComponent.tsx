@@ -51,7 +51,13 @@ const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction 
     <div ref={ref} className={`md:hidden xl:flex`}>
       <div className="flex flex-col w-full text-center xl:text-right px-2">
         <SlideFadeIn className="border-3 border-thick-border-gray" direction={direction}>
-          <div onClick={nextPage} className="cursor-pointer">
+          <div 
+            className="cursor-pointer"
+            role="button"
+            tabIndex={0}
+            onClick={nextPage}
+            onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') nextPage}}
+          >
             <Image 
               src={bookPages[currentPage]} 
               alt="My Book" 
