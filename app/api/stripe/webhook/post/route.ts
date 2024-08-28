@@ -12,18 +12,19 @@ export async function POST(req: NextRequest) {
   const sig = req.headers.get('stripe-signature') as string;
   const body = await req.text();
 
-  let event;
+  let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret as string);
-  } catch (err: any) {
-    console.error('Webhook signature verification failed.', err);
-    return NextResponse.json({ error: `Webhook Error: ${err.message}` }, { status: 400 });
+  } catch (error) {
+    const message = (error as Error).message || 'Webhook signature verification failed.';
+    console.error('Webhook signature verification failed.', message);
+    return NextResponse.json({ error: `Webhook Error: ${message}` }, { status: 400 });
   }
 
   if (event.type === 'payment_intent.succeeded') {
     const paymentIntent = event.data.object as Stripe.PaymentIntent;
-    const userId = paymentIntent.metadata.userId;
+    const userId = paymentIntent.metadata?.userId;
 
     console.log('Payment succeeded for user:', userId);
 
@@ -31,9 +32,10 @@ export async function POST(req: NextRequest) {
       // Attempt to clear the user's cart
       await clearUserCart(userId);
       console.log('Cart cleared for user:', userId);
-    } catch (err) {
-      console.error('Failed to clear the cart:', err);
-      return NextResponse.json({ error: 'Failed to clear the cart' }, { status: 500 });
+    } catch (error) {
+      const message = (error as Error).message || 'Failed to clear the cart';
+      console.error('Failed to clear the cart:', message);
+      return NextResponse.json({ error: message }, { status: 500 });
     }
   }
 
