@@ -1,13 +1,12 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { getOrCreateGuestUserId } from './utils/userUtils';
 import { useGlobalContext } from './contexts/GlobalContext';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
 import SlideFadeIn from './components/SlideFadeIn';
 
 const MyBook: React.FC = () => {    
-  const { cartItems, setCartItems, cartCount, setCartCount, userId } = useGlobalContext();
+  const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
   const [inCart, setInCart] = useState<boolean>(false);
 
   const itemId = "Beginner To Composer In 14 Days Book";
@@ -70,7 +69,10 @@ const MyBook: React.FC = () => {
               <span className="hidden xl:inline">- </span>
               <span
                 className="inline underline color-green"
+                role="button"
+                tabIndex={0}
                 onClick={inCart ? removeFromCart : addToCart}
+                onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') removeFromCart : addToCart}}
               >
                 {inCart ? 'Remove From Cart' : 'Add To Cart'}
               </span>
@@ -100,7 +102,7 @@ const MyBook: React.FC = () => {
           <p>BUY MY BOOK NOW</p>
         </SlideFadeIn>
         {/* Buy Now Links */}
-        <SlideFadeIn direction="up" className={`flex flex-col items-center w-full w-auto text-sm font-gopher-mono`}>
+        <SlideFadeIn direction="up" className={`flex flex-col items-center w-auto text-sm font-gopher-mono`}>
           <p className="bold color-dark">Beginner To Composer In 14 Days</p>                          
           <a 
             href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
