@@ -10,9 +10,11 @@ export async function DELETE(request: Request) {
                 
         if (!itemId || !userId) throw new Error('Item ID and User ID are required');
         
-        const result = await sql`
-        DELETE FROM Cart
-        WHERE itemid = ${itemId} AND userid = ${userId};`;
+        // Execute the DELETE query without assigning it to a variable
+        await sql`
+            DELETE FROM Cart
+            WHERE itemid = ${itemId} AND userid = ${userId};
+        `;
         
         return NextResponse.json({ message: 'Item removed from cart' }, { status: 200 });
     } 
