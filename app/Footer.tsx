@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
       newAudio.removeEventListener('ended', handleSongEnd);
       newAudio.pause();
     };
-  }, [currentSongIndex]);
+  }, [currentSongIndex, isPlaying, volume]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -85,12 +85,12 @@ const Footer: React.FC = () => {
   };
 
   return (
-    <div id="footer" className="fixed inset-x-0 bottom-0 flex justify-center items-center pb-4">
-      <div className="max-w-screen-md flex justify-between items-center text-xs font-gopher-mono border-t-2 border-custom-border-color pt-2 py-2">
-        <div id="green-and-pine-footer" className="px-4 md:px-14 border-r-2 border-custom-border-color">
+    <div id="footer" className="fixed inset-x-0 bottom-0 flex items-center justify-center pb-4">
+      <div className="flex items-center justify-between max-w-screen-md py-2 text-xs font-gopher-mono border-t-2 border-custom-border-color">
+        <div id="green-and-pine-footer" className="border-r-2 border-custom-border-color px-4 md:px-14">
           <span className={isPlaying ? 'flashing-text' : ''}>{responsiveText}</span>
         </div>
-        <div className="flex space-x-4 md:space-x-6 px-4 md:px-14 items-center">
+        <div className="flex items-center px-4 md:px-14 space-x-4 md:space-x-6">
           <button onClick={togglePlayPause} className="footer-buttons">
             {isPlaying ? 'pause' : 'play'}
           </button>
