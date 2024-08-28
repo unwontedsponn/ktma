@@ -15,6 +15,8 @@ export async function POST(req: NextRequest) {
       throw new Error('User ID is required');
     }
 
+    console.log('Stripe Secret Key:', stripeSecretKey ? 'Key Loaded' : 'Key Missing');
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount, // Amount in cents (e.g., 1000 for $10.00)
       currency: 'usd', // Set the currency
