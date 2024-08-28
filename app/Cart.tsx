@@ -34,7 +34,8 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
       setCartItems(mappedData);
       setCartCount(mappedData.length);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to fetch cart items:', error);
     }
   }, [userId, setCartItems, setCartCount]); // Ensure to include all dependencies
@@ -45,7 +46,8 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       const newCartItems = cartItems.filter(item => item.itemId !== itemId);
       setCartItems(newCartItems);
       setCartCount(newCartItems.length);
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to remove item from cart:', error);
     }
   };
@@ -71,7 +73,8 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       console.log('Payment intent response:', data); // Add this log
       setClientSecret(data.clientSecret); // Store the client secret
       setShowCheckout(true); // Show checkout form
-    } catch (error) {
+    } 
+    catch (error) {
       console.error('Failed to create payment intent:', error);
     }
   };
