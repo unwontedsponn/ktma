@@ -116,7 +116,10 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
                     <span> £{item.price} </span>
                     <span
                       className="hover:cursor-pointer hover:opacity-50 text-darkPink font-gopher-mono-semi"
+                      role="button"
+                      tabIndex={0}
                       onClick={() => removeItemFromCart(item.itemId)}
+                      onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') removeItemFromCart(item.itemId);}}
                     >
                       X
                     </span>
