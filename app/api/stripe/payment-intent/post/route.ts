@@ -7,7 +7,7 @@ const stripeSecretKey = isLiveMode
   ? process.env.STRIPE_LIVE_SECRET_KEY 
   : process.env.STRIPE_TEST_SECRET_KEY;
 
-if (!stripeSecretKey) {console.error('Stripe Secret Key is missing');}
+if (!stripeSecretKey) {throw new Error('Stripe Secret Key is missing');}
 
 const stripe = new Stripe(stripeSecretKey as string, {apiVersion: '2024-06-20',});
 
