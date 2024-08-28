@@ -6,3 +6,6 @@ Layout > Flexbox & Grid > Positioning > Spacing > Sizing > Typography > Backgrou
 
 Check for ESLint errors in the terminal
 npm run lint
+
+How to delete sql entries
+DELETE FROM cart WHERE userid = '5ab97ebe-ea22-4dd0-be77-5300ed1d2164';

@@ -25,6 +25,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   useEffect(() => {
     // Fetch or create the userId when the provider mounts
     const id = getOrCreateGuestUserId();
+    console.log('Setting userId in context:', id);
     setUserId(id);
 
     // Load cart from local storage if available

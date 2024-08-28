@@ -1,5 +1,3 @@
-// CheckoutForm.tsx
-
 import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useGlobalContext } from '../contexts/GlobalContext';
@@ -20,9 +18,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!stripe || !elements || !clientSecret) {
-      return;
-    }
+    if (!stripe || !elements || !clientSecret) return;
 
     setIsProcessing(true);
 

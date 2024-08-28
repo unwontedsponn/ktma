@@ -2,11 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { clearUserCart } from '@/app/utils/clearUserCart';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
-  apiVersion: '2024-06-20',
-});
+const isLiveMode = process.env.NODE_ENV === 'production'; // Or use a custom flag
+const stripeSecretKey = isLiveMode ? process.env.STRIPE_LIVE_SECRET_KEY : process.env.STRIPE_TEST_SECRET_KEY;
+const stripeWebhookSecret = isLiveMode ? process.env.STRIPE_LIVE_WEBHOOK_SECRET : process.env.STRIPE_TEST_WEBHOOK_SECRET;
 
-const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
+const stripe = new Stripe(stripeSecretKey as string, {apiVersion: '2024-06-20',});
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get('stripe-signature') as string;
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   let event: Stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret as string);
+    event = stripe.webhooks.constructEvent(body, sig, stripeWebhookSecret as string);
   } catch (error) {
     const message = (error as Error).message || 'Webhook signature verification failed.';
     console.error('Webhook signature verification failed.', message);

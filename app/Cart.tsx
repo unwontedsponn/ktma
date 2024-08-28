@@ -5,8 +5,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import CheckoutForm from './components/CheckoutForm';
 
+const isLiveMode = process.env.NODE_ENV === 'production'; // Or use a custom flag
+const stripePublishableKey = isLiveMode ? process.env.STRIPE_LIVE_PUBLISHABLE_KEY : process.env.STRIPE_TEST_PUBLISHABLE_KEY;
+
 const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || (() => {
+  stripePublishableKey || (() => {
     throw new Error('Stripe publishable key is not defined in environment variables.');
   })()
 );
@@ -73,6 +76,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       });
 
       const data = await response.json();
+      console.log('Payment intent response:', data); // Add this log
       setClientSecret(data.clientSecret); // Store the client secret
       setShowCheckout(true); // Show checkout form
     } catch (error) {
