@@ -15,7 +15,13 @@ const Arrow: React.FC<ArrowProps> = ({ direction, onClick, width, height, hide }
   // Optionally, you could add more customization options like color and strokeWidth as props
 
   return (
-    <div className={`flex items-center opacity-10 hover:cursor-pointer hover:opacity-40 ${hide}`} onClick={onClick}>
+    <div 
+      className={`flex items-center opacity-10 hover:cursor-pointer hover:opacity-40 ${hide}`}
+      role="button"
+      tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') onClick}}
+    >
       <svg width={width} height={height} viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d={pathD} stroke="black" strokeWidth="5" fill="none" />
       </svg>
