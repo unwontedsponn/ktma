@@ -8,9 +8,7 @@ const stripePublishableKey = isLiveMode
   ? process.env.NEXT_PUBLIC_STRIPE_LIVE_PUBLISHABLE_KEY 
   : process.env.NEXT_PUBLIC_STRIPE_TEST_PUBLISHABLE_KEY;
 
-if (!stripePublishableKey) {
-  console.error('Stripe publishable key is not defined in environment variables.');
-}
+if (!stripePublishableKey) console.error('Stripe publishable key is not defined in environment variables.');
 
 const stripePromise = stripePublishableKey ? loadStripe(stripePublishableKey) : null;
 
