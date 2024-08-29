@@ -1,12 +1,8 @@
+// api/stripe/webhook/post/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
+import { stripe, stripeWebhookSecret } from '@/app/utils/stripeConfig';
 import { clearUserCart } from '@/app/utils/clearUserCart';
-
-const isLiveMode = process.env.NODE_ENV === 'production'; // Or use a custom flag
-const stripeSecretKey = isLiveMode ? process.env.STRIPE_LIVE_SECRET_KEY : process.env.STRIPE_TEST_SECRET_KEY;
-const stripeWebhookSecret = isLiveMode ? process.env.STRIPE_LIVE_WEBHOOK_SECRET : process.env.STRIPE_TEST_WEBHOOK_SECRET;
-
-const stripe = new Stripe(stripeSecretKey as string, {apiVersion: '2024-06-20',});
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get('stripe-signature') as string;
@@ -29,10 +25,8 @@ export async function POST(req: NextRequest) {
     console.log('Payment succeeded for user:', userId);
 
     if (userId) {
-      try {
-        // Attempt to clear the user's cart
-        await clearUserCart(userId);
-        console.log('Cart cleared for user:', userId);
+      try {        
+        await clearUserCart(userId);        
       } catch (error) {
         const message = (error as Error).message || 'Failed to clear the cart';
         console.error('Failed to clear the cart:', message);
