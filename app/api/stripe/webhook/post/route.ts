@@ -1,7 +1,7 @@
 // api/stripe/webhook/post/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { stripe, stripeWebhookSecret } from '@/app/utils/stripeConfig';
+import { stripe, stripeWebhookSecret } from '@/app/utils/stripeConfig.server';
 import { clearUserCart } from '@/app/utils/clearUserCart';
 
 export async function POST(req: NextRequest) {

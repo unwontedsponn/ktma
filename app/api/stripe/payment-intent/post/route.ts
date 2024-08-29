@@ -1,7 +1,7 @@
 // api/stripe/payment-intent/post/route.ts
 //// To create a payment intent when the user proceeds to checkout.
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe } from '@/app/utils/stripeConfig';
+import { stripe } from '@/app/utils/stripeConfig.server';
 
 export async function POST(req: NextRequest) {
 
