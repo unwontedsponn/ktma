@@ -35,7 +35,18 @@ const config: Config = {
         'thick-border-gray': '#3f423e',
         hoverPink: '#e39ba6',
         'custom-border-color': 'rgba(172, 221, 251, 0.4)',
-        darkPink: '#c15564'
+        darkPink: '#c15564',
+
+        // Adding your custom color palette
+        'white-ish': '#f5faf9',
+        'light-blue': '#acddfb',
+        'grey-black-brown': '#3f423e',
+        'strong-blue': '#407dbf',
+        'dark-blue': '#334862',
+        'green': '#5f9251',
+        'darker-green': '#4a713f',
+        'dark-pink': '#c15564',
+        'pink': '#e39ba6',
       },
       borderWidth: {
         '3': '3px', // Adds a 'border-3' utility

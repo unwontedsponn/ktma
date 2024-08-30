@@ -7,6 +7,24 @@ interface CheckoutFormProps {
   closeModal: () => void;
 }
 
+const cardElementStyles = {
+  base: {
+    fontFamily: "'Gopher Mono', monospace", // Use your custom font here
+    fontSize: '16px', // Customize font size as needed
+    color: '#3f423e', // Example color from your palette
+    '::placeholder': {
+      color: '#c15564', // Example light blue for placeholders
+    },    
+    iconColor: '#407dbf', // Example strong blue for icons
+  },
+  invalid: {
+    color: '#4a713f',
+  },
+  complete: {
+    color: '#334862', // Example green for when the input is complete
+  },
+};
+
 const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal }) => {
   const stripe = useStripe();
   const elements = useElements();
@@ -26,7 +44,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: cardElement!,
+        card: cardElement!,        
       },
     });
 
@@ -45,8 +63,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <CardElement />
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-2xl font-gopher-mono-semi mb-4">CHECKOUT</h2> {/* This is the title */}
+      <CardElement options={{ style: cardElementStyles }} />
       {error && <div className="text-red-500 mt-2">{error}</div>}
       <button
         type="submit"

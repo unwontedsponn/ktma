@@ -74,7 +74,7 @@ const MyBook: React.FC = () => {
                 onClick={inCart ? removeFromCart : addToCart}
                 onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') removeFromCart : addToCart}}
               >
-                {inCart ? 'Remove From Cart' : 'Add To Cart'}
+                {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
               </span>
             </div>
             <a 
