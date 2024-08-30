@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import { useGlobalContext } from '../contexts/GlobalContext';
 
@@ -9,19 +9,19 @@ interface CheckoutFormProps {
 
 const cardElementStyles = {
   base: {
-    fontFamily: "'Gopher Mono', monospace", // Use your custom font here
-    fontSize: '16px', // Customize font size as needed
-    color: '#3f423e', // Example color from your palette
+    fontFamily: "'Gopher Mono', monospace",
+    fontSize: '16px',
+    color: '#3f423e',
     '::placeholder': {
-      color: '#c15564', // Example light blue for placeholders
+      color: '#c15564',
     },    
-    iconColor: '#407dbf', // Example strong blue for icons
+    iconColor: '#407dbf',
   },
   invalid: {
     color: '#4a713f',
   },
   complete: {
-    color: '#334862', // Example green for when the input is complete
+    color: '#334862',
   },
 };
 
@@ -30,13 +30,22 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [email, setEmail] = useState('');
 
-  const { setCartItems, setCartCount } = useGlobalContext(); // Destructure global context functions
+  // Example: Fetching values from the Global Context
+  const { cartItems, userId, setCartItems, setCartCount } = useGlobalContext();
+
+  // Assume we are dealing with a single item in the cart for simplicity
+  const itemId = cartItems.length > 0 ? cartItems[0].itemId : null;
+  const price = cartItems.length > 0 ? cartItems[0].price : null;
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!stripe || !elements || !clientSecret) return;
+    if (!stripe || !elements || !clientSecret || !itemId || !price || !userId) {
+      setError('Missing required data');
+      return;
+    }
 
     setIsProcessing(true);
 
@@ -44,7 +53,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
 
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: cardElement!,        
+        card: cardElement!,
+        billing_details: { email },
       },
     });
 
@@ -58,14 +68,38 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       
       alert('Payment successful! Thank you for your purchase.');
 
+      // Send order details to backend including email
+      await fetch('/api/orders/save-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ itemId, price, userId, email }), // Send all required fields
+      });
+
       closeModal(); // Close the modal after successful payment
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-2xl font-gopher-mono-semi mb-4">CHECKOUT</h2> {/* This is the title */}
+      <h2 className="text-2xl font-gopher-mono-semi mb-4">CHECKOUT</h2>    
+      
       <CardElement options={{ style: cardElementStyles }} />
+
+      {/* Email Input Field */}
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="Email Address"
+        required
+        className="w-full px-3 py-2 border-3 border-thick-border-gray"
+        style={{ fontFamily: "'Gopher Mono', monospace" }}
+      />
+
+      <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address along with a receipt of purchase.</p>
+
       {error && <div className="text-red-500 mt-2">{error}</div>}
       <button
         type="submit"
@@ -77,5 +111,4 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
     </form>
   );
 };
-
 export default CheckoutForm;

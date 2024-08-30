@@ -128,7 +128,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
                   className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
                   onClick={handleBuyItems}
                 >
-                  BUY ITEMS
+                  CHECKOUT
                 </button>
               </>
             ) : (
