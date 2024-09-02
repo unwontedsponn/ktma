@@ -23,7 +23,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const fetchCartItems = useCallback(async () => {
     try {
       // Define an async function inside useCallback
-      const response = await fetch(`/api/cart/get?userId=${userId}`);
+      const response = await fetch(`/api/cart/fetchCartItems?userId=${userId}`);
       const data = await response.json();
 
       const mappedData: CartItem[] = data.map((item: { price: number; userid: string; itemid: string }) => ({
@@ -41,7 +41,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
   const removeItemFromCart = async (itemId: string) => {
     try {
-      await fetch(`/api/cart/delete?itemId=${itemId}&userId=${userId}`, { method: 'DELETE' });
+      await fetch(`/api/cart/removeFromCart?itemId=${itemId}&userId=${userId}`, { method: 'DELETE' });
       const newCartItems = cartItems.filter(item => item.itemId !== itemId);
       setCartItems(newCartItems);
       setCartCount(newCartItems.length);
@@ -51,8 +51,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     }
   };
 
-  const handleBuyItems = async () => {
-    // Calculate the total amount
+  const checkout = async () => {
     const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
   
     if (!email) {
@@ -61,24 +60,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     }
   
     try {
-      // Step 1: Update the cart with the user's email
-      const updateResponse = await fetch('/api/cart/update-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          email,
-        }),
-      });
-  
-      if (!updateResponse.ok) {
-        throw new Error('Failed to update email in cart');
-      }
-  
-      // Step 2: Create the payment intent after email is updated
-      const response = await fetch('/api/stripe/payment-intent/post', {
+      const response = await fetch('/api/cart/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -91,14 +73,13 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       });
   
       const data = await response.json();
-      console.log('Payment intent response:', data); // Add this log
-      setClientSecret(data.clientSecret); // Store the client secret
-      setShowCheckout(true); // Show checkout form
-    } 
-    catch (error) {
-      console.error('Failed to create payment intent:', error);
+      if (!response.ok) throw new Error(data.error || 'Failed to create payment intent');
+      setClientSecret(data.clientSecret);
+      setShowCheckout(true);
+    } catch (error) {
+      console.error('Checkout failed:', error);
     }
-  };
+  };  
 
   const closeModal = () => {
     setShowCheckout(false); // Reset checkout form
@@ -160,7 +141,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
                 <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address along with a receipt of purchase.</p>
                 <button
                   className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
-                  onClick={handleBuyItems}
+                  onClick={checkout}
                 >
                   CHECKOUT
                 </button>

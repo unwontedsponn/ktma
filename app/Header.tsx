@@ -35,17 +35,13 @@ const Header: React.FC = () => {
 
     sections.forEach((section) => {
       const element = document.getElementById(section);
-      if (element) {
-        observer.observe(element);
-      }
+      if (element) observer.observe(element);
     });
 
     return () => {
       sections.forEach((section) => {
         const element = document.getElementById(section);
-        if (element) {
-          observer.unobserve(element);
-        }
+        if (element) observer.unobserve(element);
       });
     };
   }, []);
