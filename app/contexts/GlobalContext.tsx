@@ -13,6 +13,8 @@ interface GlobalState {
   cartItems: CartItem[];
   setCartItems: (items: CartItem[]) => void;
   userId: string;
+  email: string;
+  setEmail: (email: string) => void;
 }
 
 const GlobalContext = createContext<GlobalState | undefined>(undefined);
@@ -21,6 +23,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   const [cartCount, setCartCount] = useState(0);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [userId, setUserId] = useState<string>(''); 
+  const [email, setEmail] = useState<string>('');
 
   useEffect(() => {
     // Fetch or create the userId when the provider mounts
@@ -42,7 +45,7 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   }, [cartItems]);
 
   return (
-    <GlobalContext.Provider value={{ cartCount, setCartCount, cartItems, setCartItems, userId }}>
+    <GlobalContext.Provider value={{ cartCount, setCartCount, cartItems, setCartItems, userId, email, setEmail }}>
       {children}
     </GlobalContext.Provider>
   );

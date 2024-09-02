@@ -30,10 +30,9 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [email, setEmail] = useState('');
 
   // Example: Fetching values from the Global Context
-  const { cartItems, userId, setCartItems, setCartCount } = useGlobalContext();
+  const { email, setEmail, cartItems, userId, setCartItems, setCartCount } = useGlobalContext();
 
   // Assume we are dealing with a single item in the cart for simplicity
   const itemId = cartItems.length > 0 ? cartItems[0].itemId : null;
@@ -69,7 +68,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       alert('Payment successful! Thank you for your purchase.');
 
       // Send order details to backend including email
-      await fetch('/api/orders/save-email', {
+      await fetch('/api/orders/make-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -86,19 +85,6 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       <h2 className="text-2xl font-gopher-mono-semi mb-4">CHECKOUT</h2>    
       
       <CardElement options={{ style: cardElementStyles }} />
-
-      {/* Email Input Field */}
-      <input
-        type="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email Address"
-        required
-        className="w-full px-3 py-2 border-3 border-thick-border-gray"
-        style={{ fontFamily: "'Gopher Mono', monospace" }}
-      />
-
-      <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address along with a receipt of purchase.</p>
 
       {error && <div className="text-red-500 mt-2">{error}</div>}
       <button

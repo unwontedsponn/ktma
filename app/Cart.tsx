@@ -16,7 +16,7 @@ interface CartProps {
 }
 
 const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
-  const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
+  const { cartItems, setCartItems, setCartCount, userId, email, setEmail } = useGlobalContext();
   const [showCheckout, setShowCheckout] = useState(false); // Track whether to show checkout form
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
@@ -54,9 +54,30 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const handleBuyItems = async () => {
     // Calculate the total amount
     const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-
+  
+    if (!email) {
+      alert("Please enter your email address to proceed.");
+      return;
+    }
+  
     try {
-      // Create the payment intent
+      // Step 1: Update the cart with the user's email
+      const updateResponse = await fetch('/api/cart/update-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          email,
+        }),
+      });
+  
+      if (!updateResponse.ok) {
+        throw new Error('Failed to update email in cart');
+      }
+  
+      // Step 2: Create the payment intent after email is updated
       const response = await fetch('/api/stripe/payment-intent/post', {
         method: 'POST',
         headers: {
@@ -65,9 +86,10 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
         body: JSON.stringify({
           amount: totalAmount * 100, // Amount in cents
           userId,
+          email,
         }),
       });
-
+  
       const data = await response.json();
       console.log('Payment intent response:', data); // Add this log
       setClientSecret(data.clientSecret); // Store the client secret
@@ -123,7 +145,19 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
                   </div>
                 ))}
-                {/* Conditionally render the BUY ITEMS button only if there are items in the cart */}
+                {/* Conditionally render the Enter Email box and CHECKOUT button only if there are items in the cart */}
+                {/* Email Input Field */}
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email Address"
+                  required
+                  className="w-full px-3 py-2 border-3 border-thick-border-gray"
+                  style={{ fontFamily: "'Gopher Mono', monospace" }}
+                />
+
+                <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address along with a receipt of purchase.</p>
                 <button
                   className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
                   onClick={handleBuyItems}
