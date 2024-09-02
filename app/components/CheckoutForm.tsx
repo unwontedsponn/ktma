@@ -32,7 +32,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
   const [error, setError] = useState<string | null>(null);
 
   // Example: Fetching values from the Global Context
-  const { email, setEmail, cartItems, userId, setCartItems, setCartCount } = useGlobalContext();
+  const { email, cartItems, userId, setCartItems, setCartCount } = useGlobalContext();
 
   // Assume we are dealing with a single item in the cart for simplicity
   const itemId = cartItems.length > 0 ? cartItems[0].itemId : null;
