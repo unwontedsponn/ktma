@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       const { userId, email } = (event.data.object as { metadata: Metadata }).metadata || {};
 
       if (userId) {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/orders/make-order`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/make-order`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, email }),

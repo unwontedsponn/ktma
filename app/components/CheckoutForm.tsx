@@ -68,7 +68,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       alert('Payment successful! Thank you for your purchase.');
 
       // Send order details to backend including email
-      await fetch('/api/orders/make-order', {
+      await fetch('/api/make-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
