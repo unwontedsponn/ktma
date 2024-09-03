@@ -5,10 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     try {
         // Extract necessary data from the request body
-        const { userId, email } = await request.json();
-
-        // Log the incoming request data
-        console.log('Incoming data:', { userId, email });
+        const { userId, email } = await request.json();        
 
         // Check for missing fields
         if (!userId || !email) throw new Error('User ID and email is required');
@@ -32,18 +29,12 @@ export async function POST(request: Request) {
         // Commit the transaction
         await sql`COMMIT;`;
 
-        // Log success message
-        console.log('Cart items moved to orders and cart cleared successfully.');
-
         // Return a success response
-        return NextResponse.json({ message: 'Order processed successfully' }, { status: 200 });
+        return NextResponse.json({ message: 'Cart items moved to orders, cart cleared successfully & order processed successfully' }, { status: 200 });
     } 
     catch (error) {
         // Rollback the transaction in case of an error
-        await sql`ROLLBACK;`;
-
-        // Log the error message for debugging
-        console.error('Error processing request:', error);
+        await sql`ROLLBACK;`;        
 
         // Return an error response with the error message
         if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });

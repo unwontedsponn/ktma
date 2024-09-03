@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState, useCallback } from 'react';
-import { useGlobalContext } from './contexts/GlobalContext';
+import { useGlobalContext } from '../contexts/GlobalContext';
 import { Elements } from '@stripe/react-stripe-js';
-import CheckoutForm from './components/CheckoutForm';
-import { stripePromise } from './utils/stripeConfig.client';
+import CheckoutForm from '../components/CheckoutForm';
+import { stripePromise } from '../utils/stripeConfig.client';
 
 interface CartItem {
   itemId: string;
