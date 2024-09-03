@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobalContext } from './contexts/GlobalContext'; // Import your global context
+import { useGlobalContext } from '../contexts/GlobalContext';
 import Link from 'next/link';
-import Contact from './modals/Contact';
-import Cart from './modals/Cart';
+import Contact from '../modals/Contact';
+import Cart from '../modals/Cart';
 
 const Header: React.FC = () => {
   const { cartCount } = useGlobalContext();

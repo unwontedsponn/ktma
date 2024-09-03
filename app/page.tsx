@@ -1,10 +1,10 @@
 "use client"
 import React from 'react';
-import Header from './Header';
-import Homepage from './Homepage';
-import AboutMe from './AboutMe';
-import MyBook from './MyBook';
-import Footer from './Footer';
+import Header from './sections/Header';
+import Homepage from './sections/Homepage';
+import AboutMe from './sections/AboutMe';
+import MyBook from './sections/MyBook';
+import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
 
 const Home: React.FC = () => {

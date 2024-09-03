@@ -1,9 +1,9 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { useGlobalContext } from './contexts/GlobalContext';
+import { useGlobalContext } from '@/app/contexts/GlobalContext';
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
-import SlideFadeIn from './components/SlideFadeIn';
+import SlideFadeIn from '@/app/components/SlideFadeIn';
 
 const MyBook: React.FC = () => {    
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
