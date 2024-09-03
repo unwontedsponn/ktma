@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     // Step 3: Respond with the client secret for the payment intent
     return NextResponse.json({ clientSecret: paymentIntent.client_secret });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'An error occurred' }, { status: 500 });
+  } catch (error) {
+    return NextResponse.json({ error: 'An error occurred' }, { status: 500 });
   }
 }

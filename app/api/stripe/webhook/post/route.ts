@@ -2,6 +2,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, stripeWebhookSecret } from '@/app/utils/stripeConfig.server';
 
+// Define a type for the metadata structure
+interface Metadata {
+  userId?: string;
+  email?: string;
+}
+
 export async function POST(req: NextRequest) {
   const sig = req.headers.get('stripe-signature');
   const body = await req.text();
@@ -10,7 +16,7 @@ export async function POST(req: NextRequest) {
     const event = stripe.webhooks.constructEvent(body, sig!, stripeWebhookSecret as string);
 
     if (event.type === 'payment_intent.succeeded') {
-      const { userId, email } = (event.data.object as any).metadata || {};
+      const { userId, email } = (event.data.object as { metadata: Metadata }).metadata || {};
 
       if (userId) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/orders/make-order`, {
