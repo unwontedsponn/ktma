@@ -1,4 +1,5 @@
 // api/stripe/webhook/post/route.ts
+// This is only called from Stripe - not from within my project like the other API calls
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe, stripeWebhookSecret } from '@/app/utils/stripeConfig.server';
 

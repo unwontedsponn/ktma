@@ -18,7 +18,7 @@ const MyBook: React.FC = () => {
   }, [cartItems, itemId, setInCart]);
 
   const addToCart = async () => {
-    const response = await fetch('/api/cart/addToCart', {
+    const response = await fetch('/api/addToCart', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ itemId, price, userId }),
@@ -33,7 +33,7 @@ const MyBook: React.FC = () => {
   };
 
   const removeFromCart = async () => {
-    const response = await fetch(`/api/cart/removeFromCart?itemId=${itemId}&userId=${userId}`, {
+    const response = await fetch(`/api/removeFromCart?itemId=${itemId}&userId=${userId}`, {
       method: 'DELETE',
     });
 

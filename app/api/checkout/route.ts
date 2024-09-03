@@ -1,4 +1,3 @@
-// api/cart/checkout/route.ts
 import { sql } from '@vercel/postgres';
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/app/utils/stripeConfig.server';

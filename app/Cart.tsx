@@ -23,7 +23,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const fetchCartItems = useCallback(async () => {
     try {
       // Define an async function inside useCallback
-      const response = await fetch(`/api/cart/fetchCartItems?userId=${userId}`);
+      const response = await fetch(`/api/fetchCartItems?userId=${userId}`);
       const data = await response.json();
 
       const mappedData: CartItem[] = data.map((item: { price: number; userid: string; itemid: string }) => ({
@@ -41,7 +41,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
   const removeItemFromCart = async (itemId: string) => {
     try {
-      await fetch(`/api/cart/removeFromCart?itemId=${itemId}&userId=${userId}`, { method: 'DELETE' });
+      await fetch(`/api/removeFromCart?itemId=${itemId}&userId=${userId}`, { method: 'DELETE' });
       const newCartItems = cartItems.filter(item => item.itemId !== itemId);
       setCartItems(newCartItems);
       setCartCount(newCartItems.length);
@@ -60,7 +60,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
     }
   
     try {
-      const response = await fetch('/api/cart/checkout', {
+      const response = await fetch('/api/checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
