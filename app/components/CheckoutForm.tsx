@@ -65,17 +65,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ clientSecret, closeModal })
       setCartItems([]);
       setCartCount(0);
       
-      alert('Payment successful! Thank you for your purchase.');
-
-      // Send order details to backend including email
-      await fetch('/api/make-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ itemId, price, userId, email }), // Send all required fields
-      });
-
+      alert('Payment successful! Thank you for your purchase.');      
       closeModal(); // Close the modal after successful payment
     }
   };

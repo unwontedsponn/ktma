@@ -20,7 +20,12 @@ export async function POST(req: NextRequest) {
       amount,
       currency: 'usd',
       payment_method_types: ['card'],
-      metadata: { userId, email },
+      metadata: { 
+        userId,
+        email,
+        productId: 'prod_OnfpVYi2z8WURa', // The product ID from your Stripe dashboard
+        productName: 'Beginner To Composer In 14 Days PDF'
+      },      
     });
 
     // Step 3: Respond with the client secret for the payment intent
