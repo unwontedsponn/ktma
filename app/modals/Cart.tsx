@@ -105,7 +105,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
             {cartItems.length > 0 ? (
               <>
                 {cartItems.map((item) => (
-                  <div key={item.itemId} className="text-xs md:text-sm font-gopher-mono">
+                  <div key={item.itemId} className="font-gopher-mono text-xs md:text-sm ">
                     <span>- {item.itemId}</span>
                     <span> £{item.price} </span>
                     <span
@@ -121,7 +121,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
                   </div>
                 ))}
                 {/* Display the total amount */}
-                <div className="text-sm md:text-lg font-gopher-mono-semi text-lg mt-4">
+                <div className="font-gopher-mono-semi text-sm md:text-lg mt-4">
                   <strong>Total: £{Number(totalAmount).toFixed(2)}</strong>
                 </div>
 
