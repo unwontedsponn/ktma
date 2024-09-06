@@ -97,7 +97,7 @@ const Header: React.FC = () => {
                 {/* Shopping Cart Icon */}                
                 <div
                   id='cart'
-                  className="hidden md:block border-l-2 border-custom-border-color pl-6 hover:cursor-pointer hover:"
+                  className="md:border-l-2 border-custom-border-color pl-6 hover:cursor-pointer hover:"
                   role="button"
                   tabIndex={0}
                   onClick={toggleCartModal}
@@ -117,7 +117,7 @@ const Header: React.FC = () => {
              
                 <button
                   id="contactNav"
-                  className="md:border-l-2 border-custom-border-color pl-6"
+                  className="border-l-2 border-custom-border-color pl-6"
                   onClick={toggleModal}
                 >
                   contactMe

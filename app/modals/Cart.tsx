@@ -20,6 +20,8 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
   const [showCheckout, setShowCheckout] = useState(false); // Track whether to show checkout form
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
+  const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
+
   const fetchCartItems = useCallback(async () => {
     try {
       // Define an async function inside useCallback
@@ -34,9 +36,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       setCartItems(mappedData);
       setCartCount(mappedData.length);
     } 
-    catch (error) {
-      console.error('Failed to fetch cart items:', error);
-    }
+    catch (error) {console.error('Failed to fetch cart items:', error);}
   }, [userId, setCartItems, setCartCount]); // Ensure to include all dependencies
 
   const removeItemFromCart = async (itemId: string) => {
@@ -46,14 +46,10 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       setCartItems(newCartItems);
       setCartCount(newCartItems.length);
     } 
-    catch (error) {
-      console.error('Failed to remove item from cart:', error);
-    }
+    catch (error) {console.error('Failed to remove item from cart:', error);}
   };
 
-  const checkout = async () => {
-    const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
-  
+  const checkout = async () => {    
     if (!email) {
       alert("Please enter your email address to proceed.");
       return;
@@ -76,9 +72,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
       if (!response.ok) throw new Error(data.error || 'Failed to create payment intent');
       setClientSecret(data.clientSecret);
       setShowCheckout(true);
-    } catch (error) {
-      console.error('Checkout failed:', error);
-    }
+    } catch (error) {console.error('Checkout failed:', error);}
   };  
 
   const closeModal = () => {
@@ -111,7 +105,7 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
             {cartItems.length > 0 ? (
               <>
                 {cartItems.map((item) => (
-                  <div key={item.itemId} className="font-gopher-mono">
+                  <div key={item.itemId} className="text-xs md:text-sm font-gopher-mono">
                     <span>- {item.itemId}</span>
                     <span> £{item.price} </span>
                     <span
@@ -126,19 +120,23 @@ const Cart: React.FC<CartProps> = ({ showCartModal, setShowCartModal }) => {
 
                   </div>
                 ))}
-                {/* Conditionally render the Enter Email box and CHECKOUT button only if there are items in the cart */}
-                {/* Email Input Field */}
+                {/* Display the total amount */}
+                <div className="text-sm md:text-lg font-gopher-mono-semi text-lg mt-4">
+                  <strong>Total: £{Number(totalAmount).toFixed(2)}</strong>
+                </div>
+
+                {/* Conditionally render the Enter Email box and CHECKOUT button only if there are items in the cart */}                
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email Address"
                   required
-                  className="w-full px-3 py-2 border-3 border-thick-border-gray"
+                  className="w-full px-3 py-2 border-2 border-thick-border-gray"
                   style={{ fontFamily: "'Gopher Mono', monospace" }}
                 />
 
-                <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address along with a receipt of purchase.</p>
+                <p className="text-sm font-gopher-mono">A PDF copy of the book will be sent to your email address.</p>
                 <button
                   className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
                   onClick={checkout}

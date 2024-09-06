@@ -9,7 +9,7 @@ const MyBook: React.FC = () => {
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
   const [inCart, setInCart] = useState<boolean>(false);
 
-  const itemId = "Beginner To Composer In 14 Days Book";
+  const itemId = "Beginner To Composer In 14 Days PDF";
   const price = 10.00;
 
   useEffect(() => {
@@ -103,11 +103,24 @@ const MyBook: React.FC = () => {
         </SlideFadeIn>
         {/* Buy Now Links */}
         <SlideFadeIn direction="up" className={`flex flex-col items-center w-auto text-sm font-gopher-mono`}>
-          <p className="bold color-dark">Beginner To Composer In 14 Days</p>                          
+          <p className="bold color-dark">Beginner To Composer In 14 Days</p>   
+          <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>
+            <span className="hidden xl:inline">- </span>
+            <span
+              className="inline underline color-green"
+              role="button"
+              tabIndex={0}
+              onClick={inCart ? removeFromCart : addToCart}
+              onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') removeFromCart : addToCart}}
+            >
+              {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
+            </span>
+          </div>                       
           <a 
             href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
             target="_blank" 
             rel="noopener noreferrer">
+              
             <span className="underline color-green">Amazon↑</span>
           </a>
           <a 
