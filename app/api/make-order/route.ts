@@ -8,36 +8,34 @@ export async function POST(request: Request) {
         const { userId, email } = await request.json();        
 
         // Check for missing fields
-        if (!userId || !email) throw new Error('User ID and email is required');
+        if (!userId || !email) throw new Error('User ID and email are required');
 
         // Start a transaction to move data from cart to orders and clear the cart
         await sql`BEGIN;`;
 
-        // Insert data from cart into orders
-        await sql`
-        INSERT INTO orders (item_id, price, user_id, email)
-        SELECT itemid, price, CAST(userid AS uuid), email FROM cart
-        WHERE userid = ${userId};
-        `;
+        try {
+            // Insert data from cart into orders
+            await sql`
+            INSERT INTO orders (item_id, price, user_id, email)
+            SELECT itemid, price, CAST(userid AS uuid), email FROM cart
+            WHERE userid = ${userId};
+            `;
 
-        // Clear the cart for the user
-        await sql`
-        DELETE FROM cart
-        WHERE userid = ${userId};
-        `;
+            // Clear the cart for the user
+            await sql`
+            DELETE FROM cart
+            WHERE userid = ${userId};
+            `;
 
-        // Commit the transaction
-        await sql`COMMIT;`;
+            // Commit the transaction
+            await sql`COMMIT;`;
 
-        // Return a success response
-        return NextResponse.json({ message: 'Cart items moved to orders, cart cleared successfully & order processed successfully' }, { status: 200 });
+            // Return a success response
+            return NextResponse.json({ message: 'Cart items moved to orders, cart cleared successfully & order processed successfully' }, { status: 200 });
+        } catch (innerError) {            
+            await sql`ROLLBACK;`;            
+            throw new Error('Unknown error occurred during database transaction');
+        }
     } 
-    catch (error) {
-        // Rollback the transaction in case of an error
-        await sql`ROLLBACK;`;        
-
-        // Return an error response with the error message
-        if (error instanceof Error) return NextResponse.json({ error: error.message }, { status: 500 });
-        return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });
-    }
+    catch (error) {return NextResponse.json({ error: 'An unknown error occurred' }, { status: 500 });}
 }
