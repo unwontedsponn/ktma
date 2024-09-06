@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
       if (userId && email) {
         // Process order
-        const response = await fetch(`http://localhost:3000/api/make-order`, {
+        const response = await fetch(`http://benspooner.co.uk/api/make-order`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId, email }),
