@@ -16,7 +16,7 @@ const AboutMe: React.FC = () => {
             <h1 className="opacity-40">aboutMe</h1>
           </SlideFadeIn>
 
-          <SlideFadeIn direction="right" className="hidden text-4xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 md:pl-32 color-dark-blue text-decoration-color">
+          <SlideFadeIn direction="right" className="hidden md:block text-4xl font-gopher-mono underline tracking-largep whitespace-nowrap px-10 md:px-0 md:pl-32 color-dark-blue text-decoration-color">
             <p className=""><TypewriterEffect text="A little bit about me..." /></p>
           </SlideFadeIn>
               
