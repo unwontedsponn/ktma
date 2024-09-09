@@ -37,9 +37,7 @@
  * Global Styles
  */
 /*--------------------------------------------------------------------------------------------------------------------*/
-section {
-  scroll-snap-align: start;
-}
+section {scroll-snap-align: start;}
 html {scroll-behavior: smooth;}
 
 /**
@@ -75,7 +73,7 @@ html {scroll-behavior: smooth;}
 * :Hover and Text decoration
 */
 /*--------------------------------------------------------------------------------------------------------------------*/
-#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myMusicNav:hover, #myScoresNav:hover, #contactNav:hover, .footer-buttons:hover {
+#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myGameNav:hover, #contactNav:hover, .footer-buttons:hover {
   color: #e39ba6;
   text-decoration: underline;
   text-decoration-color: #c15564;

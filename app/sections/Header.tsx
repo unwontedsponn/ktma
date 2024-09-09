@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    const sections = ['homepage', 'aboutMe', 'myBook'];
+    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame'];
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -92,6 +92,16 @@ const Header: React.FC = () => {
                   onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook')}}
                 >
                   myBook
+                </div>   
+                <div
+                  id="myGameNav"
+                  className="hidden md:block border-l-2 border-custom-border-color pl-6"
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => scrollToSection('myGame')}
+                  onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame')}}
+                >
+                  myGame
                 </div>   
                 
                 {/* Shopping Cart Icon */}                

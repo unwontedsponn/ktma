@@ -4,6 +4,7 @@ import Header from './sections/Header';
 import Homepage from './sections/Homepage';
 import AboutMe from './sections/AboutMe';
 import MyBook from './sections/MyBook';
+import MyGame from './sections/MyGame';
 import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
 
@@ -16,6 +17,7 @@ const Home: React.FC = () => {
           <Homepage />
           <AboutMe />
           <MyBook />
+          <MyGame />
           <Footer />
         </div>
       </main>
