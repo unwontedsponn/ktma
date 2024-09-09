@@ -65,7 +65,7 @@ const AboutMe: React.FC = () => {
             src="/images/piano.png"            
             alt="Piano"
             width={500}
-            height={500}            
+            height={0}            
             className="opacity-10"
             priority
           />

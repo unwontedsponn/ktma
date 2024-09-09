@@ -22,20 +22,22 @@ type Obstacle = {
   color: string;
 };
 
+// Define music sections (in seconds)
+const musicSections = [0, 30, 60, 90];
+
 const MyGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentSection, setCurrentSection] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
-
-  // Define music sections (in seconds)
-  const musicSections = [0, 30, 60, 90];
+  const [gamePaused, setGamePaused] = useState(false);
 
   useEffect(() => {
-    if (!gameStarted) return;
+    if (!gameStarted || gamePaused) return; // Only run the effect when the game is started and not paused
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const audio = audioRef.current; 
+    if (!canvas || !audio) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -106,6 +108,10 @@ const MyGame: React.FC = () => {
           player.y + player.height > obstacle.y
         ) {
           gameOver = true;
+          setGamePaused(true); // Pause the game
+          if (audioRef.current) {
+            audioRef.current.pause(); // Pause the audio on collision
+          }
         }
       });
     };
@@ -135,27 +141,39 @@ const MyGame: React.FC = () => {
 
     // Game loop
     const gameLoop = () => {
-      if (!gameOver) {
+      if (!gameOver && !gamePaused) {
         update();
         render();
         requestAnimationFrame(gameLoop);
-      } else {
-        restartGame();
       }
     };
 
     // Start the game loop
     gameLoop();
 
-    // Handle spacebar press for jumping
+    // Handle spacebar press for jumping and resuming game
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code === 'Space' && !player.isJumping) {
-        player.velocityY = player.jumpStrength; // Set jump velocity
-        player.isJumping = true; // Mark as jumping
+      if (event.code === 'Space') {
+        if (gamePaused) {
+          resumeGame(); // Resume game if paused
+        } else if (!player.isJumping) {
+          player.velocityY = player.jumpStrength; // Set jump velocity
+          player.isJumping = true; // Mark as jumping
+        }
       }
     };
 
     document.addEventListener('keydown', handleKeyDown);
+
+    // Function to resume the game and restart music from the current section
+    const resumeGame = () => {
+      setGamePaused(false);
+      if (audioRef.current) {
+        audioRef.current.currentTime = musicSections[currentSection]; // Restart from current section
+        audioRef.current.play();
+      }
+      gameLoop(); // Resume game loop
+    };
 
     // Function to restart the game and music from the current section
     const restartGame = () => {
@@ -206,15 +224,14 @@ const MyGame: React.FC = () => {
     return () => {
       clearInterval(obstacleInterval);
       document.removeEventListener('keydown', handleKeyDown);
-      if (audioRef.current) {
-        audioRef.current.removeEventListener('timeupdate', handleMusicProgress);
-      }
+      audio.removeEventListener('timeupdate', handleMusicProgress);
     };
-  }, [currentSection, gameStarted]); // Dependency on currentSection and gameStarted to update state
+  }, [currentSection, gameStarted, gamePaused]); // Add gamePaused to the dependencies
 
   // Start the game and music when the Play button is clicked
   const startGame = () => {
     setGameStarted(true);
+    setGamePaused(false);
     if (audioRef.current) {
       audioRef.current.volume = 0.1;
       audioRef.current.play().catch(error => console.error("Audio play error:", error));
@@ -238,7 +255,12 @@ const MyGame: React.FC = () => {
             Play Game
           </button>
         )}
-        {gameStarted && (
+        {gamePaused && (
+          <button onClick={startGame} className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
+            Continue...
+          </button>
+        )}
+        {gameStarted && !gamePaused && (
           <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-black"></canvas>        
         )}        
         <audio 
@@ -246,7 +268,9 @@ const MyGame: React.FC = () => {
           src="/audio/game/All_Change.wav" 
           preload="auto" 
           loop 
-        />      
+        >      
+          <track kind="captions" srcLang="en" label="English captions" />
+        </audio>
       </div>
     </section>
   );
