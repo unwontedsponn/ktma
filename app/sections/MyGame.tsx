@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SlideFadeIn from "../components/SlideFadeIn";
 
 const colours = {
@@ -13,6 +13,7 @@ const colours = {
   'pink': '#e39ba6',
 };
 
+// Define the type for obstacles
 type Obstacle = {
   x: number;
   y: number;
@@ -23,8 +24,16 @@ type Obstacle = {
 
 const MyGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [currentSection, setCurrentSection] = useState(0);
+  const [gameStarted, setGameStarted] = useState(false);
+
+  // Define music sections (in seconds)
+  const musicSections = [0, 30, 60, 90];
 
   useEffect(() => {
+    if (!gameStarted) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -38,16 +47,16 @@ const MyGame: React.FC = () => {
       width: 25,
       height: 25,
       color: colours['light-blue'],
-      velocityY: 0, 
+      velocityY: 0,
       isJumping: false,
       gravity: 0.5,
-      jumpStrength: -10, // Initial jump velocity
-      rotation: 0, 
+      jumpStrength: -10,
+      rotation: 0,
       rotationSpeed: 0.1,
     };
 
     // Obstacles settings
-    const obstacles: Obstacle[] = []; // Define array with type
+    const obstacles: Obstacle[] = [];
     const obstacleWidth = 20;
     const obstacleHeight = 40;
     const obstacleSpeed = 5;
@@ -56,8 +65,8 @@ const MyGame: React.FC = () => {
     // Function to add new obstacles
     const addObstacle = () => {
       const obstacle: Obstacle = {
-        x: canvas.width, // Start from the right edge of the canvas
-        y: canvas.height - obstacleHeight - 10, // Position near the bottom
+        x: canvas.width,
+        y: canvas.height - obstacleHeight - 10,
         width: obstacleWidth,
         height: obstacleHeight,
         color: colours['dark-pink'],
@@ -66,62 +75,57 @@ const MyGame: React.FC = () => {
     };
 
     // Spawn obstacles at intervals
-    const obstacleInterval = setInterval(addObstacle, 2000); // Add obstacle every 2 seconds
+    const obstacleInterval = setInterval(addObstacle, 2000);
 
     // Update game state
     const update = () => {
-      // Apply gravity if the player is jumping
       if (player.isJumping) {
-        player.velocityY += player.gravity; // Apply gravity
-        player.y += player.velocityY; // Update player position based on velocity
-        player.rotation += player.rotationSpeed; // Spin player while jumping
+        player.velocityY += player.gravity;
+        player.y += player.velocityY;
+        player.rotation += player.rotationSpeed;
 
-        // Check if player has landed (hits the ground)
         if (player.y >= canvas.height - player.height - 10) {
-          player.y = canvas.height - player.height - 10; // Reset to ground level
-          player.velocityY = 0; // Stop vertical movement
-          player.isJumping = false; // Allow jumping again
-          player.rotation = 0; // Reset rotation after landing
+          player.y = canvas.height - player.height - 10;
+          player.velocityY = 0;
+          player.isJumping = false;
+          player.rotation = 0;
         }
       }
 
-      // Move obstacles
       obstacles.forEach((obstacle, index) => {
-        obstacle.x -= obstacleSpeed; // Move left
+        obstacle.x -= obstacleSpeed;
 
-        // Remove off-screen obstacles
-        if (obstacle.x + obstacle.width < 0) obstacles.splice(index, 1);
+        if (obstacle.x + obstacle.width < 0) {
+          obstacles.splice(index, 1);
+        }
 
-        // Check for collision with player
         if (
           player.x < obstacle.x + obstacle.width &&
           player.x + player.width > obstacle.x &&
           player.y < obstacle.y + obstacle.height &&
           player.y + player.height > obstacle.y
-        ) gameOver = true;
+        ) {
+          gameOver = true;
+        }
       });
     };
 
     // Render game elements
     const render = () => {
-      // Clear canvas
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Save the canvas state, apply rotation, and draw the player
       ctx.save();
-      ctx.translate(player.x + player.width / 2, player.y + player.height / 2); // Move origin to player's center
-      ctx.rotate(player.rotation); // Rotate around the origin
+      ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
+      ctx.rotate(player.rotation);
       ctx.fillStyle = player.color;
-      ctx.fillRect(-player.width / 2, -player.height / 2, player.width, player.height); // Draw the player centered
-      ctx.restore(); // Restore the canvas state
+      ctx.fillRect(-player.width / 2, -player.height / 2, player.width, player.height);
+      ctx.restore();
 
-      // Draw obstacles
       obstacles.forEach(obstacle => {
         ctx.fillStyle = obstacle.color;
         ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
       });
 
-      // Display game over message
       if (gameOver) {
         ctx.fillStyle = 'red';
         ctx.font = '48px serif';
@@ -135,14 +139,17 @@ const MyGame: React.FC = () => {
         update();
         render();
         requestAnimationFrame(gameLoop);
+      } else {
+        restartGame();
       }
-    };    
+    };
+
+    // Start the game loop
     gameLoop();
 
-    // Handle key press events
+    // Handle spacebar press for jumping
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === 'Space' && !player.isJumping) {
-        // Jump only if the player is not already jumping
         player.velocityY = player.jumpStrength; // Set jump velocity
         player.isJumping = true; // Mark as jumping
       }
@@ -150,12 +157,69 @@ const MyGame: React.FC = () => {
 
     document.addEventListener('keydown', handleKeyDown);
 
+    // Function to restart the game and music from the current section
+    const restartGame = () => {
+      player.x = 50;
+      player.y = canvas.height - 35;
+      player.velocityY = 0;
+      player.isJumping = false;
+      player.rotation = 0;
+      obstacles.length = 0; // Clear obstacles
+
+      // Restart the music from the current section
+      if (audioRef.current) {
+        audioRef.current.currentTime = musicSections[currentSection];
+        audioRef.current.play();
+      }
+
+      gameOver = false;
+      gameLoop(); // Restart game loop
+    };
+
+    // Function to handle music progression
+    const handleMusicProgress = () => {
+      if (!audioRef.current) return;
+
+      // Check if the music has reached the next section
+      const currentTime = audioRef.current.currentTime;
+      const nextSection = currentSection + 1;
+
+      if (nextSection < musicSections.length && currentTime >= musicSections[nextSection]) {
+        setCurrentSection(nextSection);
+      }
+
+      // End the game when the music reaches the last section
+      if (currentSection === musicSections.length - 1 && currentTime >= audioRef.current.duration) {
+        ctx.fillStyle = 'green';
+        ctx.font = '48px serif';
+        ctx.fillText('You Win!', canvas.width / 2 - 100, canvas.height / 2);
+        gameOver = true;
+      }
+    };
+
+    // Set the event listener to track music progress
+    if (audioRef.current) {
+      audioRef.current.addEventListener('timeupdate', handleMusicProgress);
+    }
+
     // Cleanup on component unmount
     return () => {
-      clearInterval(obstacleInterval); // Clear obstacle interval on unmount
+      clearInterval(obstacleInterval);
       document.removeEventListener('keydown', handleKeyDown);
+      if (audioRef.current) {
+        audioRef.current.removeEventListener('timeupdate', handleMusicProgress);
+      }
     };
-  }, []);
+  }, [currentSection, gameStarted]); // Dependency on currentSection and gameStarted to update state
+
+  // Start the game and music when the Play button is clicked
+  const startGame = () => {
+    setGameStarted(true);
+    if (audioRef.current) {
+      audioRef.current.volume = 0.1;
+      audioRef.current.play().catch(error => console.error("Audio play error:", error));
+    }
+  };
 
   return (
     <section
@@ -169,9 +233,23 @@ const MyGame: React.FC = () => {
         >
           <h1 className="opacity-40">myGame</h1>
         </SlideFadeIn>
-        <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-black"></canvas>
+        {!gameStarted && (
+          <button onClick={startGame} className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
+            Play Game
+          </button>
+        )}
+        {gameStarted && (
+          <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-black"></canvas>        
+        )}        
+        <audio 
+          ref={audioRef} 
+          src="/audio/game/All_Change.wav" 
+          preload="auto" 
+          loop 
+        />      
       </div>
     </section>
   );
 };
+
 export default MyGame;
