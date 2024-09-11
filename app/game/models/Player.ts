@@ -1,16 +1,15 @@
-// Player.ts
 export type Player = {
   x: number;
   y: number;
   width: number;
   height: number;
-  color: string;
   velocityY: number;
   isJumping: boolean;
   gravity: number;
   jumpStrength: number;
   rotation: number;
   rotationSpeed: number;
+  color: string;  
 };
 
 export const createPlayer = (canvasHeight: number): Player => ({
@@ -28,11 +27,14 @@ export const createPlayer = (canvasHeight: number): Player => ({
 });
 
 export const updatePlayer = (player: Player, canvasHeight: number) => {
+  
+  // Player jumping
   if (player.isJumping) {
     player.velocityY += player.gravity;
     player.y += player.velocityY;
     player.rotation += player.rotationSpeed;
 
+    // Player landing
     if (player.y >= canvasHeight - player.height - 10) {
       player.y = canvasHeight - player.height - 10;
       player.velocityY = 0;

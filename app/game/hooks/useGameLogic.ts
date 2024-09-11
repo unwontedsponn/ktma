@@ -1,0 +1,106 @@
+// useGameLogic.ts
+import { useEffect, MutableRefObject } from 'react';
+import { Player, createPlayer } from '@/app/game/models/Player';
+import { Obstacle, createObstacle, updateObstacles } from '@/app/game/models/Obstacles';
+import { gameLoop } from '@/app/game/managers/GameManager';
+
+interface UseGameLogicProps {
+  canvasRef: MutableRefObject<HTMLCanvasElement | null>;
+  audioRef: MutableRefObject<HTMLAudioElement | null>;
+  player: MutableRefObject<Player>;
+  obstacles: MutableRefObject<Obstacle[]>;
+  gameStarted: boolean;
+  gamePaused: boolean;
+  setGamePaused: (paused: boolean) => void;
+  resumeGame: () => void;
+  animationFrameIdRef: MutableRefObject<number | null>;
+  gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>;
+}
+
+export const useGameLogic = ({
+  canvasRef,
+  audioRef,
+  player,
+  obstacles,
+  gameStarted,
+  gamePaused,
+  setGamePaused,
+  resumeGame,
+  animationFrameIdRef,
+  gameLoopFunctionRef,
+}: UseGameLogicProps) => {
+  useEffect(() => {
+    if (!gameStarted || gamePaused) return;
+
+    const canvas = canvasRef.current;
+    const audio = audioRef.current;
+    if (!canvas || !audio) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    player.current = createPlayer(canvas.height);
+
+    let lastTime = 0; // Track the last frame time
+
+    // Initialize the game loop function
+    gameLoopFunctionRef.current = (timestamp: number) => {
+      if (!lastTime) lastTime = timestamp;
+      const deltaTime = timestamp - lastTime;
+
+      // Target 60fps (16.67ms per frame)
+      if (deltaTime > 12) {
+        lastTime = timestamp;
+        
+        gameLoop(
+          ctx,
+          player.current,
+          obstacles.current,
+          gamePaused,
+          setGamePaused,
+          audio,
+          animationFrameIdRef,
+          gameLoopFunctionRef
+        );
+
+        updateObstacles(
+          obstacles.current,
+          player.current,
+          canvas.width,
+          canvas.height,
+          setGamePaused,
+          audio
+        );
+      }
+
+      animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
+    };
+
+    // Start the first frame
+    animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
+
+    // Add obstacles at regular intervals
+    const obstacleInterval = setInterval(() => {
+      obstacles.current.push(createObstacle(canvas.width, canvas.height));
+    }, 2000);
+
+    const keyDownHandler = (event: KeyboardEvent) => {
+      if (event.code === 'Space') {
+        if (gamePaused) resumeGame();
+        else if (!player.current.isJumping) {
+          player.current.velocityY = player.current.jumpStrength;
+          player.current.isJumping = true;
+        }
+      }
+    };
+    document.addEventListener('keydown', keyDownHandler);
+
+    return () => {
+      clearInterval(obstacleInterval);
+      document.removeEventListener('keydown', keyDownHandler);
+
+      const frameId = animationFrameIdRef.current;
+      if (frameId !== null) cancelAnimationFrame(frameId);
+    };
+  }, [gameStarted, gamePaused, resumeGame]);
+};
