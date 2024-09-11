@@ -1,4 +1,4 @@
-// useGameLogic.ts
+// The useGameLogic file is a React custom hook that encapsulates the core logic for managing the game's lifecycle and interaction with the player. It serves as a bridge between the game's logic and the React component managing the game.
 import { useEffect, MutableRefObject } from 'react';
 import { Player, createPlayer } from '@/app/game/models/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/models/Obstacles';
@@ -45,6 +45,7 @@ export const useGameLogic = ({
 
     // Initialize the game loop function
     gameLoopFunctionRef.current = (timestamp: number) => {
+      if (gamePaused) return; // Prevent the game loop from continuing if paused
       if (!lastTime) lastTime = timestamp;
       const deltaTime = timestamp - lastTime;
 

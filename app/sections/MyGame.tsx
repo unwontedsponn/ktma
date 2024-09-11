@@ -11,7 +11,7 @@ import { useGameLogic } from '@/app/game/hooks/useGameLogic';
 const MyGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentSection] = useState(0);
+  const [currentSection, setCurrentSection] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
@@ -21,6 +21,9 @@ const MyGame: React.FC = () => {
   const obstacles = useRef<Obstacle[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
+
+  // Function to reset obstacles
+  const resetObstacles = () => {obstacles.current = [];};
 
   // Use the custom hook for game logic
   useGameLogic({
@@ -64,6 +67,8 @@ const MyGame: React.FC = () => {
             audioRef={audioRef} 
             gameLoopFunctionRef={gameLoopFunctionRef} 
             currentSection={currentSection} 
+            setCurrentSection={setCurrentSection}
+            resetObstacles={resetObstacles}
           />
         )}
 
