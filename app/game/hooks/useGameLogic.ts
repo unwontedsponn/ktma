@@ -101,6 +101,6 @@ export const useGameLogic = ({
 
       const frameId = animationFrameIdRef.current;
       if (frameId !== null) cancelAnimationFrame(frameId);
-    };
-  }, [gameStarted, gamePaused, resumeGame]);
+    };  
+  }, [canvasRef, audioRef, player, obstacles, gameStarted, gamePaused, setGamePaused, resumeGame, animationFrameIdRef, gameLoopFunctionRef]);
 };

@@ -1,8 +1,7 @@
 // MyGame.tsx
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState } from 'react';
 import { createPlayer } from '@/app/game/models/Player';
-import { Obstacle, createObstacle } from '@/app/game/models/Obstacles';
-import { musicSections } from '@/app/game/utils/Music';
+import { Obstacle } from '@/app/game/models/Obstacles';
 import IntroSection from '@/app/game/components/IntroSection';
 import InstructionsSection from '@/app/game/components/InstructionsSection';
 import GamePausedSection from '@/app/game/components/GamePausedSection';
@@ -12,7 +11,7 @@ import { useGameLogic } from '@/app/game/hooks/useGameLogic';
 const MyGame: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentSection, setCurrentSection] = useState(0);
+  const [currentSection] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
