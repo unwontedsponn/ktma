@@ -2,6 +2,7 @@
 import React, { useRef, useState } from 'react';
 import { createPlayer } from '@/app/game/models/Player';
 import { Obstacle } from '@/app/game/models/Obstacles';
+import { PowerUp } from '../game/models/PowerUps';
 import IntroSection from '@/app/game/components/IntroSection';
 import InstructionsSection from '@/app/game/components/InstructionsSection';
 import GamePausedSection from '@/app/game/components/GamePausedSection';
@@ -19,11 +20,13 @@ const MyGame: React.FC = () => {
 
   const player = useRef(createPlayer(0));
   const obstacles = useRef<Obstacle[]>([]);
+  const powerUps = useRef<PowerUp[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
 
-  // Function to reset obstacles
+  // Function to reset obstacles and powerUps
   const resetObstacles = () => {obstacles.current = [];};
+  const resetPowerUps = () => {powerUps.current = [];};
 
   // Use the custom hook for game logic
   useGameLogic({
@@ -31,6 +34,7 @@ const MyGame: React.FC = () => {
     audioRef,
     player,
     obstacles,
+    powerUps,
     gameStarted,
     gamePaused,
     setGamePaused,
@@ -69,6 +73,7 @@ const MyGame: React.FC = () => {
             currentSection={currentSection} 
             setCurrentSection={setCurrentSection}
             resetObstacles={resetObstacles}
+            resetPowerUps={resetPowerUps}
           />
         )}
 

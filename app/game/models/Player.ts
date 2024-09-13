@@ -14,7 +14,7 @@ export type Player = {
 
 export const createPlayer = (canvasHeight: number): Player => ({
   x: 50,
-  y: canvasHeight - 35,
+  y: canvasHeight - 25,
   width: 25,
   height: 25,
   color: '#acddfb', // light-blue
@@ -35,8 +35,8 @@ export const updatePlayer = (player: Player, canvasHeight: number) => {
     player.rotation += player.rotationSpeed;
 
     // Player landing
-    if (player.y >= canvasHeight - player.height - 10) {
-      player.y = canvasHeight - player.height - 10;
+    if (player.y >= canvasHeight - player.height) {
+      player.y = canvasHeight - player.height;
       player.velocityY = 0;
       player.isJumping = false;
       player.rotation = 0;

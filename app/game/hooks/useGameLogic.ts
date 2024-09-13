@@ -2,6 +2,7 @@
 import { useEffect, MutableRefObject } from 'react';
 import { Player, createPlayer } from '@/app/game/models/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/models/Obstacles';
+import { PowerUp, updatePowerUps } from '../models/PowerUps';
 import { gameLoop } from '@/app/game/managers/GameManager';
 
 interface UseGameLogicProps {
@@ -9,6 +10,7 @@ interface UseGameLogicProps {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
   player: MutableRefObject<Player>;
   obstacles: MutableRefObject<Obstacle[]>;
+  powerUps: MutableRefObject<PowerUp[]>;
   gameStarted: boolean;
   gamePaused: boolean;
   setGamePaused: (paused: boolean) => void;
@@ -22,6 +24,7 @@ export const useGameLogic = ({
   audioRef,
   player,
   obstacles,
+  powerUps,
   gameStarted,
   gamePaused,
   setGamePaused,
@@ -57,6 +60,7 @@ export const useGameLogic = ({
           ctx,
           player.current,
           obstacles.current,
+          powerUps.current,
           gamePaused,
           setGamePaused,
           audio,
@@ -71,6 +75,13 @@ export const useGameLogic = ({
           canvas.height,
           setGamePaused,
           audio
+        );
+        
+        updatePowerUps(
+          powerUps.current,
+          player.current,
+          canvas.width,
+          canvas.height
         );
       }
 

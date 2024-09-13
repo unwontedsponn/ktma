@@ -1,11 +1,13 @@
 // The GameManager file serves as the core of the game's rendering and update loop, orchestrating how the game progresses frame by frame.
 import { Player, updatePlayer } from '../models/Player';
 import { Obstacle, updateObstacles } from '../models/Obstacles';
+import { PowerUp, updatePowerUps } from '../models/PowerUps';
 
 export const gameLoop = (
   ctx: CanvasRenderingContext2D,
   player: Player,
   obstacles: Obstacle[],
+  powerUps: PowerUp[],
   gamePaused: boolean,
   setGamePaused: (paused: boolean) => void,
   audio: HTMLAudioElement | null,
@@ -19,7 +21,8 @@ export const gameLoop = (
 
   updatePlayer(player, canvasHeight);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio);
-  renderGame(ctx, player, obstacles);
+  updatePowerUps(powerUps, player, canvasWidth, canvasHeight)
+  renderGame(ctx, player, obstacles, powerUps);
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
@@ -28,6 +31,7 @@ export const renderGame = (
   ctx: CanvasRenderingContext2D,
   player: Player,
   obstacles: Obstacle[],
+  powerUps: PowerUp[],
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -41,5 +45,11 @@ export const renderGame = (
   obstacles.forEach(obstacle => {
     ctx.fillStyle = obstacle.color;
     ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+  });
+
+  // Render power-ups
+  powerUps.forEach(powerUp => {
+    ctx.fillStyle = powerUp.color;
+    ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
   });
 };

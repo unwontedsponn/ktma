@@ -10,7 +10,7 @@ export type Obstacle = {
 
 export const createObstacle = (canvasWidth: number, canvasHeight: number): Obstacle => ({
   x: canvasWidth,
-  y: canvasHeight - 50,
+  y: canvasHeight - 40,
   width: 20,
   height: 40,
   color: '#c15564', // dark-pink
