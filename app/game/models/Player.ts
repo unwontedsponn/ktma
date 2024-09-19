@@ -10,6 +10,7 @@ export type Player = {
   rotation: number;
   rotationSpeed: number;
   color: string;  
+  isInvincible: boolean;
 };
 
 export const createPlayer = (canvasHeight: number): Player => ({
@@ -24,9 +25,13 @@ export const createPlayer = (canvasHeight: number): Player => ({
   jumpStrength: -10,
   rotation: 0,
   rotationSpeed: 0.1,
+  isInvincible: false,
 });
 
 export const updatePlayer = (player: Player, canvasHeight: number) => {
+  
+  if (player.isInvincible) player.color = '#FFD700'; 
+  else player.color = '#acddfb';
   
   // Player jumping
   if (player.isJumping) {

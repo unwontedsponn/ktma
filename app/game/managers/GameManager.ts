@@ -13,6 +13,7 @@ export const gameLoop = (
   audio: HTMLAudioElement | null,
   animationFrameIdRef: React.MutableRefObject<number | null>,
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>,
+  setIsPowerUpActive: (isActive: boolean) => void
 ) => {
   if (gamePaused) return;
   
@@ -21,7 +22,7 @@ export const gameLoop = (
 
   updatePlayer(player, canvasHeight);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio);
-  updatePowerUps(powerUps, player, canvasWidth, canvasHeight)
+  updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive)
   renderGame(ctx, player, obstacles, powerUps);
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);

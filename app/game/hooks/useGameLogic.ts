@@ -17,6 +17,7 @@ interface UseGameLogicProps {
   resumeGame: () => void;
   animationFrameIdRef: MutableRefObject<number | null>;
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>;
+  setIsPowerUpActive: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const useGameLogic = ({
@@ -31,6 +32,7 @@ export const useGameLogic = ({
   resumeGame,
   animationFrameIdRef,
   gameLoopFunctionRef,
+  setIsPowerUpActive
 }: UseGameLogicProps) => {
   useEffect(() => {
     if (!gameStarted || gamePaused) return;
@@ -65,7 +67,8 @@ export const useGameLogic = ({
           setGamePaused,
           audio,
           animationFrameIdRef,
-          gameLoopFunctionRef
+          gameLoopFunctionRef,
+          setIsPowerUpActive
         );
 
         updateObstacles(
@@ -81,7 +84,8 @@ export const useGameLogic = ({
           powerUps.current,
           player.current,
           canvas.width,
-          canvas.height
+          canvas.height,
+          setIsPowerUpActive
         );
       }
 

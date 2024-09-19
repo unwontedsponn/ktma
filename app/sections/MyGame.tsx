@@ -1,5 +1,4 @@
-// MyGame.tsx
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { createPlayer } from '@/app/game/models/Player';
 import { Obstacle } from '@/app/game/models/Obstacles';
 import { PowerUp } from '../game/models/PowerUps';
@@ -17,6 +16,8 @@ const MyGame: React.FC = () => {
   const [gamePaused, setGamePaused] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [isPowerUpActive, setIsPowerUpActive] = useState(false);
+  const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');
 
   const player = useRef(createPlayer(0));
   const obstacles = useRef<Obstacle[]>([]);
@@ -41,7 +42,36 @@ const MyGame: React.FC = () => {
     resumeGame: () => {}, // Placeholder, the logic is in the GamePausedSection
     animationFrameIdRef,
     gameLoopFunctionRef,
-  }); 
+    setIsPowerUpActive,
+  });
+
+  // Effect to handle music switching when power-up is active
+  useEffect(() => {
+    if (isPowerUpActive && audioRef.current) {
+      const audio = audioRef.current;
+      const currentTime = audio.currentTime;
+
+      // Pause the normal music and switch to 8-bit music at the same timestamp
+      if (audioType === 'normal') {
+        audio.pause();
+        audio.src = '/audio/game/All Change 8-BIT.wav';
+        audio.currentTime = currentTime;
+        audio.play();
+        setAudioType('8bit');
+
+        // Switch back to the original music after 5 seconds
+        setTimeout(() => {
+          const newCurrentTime = audio.currentTime;
+          audio.pause();
+          audio.src = '/audio/game/All_Change.wav';
+          audio.currentTime = newCurrentTime;
+          audio.play();
+          setAudioType('normal');
+          setIsPowerUpActive(false);
+        }, 5000);
+      }
+    }
+  }, [isPowerUpActive, audioRef, audioType]);
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">

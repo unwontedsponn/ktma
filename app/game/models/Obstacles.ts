@@ -41,7 +41,9 @@ export const updateObstacles = (
     obstacle.x -= 2;
 
     if (obstacle.x + obstacle.width < 0) obstacles.splice(index, 1);
+    // Only check for collision if player is NOT invincible
     if (
+      !player.isInvincible && // Skip collision if player is invincible
       player.x < obstacle.x + obstacle.width &&
       player.x + player.width > obstacle.x &&
       player.y < obstacle.y + obstacle.height &&

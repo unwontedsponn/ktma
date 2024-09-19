@@ -21,13 +21,12 @@ export const updatePowerUps = (
   player: Player,
   canvasWidth: number,
   canvasHeight: number,
+  setIsPowerUpActive: (isActive: boolean) => void
 ) => {
   powerUps.forEach((powerUp, index) => {
     powerUp.x -= 4;
 
-    if (powerUp.x + powerUp.width < 0) {
-      powerUps.splice(index, 1); // Remove power-up when it goes off screen
-    }
+    if (powerUp.x + powerUp.width < 0) powerUps.splice(index, 1);
 
     // Check for collision between player and power-up
     if (
@@ -35,15 +34,17 @@ export const updatePowerUps = (
       player.x + player.width > powerUp.x &&
       player.y < powerUp.y + powerUp.height &&
       player.y + player.height > powerUp.y
-    ) {
-      // Logic for invincibility or power-up activation
-      // e.g., activate invincibility, play 8-bit music, etc.
+    ) {      
+      setIsPowerUpActive(true);
+      player.isInvincible = true;
+      powerUps.splice(index, 1);
+      setTimeout(() => {
+        player.isInvincible = false; // Turn off invincibility after 5 seconds
+      }, 5000);
     }
   });
 
   // Spawning new power-ups with a controlled probability
-  const spawnProbability = 0.0002; // Adjust as needed for desired frequency
-  if (Math.random() < spawnProbability) {
-    powerUps.push(createPowerUp(canvasWidth, canvasHeight));
-  }
+  const spawnProbability = 0.002;
+  if (Math.random() < spawnProbability) powerUps.push(createPowerUp(canvasWidth, canvasHeight));
 };
