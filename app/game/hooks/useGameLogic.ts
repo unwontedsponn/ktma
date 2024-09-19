@@ -18,6 +18,8 @@ interface UseGameLogicProps {
   animationFrameIdRef: MutableRefObject<number | null>;
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>;
   setIsPowerUpActive: React.Dispatch<React.SetStateAction<boolean>>;
+  audioType: string; // Add audioType
+  setAudioType: (type: 'normal' | '8bit') => void; // Add setAudioType
 }
 
 export const useGameLogic = ({
@@ -32,7 +34,9 @@ export const useGameLogic = ({
   resumeGame,
   animationFrameIdRef,
   gameLoopFunctionRef,
-  setIsPowerUpActive
+  setIsPowerUpActive,
+  audioType,  // Add audioType
+  setAudioType  // Add setAudioType
 }: UseGameLogicProps) => {
   useEffect(() => {
     if (!gameStarted || gamePaused) return;
@@ -68,7 +72,10 @@ export const useGameLogic = ({
           audio,
           animationFrameIdRef,
           gameLoopFunctionRef,
-          setIsPowerUpActive
+          setIsPowerUpActive,
+          audioRef, // Pass audioRef to the gameLoop
+          audioType, // Pass audioType
+          setAudioType // Pass setAudioType
         );
 
         updateObstacles(
@@ -85,7 +92,10 @@ export const useGameLogic = ({
           player.current,
           canvas.width,
           canvas.height,
-          setIsPowerUpActive
+          setIsPowerUpActive,
+          audioRef, 
+          audioType, 
+          setAudioType
         );
       }
 

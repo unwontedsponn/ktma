@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { createPlayer } from '@/app/game/models/Player';
 import { Obstacle } from '@/app/game/models/Obstacles';
-import { PowerUp } from '../game/models/PowerUps';
+import { PowerUp, updatePowerUps } from '../game/models/PowerUps';
 import IntroSection from '@/app/game/components/IntroSection';
 import InstructionsSection from '@/app/game/components/InstructionsSection';
 import GamePausedSection from '@/app/game/components/GamePausedSection';
@@ -43,35 +43,9 @@ const MyGame: React.FC = () => {
     animationFrameIdRef,
     gameLoopFunctionRef,
     setIsPowerUpActive,
-  });
-
-  // Effect to handle music switching when power-up is active
-  useEffect(() => {
-    if (isPowerUpActive && audioRef.current) {
-      const audio = audioRef.current;
-      const currentTime = audio.currentTime;
-
-      // Pause the normal music and switch to 8-bit music at the same timestamp
-      if (audioType === 'normal') {
-        audio.pause();
-        audio.src = '/audio/game/All Change 8-BIT.wav';
-        audio.currentTime = currentTime;
-        audio.play();
-        setAudioType('8bit');
-
-        // Switch back to the original music after 5 seconds
-        setTimeout(() => {
-          const newCurrentTime = audio.currentTime;
-          audio.pause();
-          audio.src = '/audio/game/All_Change.wav';
-          audio.currentTime = newCurrentTime;
-          audio.play();
-          setAudioType('normal');
-          setIsPowerUpActive(false);
-        }, 5000);
-      }
-    }
-  }, [isPowerUpActive, audioRef, audioType]);
+    audioType, // Pass audioType
+    setAudioType, // Pass setAudioType
+  });  
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
