@@ -1,54 +1,29 @@
-import React, { useRef, useState } from 'react';
-import { createPlayer } from '@/app/game/models/Player';
-import { Obstacle } from '@/app/game/models/Obstacles';
-import { PowerUp } from '../game/models/PowerUps';
-import IntroSection from '@/app/game/components/IntroSection';
-import InstructionsSection from '@/app/game/components/InstructionsSection';
-import GamePausedSection from '@/app/game/components/GamePausedSection';
-import GameCanvas from '@/app/game/components/GameCanvas';
-import { useGameLogic } from '@/app/game/hooks/useGameLogic';
+// MyGame.tsx
+import React, { useState, useRef } from 'react';
+import { useGameLogic } from '@/app/game/GameLogic';
+import IntroSection from '@/app/game/sections/Intro';
+import InstructionsSection from '@/app/game/sections/Instructions';
+import GamePausedSection from '@/app/game/sections/Paused';
 
 const MyGame: React.FC = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentSection, setCurrentSection] = useState(0);
-  const [gameStarted, setGameStarted] = useState(false);
-  const [gamePaused, setGamePaused] = useState(false);
-  const [showIntro, setShowIntro] = useState(true);
-  const [showInstructions, setShowInstructions] = useState(false);
-  const [isPowerUpActive, setIsPowerUpActive] = useState(false);
-  const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');
-  const [playerColour, setPlayerColour] = useState('#acddfb'); // Default color (light-blue)
-
-  const player = useRef(createPlayer(0));
-  const obstacles = useRef<Obstacle[]>([]);
-  const powerUps = useRef<PowerUp[]>([]);
-  const animationFrameIdRef = useRef<number | null>(null);
-  const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-
-  // Function to reset obstacles and powerUps
-  const resetObstacles = () => {obstacles.current = [];};
-  const resetPowerUps = () => {powerUps.current = [];};
-
-  // Use the custom hook for game logic
-  useGameLogic({
+  const {
     canvasRef,
     audioRef,
-    player,
-    obstacles,
-    powerUps,
     gameStarted,
+    setGameStarted,
     gamePaused,
-    setGamePaused,    
-    animationFrameIdRef,
-    gameLoopFunctionRef,
-    isPowerUpActive,
-    setIsPowerUpActive,
-    audioType, 
-    setAudioType, 
-    playerColour, 
-    setPlayerColour,
-  });  
+    setGamePaused,
+    resetObstacles,
+    resetPowerUps,
+    playerColour,
+  } = useGameLogic();
+
+  // Ensure you have the following hooks and variables initialized:
+  const [showIntro, setShowIntro] = useState(true);
+  const [showInstructions, setShowInstructions] = useState(false);
+  const animationFrameIdRef = useRef<number | null>(null);
+  const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
+  const [currentSection, setCurrentSection] = useState(0); // Track the current section
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -61,7 +36,7 @@ const MyGame: React.FC = () => {
           />
         )}
 
-        {showInstructions && !gameStarted && (
+        {!showIntro && showInstructions && !gameStarted && (
           <InstructionsSection 
             setGameStarted={setGameStarted} 
             setGamePaused={setGamePaused} 
@@ -69,27 +44,29 @@ const MyGame: React.FC = () => {
           />
         )}
 
-        {gameStarted && !gamePaused && <GameCanvas canvasRef={canvasRef} />}
+        {gameStarted && !gamePaused && 
+          <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-grey-black-brown"></canvas>
+        }
 
         {gamePaused && (
           <GamePausedSection 
-            setGamePaused={setGamePaused} 
-            animationFrameIdRef={animationFrameIdRef} 
-            audioRef={audioRef} 
-            gameLoopFunctionRef={gameLoopFunctionRef} 
-            currentSection={currentSection} 
+            setGamePaused={setGamePaused}
+            animationFrameIdRef={animationFrameIdRef}
+            audioRef={audioRef}
+            gameLoopFunctionRef={gameLoopFunctionRef}
+            currentSection={currentSection}
             setCurrentSection={setCurrentSection}
             resetObstacles={resetObstacles}
             resetPowerUps={resetPowerUps}
-          />
+          />        
         )}
 
         <audio ref={audioRef} src="/audio/game/All_Change.wav" preload="auto" loop>
           <track kind="captions" srcLang="en" label="English captions" />
         </audio>
+
       </div>
     </section>
   );
 };
-
 export default MyGame;

@@ -7,6 +7,7 @@ interface IntroSectionProps {
 }
 
 const IntroSection: React.FC<IntroSectionProps> = ({ setShowIntro, setShowInstructions }) => {
+  
   const showHowToPlay = () => {
     setShowIntro(false);
     setShowInstructions(true);

@@ -1,4 +1,4 @@
-// GamePausedSection.tsx
+// Paused.tsx
 import React, { useCallback, useEffect } from 'react';
 import { musicSections } from '@/app/game/utils/Music';
 
