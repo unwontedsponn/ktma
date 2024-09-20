@@ -1,3 +1,4 @@
+// Player.ts
 export type Player = {
   x: number;
   y: number;
@@ -28,9 +29,9 @@ export const createPlayer = (canvasHeight: number): Player => ({
   isInvincible: false,
 });
 
-export const updatePlayer = (player: Player, canvasHeight: number, playerColour: string) => {  
-  
-  player.color = playerColour;
+export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActive: boolean) => {    
+  if (isPowerUpActive) player.color = '#ffd700'; // Set to gold
+  else player.color = '#acddfb'; // Back to normal blue
 
   // Player jumping
   if (player.isJumping) {

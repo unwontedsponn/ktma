@@ -4,7 +4,6 @@ import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
 
-// Game loop logic that was previously in GameManager.ts
 const gameLoop = (
   ctx: CanvasRenderingContext2D,
   player: Player,
@@ -19,15 +18,14 @@ const gameLoop = (
   audioRef: MutableRefObject<HTMLAudioElement | null>, 
   audioType: string,
   setAudioType: (type: 'normal' | '8bit') => void,
-  playerColour: string,
-  setPlayerColour: (color: string) => void,
+  isPowerUpActive: boolean
 ) => {
   if (gamePaused) return;
   
   const canvasWidth = ctx.canvas.width;
   const canvasHeight = ctx.canvas.height;
 
-  updatePlayer(player, canvasHeight, playerColour);
+  updatePlayer(player, canvasHeight, isPowerUpActive);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio);
   updatePowerUps(
     powerUps, 
@@ -37,8 +35,7 @@ const gameLoop = (
     setIsPowerUpActive, 
     audioRef, 
     audioType, 
-    setAudioType,
-    setPlayerColour
+    setAudioType,    
   );
   renderGame(ctx, player, obstacles, powerUps);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
@@ -70,7 +67,6 @@ const renderGame = (
   });
 };
 
-// Consolidated useGameLogic
 export const useGameLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -83,8 +79,7 @@ export const useGameLogic = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);
-  const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');
-  const [playerColour, setPlayerColour] = useState('#acddfb'); // Default color (light-blue)
+  const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');  
 
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
@@ -125,9 +120,8 @@ export const useGameLogic = () => {
           setIsPowerUpActive,
           audioRef, 
           audioType, 
-          setAudioType,   
-          playerColour,   
-          setPlayerColour
+          setAudioType,    
+          isPowerUpActive,                   
         );
       }
       animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
@@ -155,7 +149,7 @@ export const useGameLogic = () => {
       const frameId = animationFrameIdRef.current;
       if (frameId !== null) cancelAnimationFrame(frameId);
     };
-  }, [gameStarted, gamePaused]);
+  }, [gameStarted, gamePaused, isPowerUpActive]);
 
   return {
     canvasRef,
@@ -165,8 +159,7 @@ export const useGameLogic = () => {
     gamePaused,
     setGamePaused,
     resetObstacles,
-    resetPowerUps,
-    playerColour,
-    setPlayerColour,
+    resetPowerUps,    
+    isPowerUpActive
   };
 };

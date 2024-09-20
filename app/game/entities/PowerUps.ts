@@ -1,4 +1,5 @@
-import { Player } from "@/app/game/models/Player";
+// PowerUps.ts
+import { Player } from "@/app/game/entities/Player";
 
 export type PowerUp = {
   x: number;
@@ -24,11 +25,10 @@ export const updatePowerUps = (
   setIsPowerUpActive: (isActive: boolean) => void,
   audioRef: React.RefObject<HTMLAudioElement>,
   audioType: string,
-  setAudioType: (type: 'normal' | '8bit') => void,
-  setPlayerColour: (color: string) => void,
+  setAudioType: (type: 'normal' | '8bit') => void,  
 ) => {
   powerUps.forEach((powerUp, index) => {
-    powerUp.x -= 4;
+    powerUp.x -= 6;
 
     // Remove power-up when it goes off-screen
     if (powerUp.x + powerUp.width < 0) powerUps.splice(index, 1); 
@@ -43,7 +43,6 @@ export const updatePowerUps = (
       // Activate the power-up (invincibility and audio change)
       setIsPowerUpActive(true);
       player.isInvincible = true;
-      setPlayerColour('#FFD700'); // Set to gold
 
       // Change the music to 8-bit version if not already playing
       if (audioRef && audioRef.current && audioType === 'normal') {
@@ -66,8 +65,7 @@ export const updatePowerUps = (
           audio.play();
           setAudioType('normal');
           setIsPowerUpActive(false);
-          player.isInvincible = false;
-          setPlayerColour('#acddfb');
+          player.isInvincible = false;          
         }, 5000);
       }
 
@@ -77,7 +75,7 @@ export const updatePowerUps = (
   });
 
   // Spawning new power-ups with a controlled probability
-  const spawnProbability = 0.005;
+  const spawnProbability = 0.001;
   if (Math.random() < spawnProbability) powerUps.push(createPowerUp(canvasWidth, canvasHeight));
 };
 

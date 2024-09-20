@@ -1,4 +1,4 @@
-import { Player } from "@/app/game/models/Player";
+import { Player } from "@/app/game/entities/Player";
 
 export type Obstacle = {
   x: number;
@@ -38,7 +38,7 @@ export const updateObstacles = (
   const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, horizontalSpeed);
 
   obstacles.forEach((obstacle, index) => {
-    obstacle.x -= 2;
+    obstacle.x -= 4;
 
     if (obstacle.x + obstacle.width < 0) obstacles.splice(index, 1);
     // Only check for collision if player is NOT invincible

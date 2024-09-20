@@ -14,8 +14,7 @@ const MyGame: React.FC = () => {
     gamePaused,
     setGamePaused,
     resetObstacles,
-    resetPowerUps,
-    playerColour,
+    resetPowerUps,    
   } = useGameLogic();
 
   // Ensure you have the following hooks and variables initialized:
