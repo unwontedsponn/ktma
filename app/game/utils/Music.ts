@@ -1,4 +1,3 @@
-// Music.ts
 export const musicSections = [
   0,    // 00:00
   9,    // 00:09

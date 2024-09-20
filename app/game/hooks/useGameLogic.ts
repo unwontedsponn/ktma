@@ -15,10 +15,10 @@ interface UseGameLogicProps {
   powerUps: MutableRefObject<PowerUp[]>;
   gameStarted: boolean;
   gamePaused: boolean;
-  setGamePaused: (paused: boolean) => void;
-  resumeGame: () => void;
+  setGamePaused: (paused: boolean) => void;  
   animationFrameIdRef: MutableRefObject<number | null>;
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>;
+  isPowerUpActive: boolean;
   setIsPowerUpActive: React.Dispatch<React.SetStateAction<boolean>>;
   audioType: string;
   setAudioType: (type: 'normal' | '8bit') => void;
@@ -35,9 +35,9 @@ export const useGameLogic = ({
   gameStarted,
   gamePaused,
   setGamePaused,
-  resumeGame,
   animationFrameIdRef,
   gameLoopFunctionRef,
+  isPowerUpActive,
   setIsPowerUpActive,
   audioType,
   setAudioType,
@@ -119,9 +119,8 @@ export const useGameLogic = ({
     }, 2000);
 
     const keyDownHandler = (event: KeyboardEvent) => {
-      if (event.code === 'Space') {
-        if (gamePaused) resumeGame();
-        else if (!player.current.isJumping) {
+      if (event.code === 'Space') {        
+        if (!player.current.isJumping) {
           player.current.velocityY = player.current.jumpStrength;
           player.current.isJumping = true;
         }
@@ -136,5 +135,22 @@ export const useGameLogic = ({
       const frameId = animationFrameIdRef.current;
       if (frameId !== null) cancelAnimationFrame(frameId);
     };  
-  }, [canvasRef, audioRef, player, obstacles, gameStarted, gamePaused, setGamePaused, resumeGame, animationFrameIdRef, gameLoopFunctionRef]);
+  }, [
+    canvasRef,
+    audioRef,
+    player,
+    obstacles,
+    powerUps,
+    gameStarted,
+    gamePaused,
+    setGamePaused,
+    animationFrameIdRef,
+    gameLoopFunctionRef,
+    isPowerUpActive,
+    setIsPowerUpActive,
+    audioType,
+    setAudioType,
+    playerColour,
+    setPlayerColour,
+  ]);
 };

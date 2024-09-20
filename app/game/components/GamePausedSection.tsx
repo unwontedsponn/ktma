@@ -51,9 +51,18 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     }
 
     gameLoopFunctionRef.current(performance.now()); // Initialize the game loop
-  }, [currentSection, setGamePaused, animationFrameIdRef, audioRef, gameLoopFunctionRef]);
+  }, [
+    currentSection,
+    setGamePaused,
+    animationFrameIdRef,
+    audioRef,
+    gameLoopFunctionRef,
+    resetObstacles,
+    resetPowerUps,
+    setCurrentSection,
+  ]);
 
-  // Add effect to handle the Space key press
+  // Handle the 'Space' key to resume the game
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.code === 'Space') resumeGame();

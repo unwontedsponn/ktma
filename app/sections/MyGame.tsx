@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import { createPlayer } from '@/app/game/models/Player';
 import { Obstacle } from '@/app/game/models/Obstacles';
-import { PowerUp, updatePowerUps } from '../game/models/PowerUps';
+import { PowerUp } from '../game/models/PowerUps';
 import IntroSection from '@/app/game/components/IntroSection';
 import InstructionsSection from '@/app/game/components/InstructionsSection';
 import GamePausedSection from '@/app/game/components/GamePausedSection';
@@ -39,16 +39,15 @@ const MyGame: React.FC = () => {
     powerUps,
     gameStarted,
     gamePaused,
-    setGamePaused,
-    resumeGame: () => {}, // Placeholder, the logic is in the GamePausedSection
+    setGamePaused,    
     animationFrameIdRef,
     gameLoopFunctionRef,
+    isPowerUpActive,
     setIsPowerUpActive,
-    audioType, // Pass audioType
-    setAudioType, // Pass setAudioType
-    playerColour,  // Pass player color
-    setPlayerColour, // Pass setPlayerColour function to update color
-
+    audioType, 
+    setAudioType, 
+    playerColour, 
+    setPlayerColour,
   });  
 
   return (
