@@ -10,10 +10,10 @@ export type PowerUp = {
 
 export const createPowerUp = (canvasWidth: number, canvasHeight: number): PowerUp => ({
   x: canvasWidth,
-  y: canvasHeight - 85,  // Ensure this height aligns well with the player's jump height
+  y: canvasHeight - 85,
   width: 20,
   height: 20,
-  color: '#5f9251', // green, corrected color code
+  color: '#5f9251', // green
 });
 
 export const updatePowerUps = (
@@ -22,14 +22,16 @@ export const updatePowerUps = (
   canvasWidth: number,
   canvasHeight: number,
   setIsPowerUpActive: (isActive: boolean) => void,
-  audioRef: React.RefObject<HTMLAudioElement>,  // Pass audioRef here to manage the music
-  audioType: string, // Keep track of the current audio type ('normal' or '8bit')
-  setAudioType: (type: 'normal' | '8bit') => void // Set audio type
+  audioRef: React.RefObject<HTMLAudioElement>,
+  audioType: string,
+  setAudioType: (type: 'normal' | '8bit') => void,
+  setPlayerColour: (color: string) => void,
 ) => {
   powerUps.forEach((powerUp, index) => {
     powerUp.x -= 4;
 
-    if (powerUp.x + powerUp.width < 0) powerUps.splice(index, 1); // Remove power-up when it goes off-screen
+    // Remove power-up when it goes off-screen
+    if (powerUp.x + powerUp.width < 0) powerUps.splice(index, 1); 
 
     // Check for collision between player and power-up
     if (
@@ -41,6 +43,7 @@ export const updatePowerUps = (
       // Activate the power-up (invincibility and audio change)
       setIsPowerUpActive(true);
       player.isInvincible = true;
+      setPlayerColour('#FFD700'); // Set to gold
 
       // Change the music to 8-bit version if not already playing
       if (audioRef && audioRef.current && audioType === 'normal') {
@@ -61,9 +64,10 @@ export const updatePowerUps = (
           audio.src = '/audio/game/All_Change.wav';
           audio.currentTime = newCurrentTime;
           audio.play();
-          setAudioType('normal'); // Set the audio type back to normal
-          setIsPowerUpActive(false); // Deactivate the power-up
-          player.isInvincible = false; // Turn off invincibility after 5 seconds
+          setAudioType('normal');
+          setIsPowerUpActive(false);
+          player.isInvincible = false;
+          setPlayerColour('#acddfb');
         }, 5000);
       }
 
@@ -73,7 +77,7 @@ export const updatePowerUps = (
   });
 
   // Spawning new power-ups with a controlled probability
-  const spawnProbability = 0.002;
+  const spawnProbability = 0.005;
   if (Math.random() < spawnProbability) powerUps.push(createPowerUp(canvasWidth, canvasHeight));
 };
 

@@ -1,4 +1,6 @@
-// The useGameLogic file is a React custom hook that encapsulates the core logic for managing the game's lifecycle and interaction with the player. It serves as a bridge between the game's logic and the React component managing the game.
+/* ************************************ */
+/* The useGameLogic file is a React custom hook that encapsulates the core logic for managing the game's lifecycle and interaction with the player. It serves as a bridge between the game's logic and the React component managing the game. */
+/* ************************************ */ 
 import { useEffect, MutableRefObject } from 'react';
 import { Player, createPlayer } from '@/app/game/models/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/models/Obstacles';
@@ -18,8 +20,10 @@ interface UseGameLogicProps {
   animationFrameIdRef: MutableRefObject<number | null>;
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>;
   setIsPowerUpActive: React.Dispatch<React.SetStateAction<boolean>>;
-  audioType: string; // Add audioType
-  setAudioType: (type: 'normal' | '8bit') => void; // Add setAudioType
+  audioType: string;
+  setAudioType: (type: 'normal' | '8bit') => void;
+  playerColour: string;
+  setPlayerColour: (color: string) => void;
 }
 
 export const useGameLogic = ({
@@ -35,8 +39,10 @@ export const useGameLogic = ({
   animationFrameIdRef,
   gameLoopFunctionRef,
   setIsPowerUpActive,
-  audioType,  // Add audioType
-  setAudioType  // Add setAudioType
+  audioType,
+  setAudioType,
+  playerColour,
+  setPlayerColour,
 }: UseGameLogicProps) => {
   useEffect(() => {
     if (!gameStarted || gamePaused) return;
@@ -73,9 +79,11 @@ export const useGameLogic = ({
           animationFrameIdRef,
           gameLoopFunctionRef,
           setIsPowerUpActive,
-          audioRef, // Pass audioRef to the gameLoop
-          audioType, // Pass audioType
-          setAudioType // Pass setAudioType
+          audioRef, 
+          audioType, 
+          setAudioType,   
+          playerColour,   
+          setPlayerColour
         );
 
         updateObstacles(
@@ -95,10 +103,10 @@ export const useGameLogic = ({
           setIsPowerUpActive,
           audioRef, 
           audioType, 
-          setAudioType
+          setAudioType,
+          setPlayerColour
         );
       }
-
       animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
     };
 

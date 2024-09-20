@@ -28,10 +28,10 @@ export const createPlayer = (canvasHeight: number): Player => ({
   isInvincible: false,
 });
 
-export const updatePlayer = (player: Player, canvasHeight: number) => {
+export const updatePlayer = (player: Player, canvasHeight: number, playerColour: string) => {
   
-  if (player.isInvincible) player.color = '#FFD700'; 
-  else player.color = '#acddfb';
+  // Set the player color to the current value passed from the state
+  player.color = playerColour;
   
   // Player jumping
   if (player.isJumping) {

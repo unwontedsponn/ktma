@@ -17,9 +17,9 @@ export const createObstacle = (canvasWidth: number, canvasHeight: number): Obsta
 });
 
 const calculateJumpDistance = (jumpStrength: number, gravity: number, horizontalSpeed: number) => {
-  const timeToPeak = jumpStrength / gravity; // Time to reach the peak of the jump
-  const totalTimeInAir = timeToPeak * 2;     // Total air time
-  const jumpDistance = horizontalSpeed * totalTimeInAir; // Horizontal distance covered during the jump
+  const timeToPeak = jumpStrength / gravity;
+  const totalTimeInAir = timeToPeak * 2;
+  const jumpDistance = horizontalSpeed * totalTimeInAir;
 
   return jumpDistance;
 };
@@ -35,7 +35,7 @@ export const updateObstacles = (
   
   const horizontalSpeed = 1.8; // Adjust this to match actual player speed
   // Calculate player's jump distance based on their speed, gravity, and jump strength
-  const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, horizontalSpeed); // Replace 2 with actual player speed if variable
+  const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, horizontalSpeed);
 
   obstacles.forEach((obstacle, index) => {
     obstacle.x -= 2;

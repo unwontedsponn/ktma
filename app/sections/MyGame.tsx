@@ -18,6 +18,7 @@ const MyGame: React.FC = () => {
   const [showInstructions, setShowInstructions] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);
   const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');
+  const [playerColour, setPlayerColour] = useState('#acddfb'); // Default color (light-blue)
 
   const player = useRef(createPlayer(0));
   const obstacles = useRef<Obstacle[]>([]);
@@ -45,6 +46,9 @@ const MyGame: React.FC = () => {
     setIsPowerUpActive,
     audioType, // Pass audioType
     setAudioType, // Pass setAudioType
+    playerColour,  // Pass player color
+    setPlayerColour, // Pass setPlayerColour function to update color
+
   });  
 
   return (
