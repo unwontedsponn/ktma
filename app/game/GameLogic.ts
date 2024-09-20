@@ -3,6 +3,7 @@ import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
+import { playSfx } from "@/app/game/utils/Audio";
 
 const gameLoop = (
   ctx: CanvasRenderingContext2D,
@@ -135,7 +136,7 @@ export const useGameLogic = () => {
 
     const keyDownHandler = (event: KeyboardEvent) => {
       if (event.code === 'Space') {        
-        if (!player.current.isJumping) {
+        if (!player.current.isJumping) {          
           player.current.velocityY = player.current.jumpStrength;
           player.current.isJumping = true;
         }

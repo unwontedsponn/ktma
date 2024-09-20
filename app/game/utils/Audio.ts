@@ -16,6 +16,7 @@ export const musicSections = [
   228   // 03:48
 ];
 
+// Switch between main track and 8-bit version
 export const switchMusic = (
   audioRef: React.RefObject<HTMLAudioElement>, 
   currentTime: number,
@@ -31,4 +32,12 @@ export const switchMusic = (
     audio.play();
     setAudioType(audioType);
   }
+};
+
+// Play sound effect
+export const playSfx = (src: string, volume: number = 1.0) => {
+  const audio = new Audio(src);
+  audio.volume = volume;
+  audio.currentTime = 0;
+  audio.play();
 };

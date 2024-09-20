@@ -1,4 +1,6 @@
 // Player.ts
+import { playSfx } from "@/app/game/utils/Audio";
+
 export type Player = {
   x: number;
   y: number;
@@ -39,9 +41,12 @@ export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActi
     player.isInvincible = false;
   }
 
-
   // Player jumping
-  if (player.isJumping) {
+  if (player.isJumping) {   
+    
+    // If the player just started jumping, play the jump sound effect once
+    if (player.velocityY === player.jumpStrength) playSfx('/audio/game/sfx/1. Jumping/jump1.wav', 0.1); 
+
     player.velocityY += player.gravity;
     player.y += player.velocityY;
     player.rotation += player.rotationSpeed;
@@ -50,8 +55,13 @@ export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActi
     if (player.y >= canvasHeight - player.height) {
       player.y = canvasHeight - player.height;
       player.velocityY = 0;
+
+      // Only play landing sound if the player was jumping
+      if (player.isJumping) playSfx('/audio/game/sfx/2. Landing/land1.wav', 0.1);
+
+      // Mark the player as no longer jumping
       player.isJumping = false;
-      player.rotation = 0;
+      player.rotation = 0;            
     }
   }
 };
