@@ -3,7 +3,6 @@ import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
-import { playSfx } from "@/app/game/utils/Audio";
 
 const gameLoop = (
   ctx: CanvasRenderingContext2D,
