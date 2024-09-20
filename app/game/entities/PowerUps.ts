@@ -1,5 +1,6 @@
 // PowerUps.ts
 import { Player } from "@/app/game/entities/Player";
+import { switchMusic } from '@/app/game/utils/Audio';
 
 export type PowerUp = {
   x: number;
@@ -41,41 +42,20 @@ export const updatePowerUps = (
       player.y + player.height > powerUp.y
     ) {
       // Activate the power-up (invincibility and audio change)
-      setIsPowerUpActive(true);
-      player.isInvincible = true;
-
-      // Change the music to 8-bit version if not already playing
-      if (audioRef && audioRef.current && audioType === 'normal') {
-        const audio = audioRef.current;
-        const currentTime = audio.currentTime;
-
-        // Pause normal music and switch to 8-bit music at the same timestamp
-        audio.pause();
-        audio.src = '/audio/game/All Change 8-BIT.wav';
-        audio.currentTime = currentTime;
-        audio.play();
-        setAudioType('8bit'); // Set the audio type to 8bit
-
-        // Schedule to switch back to normal music after 5 seconds
-        setTimeout(() => {
-          const newCurrentTime = audio.currentTime;
-          audio.pause();
-          audio.src = '/audio/game/All_Change.wav';
-          audio.currentTime = newCurrentTime;
-          audio.play();
-          setAudioType('normal');
-          setIsPowerUpActive(false);
-          player.isInvincible = false;          
-        }, 5000);
-      }
-
-      // Remove the collected power-up
+      setIsPowerUpActive(true);      
       powerUps.splice(index, 1);
+
+      const currentTime = audioRef?.current?.currentTime || 0;
+
+      switchMusic(audioRef, currentTime, '/audio/game/All Change 8-BIT.wav', '8bit', setAudioType);
+
+      setTimeout(() => {
+        const newCurrentTime = audioRef?.current?.currentTime || 0;
+        switchMusic(audioRef, newCurrentTime, '/audio/game/All_Change.wav', 'normal', setAudioType);
+        setIsPowerUpActive(false);
+      }, 5000);
     }
   });
-
-  // Spawning new power-ups with a controlled probability
   const spawnProbability = 0.001;
   if (Math.random() < spawnProbability) powerUps.push(createPowerUp(canvasWidth, canvasHeight));
 };
-

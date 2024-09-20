@@ -1,6 +1,6 @@
 // Paused.tsx
 import React, { useCallback, useEffect } from 'react';
-import { musicSections } from '@/app/game/utils/Music';
+import { musicSections } from '@/app/game/utils/Audio';
 
 interface GamePausedSectionProps {
   setGamePaused: (paused: boolean) => void;

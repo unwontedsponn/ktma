@@ -30,8 +30,15 @@ export const createPlayer = (canvasHeight: number): Player => ({
 });
 
 export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActive: boolean) => {    
-  if (isPowerUpActive) player.color = '#ffd700'; // Set to gold
-  else player.color = '#acddfb'; // Back to normal blue
+  if (isPowerUpActive) {
+    player.color = '#ffd700'; // Set to gold
+    player.isInvincible = true;
+  }
+  else {
+    player.color = '#acddfb'; // Back to normal blue
+    player.isInvincible = false;
+  }
+
 
   // Player jumping
   if (player.isJumping) {
