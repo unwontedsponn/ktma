@@ -43,8 +43,8 @@ export const updatePlayer = (
   
   if (isPowerUpActive) {
     player.color = '#ffd700'; // Set to gold
-    player.isInvincible = true;
-  }
+    player.isInvincible = true;    
+  }  
   else {
     player.color = '#acddfb'; // Back to normal blue
     player.isInvincible = false;
@@ -64,13 +64,13 @@ export const updatePlayer = (
     if (player.y >= canvasHeight - player.height) {
       player.y = canvasHeight - player.height;
       player.velocityY = 0;
+      player.rotation = 0;
 
       // Only play landing sound if the player was jumping
       if (player.isJumping) playRandomSfx(landSfx, 0.1);
 
       // Mark the player as no longer jumping
-      player.isJumping = false;
-      player.rotation = 0;            
+      player.isJumping = false;                  
     }
-  }
+  }  
 };
