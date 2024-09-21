@@ -1,3 +1,5 @@
+// Obstacles.ts
+import { playRandomSfx, dyingSfx } from "@/app/game/utils/Audio";
 import { Player } from "@/app/game/entities/Player";
 
 export type Obstacle = {
@@ -30,8 +32,10 @@ export const updateObstacles = (
   canvasWidth: number,
   canvasHeight: number,
   setGamePaused: (paused: boolean) => void,
-  audio: HTMLAudioElement | null
+  audio: HTMLAudioElement | null,
+  gamePaused: boolean
 ) => {
+  if (gamePaused || player.isDead) return; // Stop updating if the game is paused or player has already collided
   
   const horizontalSpeed = 1.8; // Adjust this to match actual player speed
   // Calculate player's jump distance based on their speed, gravity, and jump strength
@@ -48,9 +52,13 @@ export const updateObstacles = (
       player.x + player.width > obstacle.x &&
       player.y < obstacle.y + obstacle.height &&
       player.y + player.height > obstacle.y
-    ) {
+    ) {      
       setGamePaused(true);
+      playRandomSfx(dyingSfx, 0.3);
       if (audio) audio.pause();
+      
+      // Mark the player as collided to prevent further sound triggering
+      player.isDead = true;
     }
   });
   

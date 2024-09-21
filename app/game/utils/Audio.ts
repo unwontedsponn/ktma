@@ -34,10 +34,40 @@ export const switchMusic = (
   }
 };
 
-// Play sound effect
-export const playSfx = (src: string, volume: number = 1.0) => {
-  const audio = new Audio(src);
+// Play sound effect with random selection and slight pitch variation
+export const playRandomSfx = (srcArray: string[], volume: number = 1.0) => {
+  const randomIndex = Math.floor(Math.random() * srcArray.length);
+  const audio = new Audio(srcArray[randomIndex]);
   audio.volume = volume;
+  
+  // Apply slight random pitch variation (playbackRate)
+  const pitchVariation = 0.9 + Math.random() * 0.2; // Random playback rate between 0.9 and 1.1
+  audio.playbackRate = pitchVariation;
+
   audio.currentTime = 0;
   audio.play();
 };
+
+const sfxBaseURL = '/audio/game/sfx/';
+
+export const jumpSfx = [
+  `${sfxBaseURL}1. Jumping/jump1.wav`,
+  `${sfxBaseURL}1. Jumping/jump2.wav`,
+  `${sfxBaseURL}1. Jumping/jump3.wav`,  
+];
+
+export const landSfx = [
+  `${sfxBaseURL}2. Landing/land1.wav`,
+  `${sfxBaseURL}2. Landing/land2.wav`,
+  `${sfxBaseURL}2. Landing/land3.wav`,
+  `${sfxBaseURL}2. Landing/land4.wav`,
+  `${sfxBaseURL}2. Landing/land5.wav`,
+  `${sfxBaseURL}2. Landing/land6.wav`,
+];
+
+export const dyingSfx = [
+  `${sfxBaseURL}3. Dying/dying1.wav`,
+  `${sfxBaseURL}3. Dying/dying2.wav`,
+  `${sfxBaseURL}3. Dying/dying3.wav`,
+  `${sfxBaseURL}3. Dying/dying4.wav`,
+];

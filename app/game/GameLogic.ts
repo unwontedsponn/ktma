@@ -20,13 +20,19 @@ const gameLoop = (
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean
 ) => {
-  if (gamePaused) return;
+  if (gamePaused) {
+    if (animationFrameIdRef.current !== null) {
+      cancelAnimationFrame(animationFrameIdRef.current);
+      animationFrameIdRef.current = null; // Clear the frame ID to fully stop the loop
+    }
+    return;
+  }
   
   const canvasWidth = ctx.canvas.width;
   const canvasHeight = ctx.canvas.height;
 
-  updatePlayer(player, canvasHeight, isPowerUpActive);
-  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio);
+  updatePlayer(player, canvasHeight, isPowerUpActive, gamePaused);
+  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
   updatePowerUps(
     powerUps, 
     player, 
@@ -96,7 +102,7 @@ export const useGameLogic = () => {
 
     player.current = createPlayer(canvas.height);
 
-    let lastTime = 0;
+    let lastTime = 0;    
 
     // Initialize the game loop function
     gameLoopFunctionRef.current = (timestamp: number) => {
@@ -126,12 +132,25 @@ export const useGameLogic = () => {
       }
       animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
     };
+    
+    // Start the game loop when the game starts or resumes
+    if (animationFrameIdRef.current === null) {
+      animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
+      player.current.isDead = false;
+    }
 
-    animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
-
+    // Set the obstacle spawning interval after the game starts
     const obstacleInterval = setInterval(() => {
       obstacles.current.push(createObstacle(canvas.width, canvas.height));
     }, 2000);
+
+    // Stop obstacles spawning and animation if the game is paused
+    if (gamePaused) {
+      if (obstacleInterval) clearInterval(obstacleInterval);
+      const frameId = animationFrameIdRef.current;
+      if (frameId !== null) cancelAnimationFrame(frameId);
+      animationFrameIdRef.current = null;
+    }
 
     const keyDownHandler = (event: KeyboardEvent) => {
       if (event.code === 'Space') {        

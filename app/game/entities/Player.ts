@@ -1,5 +1,5 @@
 // Player.ts
-import { playSfx } from "@/app/game/utils/Audio";
+import { playRandomSfx, jumpSfx, landSfx } from "@/app/game/utils/Audio";
 
 export type Player = {
   x: number;
@@ -14,6 +14,7 @@ export type Player = {
   rotationSpeed: number;
   color: string;  
   isInvincible: boolean;
+  isDead: boolean;
 };
 
 export const createPlayer = (canvasHeight: number): Player => ({
@@ -29,9 +30,17 @@ export const createPlayer = (canvasHeight: number): Player => ({
   rotation: 0,
   rotationSpeed: 0.1,
   isInvincible: false,
+  isDead: false,
 });
 
-export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActive: boolean) => {    
+export const updatePlayer = (
+  player: Player, 
+  canvasHeight: number, 
+  isPowerUpActive: boolean,
+  gamePaused: boolean
+) => {    
+  if (gamePaused) return; // Do not update player if the game is paused
+  
   if (isPowerUpActive) {
     player.color = '#ffd700'; // Set to gold
     player.isInvincible = true;
@@ -45,7 +54,7 @@ export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActi
   if (player.isJumping) {   
     
     // If the player just started jumping, play the jump sound effect once
-    if (player.velocityY === player.jumpStrength) playSfx('/audio/game/sfx/1. Jumping/jump1.wav', 0.1); 
+    if (player.velocityY === player.jumpStrength) playRandomSfx(jumpSfx, 0.1);
 
     player.velocityY += player.gravity;
     player.y += player.velocityY;
@@ -57,7 +66,7 @@ export const updatePlayer = (player: Player, canvasHeight: number, isPowerUpActi
       player.velocityY = 0;
 
       // Only play landing sound if the player was jumping
-      if (player.isJumping) playSfx('/audio/game/sfx/2. Landing/land1.wav', 0.1);
+      if (player.isJumping) playRandomSfx(landSfx, 0.1);
 
       // Mark the player as no longer jumping
       player.isJumping = false;
