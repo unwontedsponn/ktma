@@ -6,6 +6,7 @@ export type Player = {
   y: number;
   width: number;
   height: number;
+  velocityX: number;
   velocityY: number;
   isJumping: boolean;
   gravity: number;
@@ -23,6 +24,7 @@ export const createPlayer = (canvasHeight: number): Player => ({
   width: 25,
   height: 25,
   color: '#acddfb', // light-blue
+  velocityX: 0,
   velocityY: 0,
   isJumping: false,
   gravity: 0.5,
@@ -41,6 +43,7 @@ export const updatePlayer = (
 ) => {    
   if (gamePaused) return; // Do not update player if the game is paused
   
+  // Handle power-up effects
   if (isPowerUpActive) {
     player.color = '#ffd700'; // Set to gold
     player.isInvincible = true;    
@@ -50,6 +53,13 @@ export const updatePlayer = (
     player.isInvincible = false;
   }
 
+   // Player movement
+   player.x += player.velocityX;
+
+   // Ensure the player doesn't move out of the canvas (optional)
+   if (player.x < 0) player.x = 0;
+   if (player.x + player.width > canvasHeight) player.x = canvasHeight - player.width;
+ 
   // Player jumping
   if (player.isJumping) {   
     

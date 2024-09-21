@@ -40,13 +40,11 @@ export const updatePowerUps = (
       player.x + player.width > powerUp.x &&
       player.y < powerUp.y + powerUp.height &&
       player.y + player.height > powerUp.y
-    ) {
-      // Activate the power-up (invincibility and audio change)
-      setIsPowerUpActive(true);      
+    ) {             
+      setIsPowerUpActive(true);  
       powerUps.splice(index, 1);
-
+      
       const currentTime = audioRef?.current?.currentTime || 0;
-
       switchMusic(audioRef, currentTime, '/audio/game/All Change 8-BIT.wav', '8bit', setAudioType);
       
       setTimeout(() => {

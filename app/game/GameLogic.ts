@@ -3,6 +3,7 @@ import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
+import { keyDownHandler, keyUpHandler } from './utils/InputHandlers';
 
 const gameLoop = (
   ctx: CanvasRenderingContext2D,
@@ -152,19 +153,20 @@ export const useGameLogic = () => {
       animationFrameIdRef.current = null;
     }
 
-    const keyDownHandler = (event: KeyboardEvent) => {
-      if (event.code === 'Space') {        
-        if (!player.current.isJumping) {          
-          player.current.velocityY = player.current.jumpStrength;
-          player.current.isJumping = true;
-        }
-      }
-    };
-    document.addEventListener('keydown', keyDownHandler);
+    const playerInstance = player.current;
+
+    // Add event listeners for keydown and keyup
+    const handleKeyDown = (event: KeyboardEvent) => keyDownHandler(event, playerInstance);
+    const handleKeyUp = (event: KeyboardEvent) => keyUpHandler(event, playerInstance);
+    
+    // Add event listeners
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);    
 
     return () => {
       clearInterval(obstacleInterval);
-      document.removeEventListener('keydown', keyDownHandler);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
       const frameId = animationFrameIdRef.current;
       if (frameId !== null) cancelAnimationFrame(frameId);
     };
