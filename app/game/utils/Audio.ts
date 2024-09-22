@@ -1,4 +1,6 @@
 // Audio.ts
+import { NextLevelLine, createNextLevelLine } from "../entities/NextLevelLine";
+
 export const musicSections = [
   0,    // 00:00
   9,    // 00:09
@@ -15,6 +17,19 @@ export const musicSections = [
   207,  // 03:27
   228   // 03:48
 ];
+
+export const checkMusicSection = (
+  currentTime: number,
+  nextLevelLines: NextLevelLine[],
+  canvasWidth: number,
+  canvasHeight: number
+) => {
+  const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
+  if (upcomingSection && nextLevelLines.length === 0) {
+    nextLevelLines.push(createNextLevelLine(canvasWidth, canvasHeight));
+    console.log("Line added for section:", upcomingSection);
+  }
+};
 
 // Switch between main track and 8-bit version
 export const switchMusic = (
