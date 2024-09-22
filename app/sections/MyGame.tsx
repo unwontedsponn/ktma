@@ -17,7 +17,6 @@ const MyGame: React.FC = () => {
     resetPowerUps,    
   } = useGameLogic();
 
-  // Ensure you have the following hooks and variables initialized:
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
   const animationFrameIdRef = useRef<number | null>(null);
@@ -43,9 +42,7 @@ const MyGame: React.FC = () => {
           />
         )}
 
-        {gameStarted && !gamePaused && 
-          <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-grey-black-brown"></canvas>
-        }
+        {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-grey-black-brown"></canvas>}
 
         {gamePaused && (
           <GamePausedSection 

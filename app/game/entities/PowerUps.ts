@@ -24,17 +24,14 @@ export const updatePowerUps = (
   canvasWidth: number,
   canvasHeight: number,
   setIsPowerUpActive: (isActive: boolean) => void,
-  audioRef: React.RefObject<HTMLAudioElement>,
-  audioType: string,
+  audioRef: React.RefObject<HTMLAudioElement>,  
   setAudioType: (type: 'normal' | '8bit') => void,  
 ) => {
-  powerUps.forEach((powerUp, index) => {
-    powerUp.x -= 6;
-
-    // Remove power-up when it goes off-screen
+  
+  powerUps.forEach((powerUp, index) => {    
+    powerUp.x -= 6;  
     if (powerUp.x + powerUp.width < 0) powerUps.splice(index, 1); 
-
-    // Check for collision between player and power-up
+    
     if (
       player.x < powerUp.x + powerUp.width &&
       player.x + player.width > powerUp.x &&

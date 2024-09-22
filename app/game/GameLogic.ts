@@ -16,8 +16,7 @@ const gameLoop = (
   animationFrameIdRef: MutableRefObject<number | null>,
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>,
   setIsPowerUpActive: (isActive: boolean) => void,
-  audioRef: MutableRefObject<HTMLAudioElement | null>, 
-  audioType: string,
+  audioRef: MutableRefObject<HTMLAudioElement | null>,   
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean
 ) => {
@@ -32,16 +31,29 @@ const gameLoop = (
   const canvasWidth = ctx.canvas.width;
   const canvasHeight = ctx.canvas.height;
 
-  updatePlayer(player, canvasHeight, isPowerUpActive, gamePaused);
-  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
+  updatePlayer(
+    player, 
+    canvasWidth,
+    canvasHeight, 
+    isPowerUpActive, 
+    gamePaused
+  );
+  updateObstacles(
+    obstacles, 
+    player, 
+    canvasWidth, 
+    canvasHeight, 
+    setGamePaused, 
+    audio, 
+    gamePaused
+  );
   updatePowerUps(
     powerUps, 
     player, 
     canvasWidth, 
     canvasHeight, 
     setIsPowerUpActive, 
-    audioRef, 
-    audioType, 
+    audioRef,     
     setAudioType,    
   );
   renderGame(ctx, player, obstacles, powerUps);
@@ -77,7 +89,7 @@ const renderGame = (
 export const useGameLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const player = useRef(createPlayer(0));
+  const player = useRef<Player | null>(null);
   const obstacles = useRef<Obstacle[]>([]);
   const powerUps = useRef<PowerUp[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
@@ -99,9 +111,9 @@ export const useGameLogic = () => {
     if (!canvas || !audio) return;
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;
+    if (!ctx) return;    
 
-    player.current = createPlayer(canvas.height);
+    if (!player.current) player.current = createPlayer(canvas.height);
 
     let lastTime = 0;    
 
@@ -114,22 +126,23 @@ export const useGameLogic = () => {
       if (deltaTime > 12) {
         lastTime = timestamp;
         
-        gameLoop(
-          ctx,
-          player.current,
-          obstacles.current,
-          powerUps.current,
-          gamePaused,
-          setGamePaused,
-          audio,
-          animationFrameIdRef,
-          gameLoopFunctionRef,
-          setIsPowerUpActive,
-          audioRef, 
-          audioType, 
-          setAudioType,    
-          isPowerUpActive,                   
-        );
+        if (player.current) {
+          gameLoop(
+            ctx,
+            player.current,
+            obstacles.current,
+            powerUps.current,
+            gamePaused,
+            setGamePaused,
+            audio,
+            animationFrameIdRef,
+            gameLoopFunctionRef,
+            setIsPowerUpActive,
+            audioRef,           
+            setAudioType,    
+            isPowerUpActive,                   
+          );
+        }        
       }
       animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
     };

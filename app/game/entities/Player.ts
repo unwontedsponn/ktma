@@ -37,13 +37,14 @@ export const createPlayer = (canvasHeight: number): Player => ({
 
 export const updatePlayer = (
   player: Player, 
-  canvasHeight: number, 
+  canvasWidth: number, 
+  canvasHeight: number,
   isPowerUpActive: boolean,
   gamePaused: boolean
 ) => {    
-  if (gamePaused) return; // Do not update player if the game is paused
+  if (gamePaused) return;
   
-  // Handle power-up effects
+  // Power-up effects on Player
   if (isPowerUpActive) {
     player.color = '#ffd700'; // Set to gold
     player.isInvincible = true;    
@@ -55,10 +56,8 @@ export const updatePlayer = (
 
    // Player movement
    player.x += player.velocityX;
-
-   // Ensure the player doesn't move out of the canvas (optional)
    if (player.x < 0) player.x = 0;
-   if (player.x + player.width > canvasHeight) player.x = canvasHeight - player.width;
+   if (player.x + player.width > canvasWidth) player.x = canvasWidth - player.width;
  
   // Player jumping
   if (player.isJumping) {   
@@ -75,11 +74,9 @@ export const updatePlayer = (
       player.y = canvasHeight - player.height;
       player.velocityY = 0;
       player.rotation = 0;
-
-      // Only play landing sound if the player was jumping
+      
       if (player.isJumping) playRandomSfx(landSfx, 0.1);
-
-      // Mark the player as no longer jumping
+      
       player.isJumping = false;                  
     }
   }  
