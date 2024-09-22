@@ -98,7 +98,7 @@ export const useGameLogic = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);
-  const [audioType, setAudioType] = useState<'normal' | '8bit'>('normal');  
+  const [, setAudioType] = useState<'normal' | '8bit'>('normal');  
 
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
