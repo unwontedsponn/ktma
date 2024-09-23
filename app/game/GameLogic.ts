@@ -4,7 +4,7 @@ import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
 import { keyDownHandler, keyUpHandler } from './utils/InputHandlers';
-import { NextLevelLine, updateNextLevelLines } from './entities/NextLevelLine';
+import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { checkMusicSection, musicSections } from './utils/Audio';
 
 const gameLoop = (
@@ -12,7 +12,7 @@ const gameLoop = (
   player: Player,
   obstacles: Obstacle[],
   powerUps: PowerUp[],
-  nextLevelLines: NextLevelLine[],
+  checkpointLines: CheckpointLine[],
   gamePaused: boolean,
   setGamePaused: (paused: boolean) => void,
   audio: HTMLAudioElement | null,
@@ -35,7 +35,7 @@ const gameLoop = (
   const canvasHeight = ctx.canvas.height;
   const currentTime = audioRef?.current?.currentTime || 0; // Calculate currentTime once
 
-  checkMusicSection(currentTime, nextLevelLines, canvasWidth, canvasHeight); // Use currentTime here
+  checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
 
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
@@ -43,8 +43,8 @@ const gameLoop = (
   updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
   updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType);  
-  updateNextLevelLines(nextLevelLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
-  renderGame(ctx, player, obstacles, powerUps, nextLevelLines);
+  updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
+  renderGame(ctx, player, obstacles, powerUps, checkpointLines);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
 
@@ -53,7 +53,7 @@ const renderGame = (
   player: Player,
   obstacles: Obstacle[],
   powerUps: PowerUp[],
-  nextLevelLines: NextLevelLine[],
+  checkpointLines: CheckpointLine[],
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -75,9 +75,9 @@ const renderGame = (
     ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
   });
 
-  nextLevelLines.forEach(nextLevelLine => {
-    ctx.fillStyle = nextLevelLine.color;
-    ctx.fillRect(nextLevelLine.x, nextLevelLine.y, nextLevelLine.width, nextLevelLine.height);
+  checkpointLines.forEach(checkpointLine => {
+    ctx.fillStyle = checkpointLine.color;
+    ctx.fillRect(checkpointLine.x, checkpointLine.y, checkpointLine.width, checkpointLine.height);
   });
 };
 
@@ -88,7 +88,7 @@ export const useGameLogic = () => {
   const player = useRef<Player | null>(null);
   const obstacles = useRef<Obstacle[]>([]);
   const powerUps = useRef<PowerUp[]>([]);
-  const nextLevelLines = useRef<NextLevelLine[]>([]);
+  const checkpointLines = useRef<CheckpointLine[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
   
@@ -99,7 +99,7 @@ export const useGameLogic = () => {
 
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
-  const resetNextLevelLines = () => { nextLevelLines.current = []; };
+  const resetCheckpointLines = () => { checkpointLines.current = []; };
 
   useEffect(() => {
     if (!gameStarted || gamePaused) return;
@@ -123,7 +123,7 @@ export const useGameLogic = () => {
 
     let lastTime = 0;    
 
-    console.log(nextLevelLines);
+    console.log(checkpointLines);
 
     // Initialize the game loop function
     gameLoopFunctionRef.current = (timestamp: number) => {
@@ -140,7 +140,7 @@ export const useGameLogic = () => {
             player.current,
             obstacles.current,
             powerUps.current,
-            nextLevelLines.current,
+            checkpointLines.current,
             gamePaused,
             setGamePaused,
             audio,
@@ -203,7 +203,7 @@ export const useGameLogic = () => {
     setGamePaused,
     resetObstacles,
     resetPowerUps,    
-    resetNextLevelLines,
+    resetCheckpointLines,
     isPowerUpActive
   };
 };

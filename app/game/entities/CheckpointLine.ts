@@ -1,7 +1,7 @@
 // NextLevelLine.ts
 import { Player } from "./Player";
 
-export type NextLevelLine = {
+export type CheckpointLine = {
   x: number;
   y: number;
   width: number;
@@ -9,7 +9,7 @@ export type NextLevelLine = {
   color: string;
 };
 
-export const createNextLevelLine = (canvasWidth: number, canvasHeight: number): NextLevelLine => ({
+export const createCheckpointLine = (canvasWidth: number, canvasHeight: number): CheckpointLine => ({
   x: canvasWidth,
   y: 0,
   width: 5,
@@ -17,8 +17,8 @@ export const createNextLevelLine = (canvasWidth: number, canvasHeight: number): 
   color: '#334862', // dark-blue
 });
 
-export const updateNextLevelLines = (
-  nextLevelLines: NextLevelLine[],
+export const updateCheckpointLines = (
+  checkpointLines: CheckpointLine[],
   player: Player,
   canvasWidth: number,
   currentTime: number,
@@ -30,8 +30,8 @@ export const updateNextLevelLines = (
   const timeRemaining = nextSectionTime - currentTime;
   const speed = canvasWidth / (timeRemaining * 60); // Speed calculated based on remaining time
 
-  nextLevelLines.forEach((nextLevelLine, index) => {
-    nextLevelLine.x -= speed;
-    if (nextLevelLine.x + nextLevelLine.width < 0) nextLevelLines.splice(index, 1); // Remove line when off-screen
+  checkpointLines.forEach((checkpointLine, index) => {
+    checkpointLine.x -= speed;
+    if (checkpointLine.x + checkpointLine.width < 0) checkpointLines.splice(index, 1); // Remove line when off-screen
   });
 };

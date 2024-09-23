@@ -63,7 +63,7 @@ export const updatePlayer = (
   if (player.isJumping) {   
     
     // If the player just started jumping, play the jump sound effect once
-    if (player.velocityY === player.jumpStrength) playRandomSfx(jumpSfx, 0.1);
+    if (player.velocityY === player.jumpStrength) playRandomSfx(jumpSfx, 'jump');
 
     player.velocityY += player.gravity;
     player.y += player.velocityY;
@@ -75,7 +75,7 @@ export const updatePlayer = (
       player.velocityY = 0;
       player.rotation = 0;
       
-      if (player.isJumping) playRandomSfx(landSfx, 0.1);
+      if (player.isJumping) playRandomSfx(landSfx, 'land');
       
       player.isJumping = false;                  
     }

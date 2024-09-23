@@ -54,7 +54,7 @@ export const updateObstacles = (
       player.y + player.height > obstacle.y
     ) {      
       setGamePaused(true);
-      playRandomSfx(dyingSfx, 0.3);
+      playRandomSfx(dyingSfx, 'dying');
       if (audio) audio.pause();
       
       // Mark the player as collided to prevent further sound triggering

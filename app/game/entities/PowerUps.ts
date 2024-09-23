@@ -1,6 +1,6 @@
 // PowerUps.ts
 import { Player } from "@/app/game/entities/Player";
-import { switchMusic } from '@/app/game/utils/Audio';
+import { switchMusic, playRandomSfx, tokenSfx } from '@/app/game/utils/Audio';
 
 export type PowerUp = {
   x: number;
@@ -41,6 +41,7 @@ export const updatePowerUps = (
       setIsPowerUpActive(true);  
       powerUps.splice(index, 1);
       
+      playRandomSfx(tokenSfx, 'token');
       const currentTime = audioRef?.current?.currentTime || 0;
       switchMusic(audioRef, currentTime, '8bit', setAudioType);
       
