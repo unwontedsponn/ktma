@@ -40,7 +40,6 @@ const gameLoop = (
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
-
   updatePlayer(
     player, 
     canvasWidth,
@@ -139,7 +138,12 @@ export const useGameLogic = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;    
 
+    // Reset the game state when the game starts or resumes
     if (!player.current) player.current = createPlayer(canvas.height);
+    resetObstacles(); 
+    resetNextLevelLines();
+    resetPowerUps();
+    player.current.isDead = false; // Reset player's death state
 
     let lastTime = 0;    
 

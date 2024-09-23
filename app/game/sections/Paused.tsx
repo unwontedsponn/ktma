@@ -11,6 +11,7 @@ interface GamePausedSectionProps {
   setCurrentSection: (section: number) => void;
   resetObstacles: () => void;
   resetPowerUps: () => void;
+  resetNextLevelLines: () => void;
 }
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
@@ -21,7 +22,8 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   currentSection, 
   setCurrentSection,
   resetObstacles,
-  resetPowerUps
+  resetPowerUps,
+  resetNextLevelLines
 }) => {
 
   const resumeGame = useCallback(async () => {
@@ -30,6 +32,7 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     setGamePaused(false);
     resetObstacles();
     resetPowerUps();
+    resetNextLevelLines();
 
     if (audioRef.current) {
       if (!audioRef.current.paused) audioRef.current.pause();
@@ -59,6 +62,7 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     gameLoopFunctionRef,
     resetObstacles,
     resetPowerUps,
+    resetNextLevelLines,
     setCurrentSection,
   ]);
 

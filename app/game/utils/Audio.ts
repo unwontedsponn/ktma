@@ -18,17 +18,29 @@ export const musicSections = [
   228   // 03:48
 ];
 
+let lineAddedForSection: number | null = null; // Keeps track of the section where a line was added
+
 export const checkMusicSection = (
   currentTime: number,
   nextLevelLines: NextLevelLine[],
   canvasWidth: number,
   canvasHeight: number
 ) => {
-  const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
-  if (upcomingSection && nextLevelLines.length === 0) {
+  const upcomingSection = musicSections.find(
+    section => section - currentTime <= 1 && section - currentTime > 0
+  );
+  
+  if (upcomingSection && lineAddedForSection !== upcomingSection) {
+    // Only add a line if one hasn't been added for this section
     nextLevelLines.push(createNextLevelLine(canvasWidth, canvasHeight));
-    console.log("Line added for section:", upcomingSection);
+    playRandomSfx(checkpointSfx, 0.3);
+
+    // Set the flag to the current section
+    lineAddedForSection = upcomingSection;
   }
+
+  // Optionally reset the flag when a section is far enough behind
+  if (upcomingSection === undefined) lineAddedForSection = null;
 };
 
 // Switch between main track and 8-bit version
@@ -85,4 +97,11 @@ export const dyingSfx = [
   `${sfxBaseURL}3. Dying/dying2.wav`,
   `${sfxBaseURL}3. Dying/dying3.wav`,
   `${sfxBaseURL}3. Dying/dying4.wav`,
+];
+
+export const checkpointSfx = [
+  `${sfxBaseURL}5. Checkpoint/checkpoint1.wav`,
+  `${sfxBaseURL}5. Checkpoint/checkpoint2.wav`,
+  `${sfxBaseURL}5. Checkpoint/checkpoint3.wav`,
+  `${sfxBaseURL}5. Checkpoint/checkpoint4.wav`,
 ];
