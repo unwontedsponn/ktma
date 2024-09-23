@@ -40,39 +40,10 @@ const gameLoop = (
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
-  updatePlayer(
-    player, 
-    canvasWidth,
-    canvasHeight, 
-    isPowerUpActive, 
-    gamePaused
-  );
-  updateObstacles(
-    obstacles, 
-    player, 
-    canvasWidth, 
-    canvasHeight, 
-    setGamePaused, 
-    audio, 
-    gamePaused
-  );
-  updatePowerUps(
-    powerUps, 
-    player, 
-    canvasWidth, 
-    canvasHeight, 
-    setIsPowerUpActive, 
-    audioRef,     
-    setAudioType,    
-  );  
-  updateNextLevelLines(
-    nextLevelLines,
-    player,
-    canvasWidth,
-    currentTime,
-    nextSectionTime,
-    gamePaused,
-  )
+  updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused);
+  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
+  updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType);  
+  updateNextLevelLines(nextLevelLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
   renderGame(ctx, player, obstacles, powerUps, nextLevelLines);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
@@ -86,6 +57,7 @@ const renderGame = (
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
+  // Render Player
   ctx.save();
   ctx.translate(player.x + player.width / 2, player.y + player.height / 2);
   ctx.rotate(player.rotation);
@@ -139,10 +111,7 @@ export const useGameLogic = () => {
     if (!ctx) return;    
 
     // Reset the game state when the game starts or resumes
-    if (!player.current) player.current = createPlayer(canvas.height);
-    resetObstacles(); 
-    resetNextLevelLines();
-    resetPowerUps();
+    if (!player.current) player.current = createPlayer(canvas.height);    
     player.current.isDead = false; // Reset player's death state
 
     let lastTime = 0;    
