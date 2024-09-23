@@ -3,6 +3,7 @@ import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
+import { renderProgressBar } from './entities/ProgressBar';
 import { keyDownHandler, keyUpHandler } from './utils/InputHandlers';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { checkMusicSection, musicSections } from './utils/Audio';
@@ -44,7 +45,7 @@ const gameLoop = (
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
   updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType);  
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
-  renderGame(ctx, player, obstacles, powerUps, checkpointLines);
+  renderGame(ctx, player, obstacles, powerUps, checkpointLines, audioRef);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
 
@@ -54,6 +55,7 @@ const renderGame = (
   obstacles: Obstacle[],
   powerUps: PowerUp[],
   checkpointLines: CheckpointLine[],
+  audioRef: MutableRefObject<HTMLAudioElement | null>,
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -79,6 +81,16 @@ const renderGame = (
     ctx.fillStyle = checkpointLine.color;
     ctx.fillRect(checkpointLine.x, checkpointLine.y, checkpointLine.width, checkpointLine.height);
   });
+
+  // Calculate current progress and the current time
+  const totalSections = musicSections.length;
+  const currentTime = audioRef?.current?.currentTime || 0;
+  const currentSection = musicSections.findIndex(section => section > currentTime);
+  const progress = currentSection >= 0 ? currentSection : totalSections;
+  const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1]; // Default to the last section end time
+
+  // Render the progress bar with the current section filling as the player progresses
+  renderProgressBar(ctx, totalSections, progress, ctx.canvas.width, currentTime, nextSectionTime);
 };
 
 export const useGameLogic = () => {
