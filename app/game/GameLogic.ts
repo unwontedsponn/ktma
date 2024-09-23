@@ -84,6 +84,7 @@ const renderGame = (
 export const useGameLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasSetInitialVolume = useRef(false);
   const player = useRef<Player | null>(null);
   const obstacles = useRef<Obstacle[]>([]);
   const powerUps = useRef<PowerUp[]>([]);
@@ -106,6 +107,12 @@ export const useGameLogic = () => {
     const canvas = canvasRef.current;
     const audio = audioRef.current;
     if (!canvas || !audio) return;
+
+    // Only set the initial volume if it hasn't been set yet
+    if (!hasSetInitialVolume.current) {
+      audio.volume = 0.4;
+      hasSetInitialVolume.current = true;  // Mark the initial volume as set
+    }
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;    

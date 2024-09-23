@@ -18,6 +18,30 @@ export const musicSections = [
   228   // 03:48
 ];
 
+// Switch between main track and 8-bit version
+export const switchMusic = (
+  audioRef: React.RefObject<HTMLAudioElement>, 
+  currentTime: number,  
+  audioType: 'normal' | '8bit',
+  setAudioType: (type: 'normal' | '8bit') => void
+) => {
+  if (audioRef && audioRef.current) {
+    const audio = audioRef.current;
+    audio.pause();
+    if (audioType === 'normal') {
+      audio.src = '/audio/game/All_Change.wav';
+      audio.volume = 0.4;
+    }
+    else {
+      audio.src = '/audio/game/All Change 8-BIT.wav';
+      audio.volume = 0.3;
+    }
+    audio.currentTime = currentTime;
+    audio.play();
+    setAudioType(audioType);    
+  }
+};
+
 let lineAddedForSection: number | null = null; // Keeps track of the section where a line was added
 
 export const checkMusicSection = (
@@ -41,24 +65,6 @@ export const checkMusicSection = (
 
   // Optionally reset the flag when a section is far enough behind
   if (upcomingSection === undefined) lineAddedForSection = null;
-};
-
-// Switch between main track and 8-bit version
-export const switchMusic = (
-  audioRef: React.RefObject<HTMLAudioElement>, 
-  currentTime: number,
-  src: string,
-  audioType: 'normal' | '8bit',
-  setAudioType: (type: 'normal' | '8bit') => void
-) => {
-  if (audioRef && audioRef.current) {
-    const audio = audioRef.current;
-    audio.pause();
-    audio.src = src;
-    audio.currentTime = currentTime;
-    audio.play();
-    setAudioType(audioType);
-  }
 };
 
 // Play sound effect with random selection and slight pitch variation

@@ -42,11 +42,11 @@ export const updatePowerUps = (
       powerUps.splice(index, 1);
       
       const currentTime = audioRef?.current?.currentTime || 0;
-      switchMusic(audioRef, currentTime, '/audio/game/All Change 8-BIT.wav', '8bit', setAudioType);
+      switchMusic(audioRef, currentTime, '8bit', setAudioType);
       
       setTimeout(() => {
         const newCurrentTime = audioRef?.current?.currentTime || 0;
-        switchMusic(audioRef, newCurrentTime, '/audio/game/All_Change.wav', 'normal', setAudioType);
+        switchMusic(audioRef, newCurrentTime, 'normal', setAudioType);
         setIsPowerUpActive(false);
       }, 5000);
     }
