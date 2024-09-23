@@ -6,7 +6,8 @@ export const renderProgressBar = (
   progress: number,
   canvasWidth: number,
   currentTime: number,
-  nextSectionTime: number
+  nextSectionTime: number,
+  lastCompletedSection: number // Keep track of the last fully completed section
 ) => {
   const barHeight = 20;
   const segmentWidth = canvasWidth / totalSections;
@@ -36,6 +37,16 @@ export const renderProgressBar = (
       ctx.rect(i * segmentWidth, yPosition, segmentWidth - 5, barHeight);
       ctx.fillStyle = '#407dbf'; // Dark blue for completed sections
       ctx.fill();
+
+      // Add a "pulse" effect for the most recently completed segment
+      if (i === lastCompletedSection) {
+        ctx.beginPath();
+        ctx.arc(i * segmentWidth + segmentWidth / 2 - 2.5, yPosition + barHeight / 2, barHeight, 0, Math.PI * 2); // Circle in the middle of the segment
+        ctx.strokeStyle = 'rgba(64, 125, 191, 0.5)'; // Light blue pulse/glow effect
+        ctx.lineWidth = 4; // Thicker border for the pulse
+        ctx.stroke();
+        ctx.closePath();
+      }
     }
     // For the current section, fill according to progress within the section
     else if (i === progress - 1) {
