@@ -1,8 +1,9 @@
 // GameLogic.ts
 import { useEffect, MutableRefObject, useRef, useState } from 'react';
-import { Player, createPlayer, updatePlayer } from '@/app/game/entities/Player';
+import { Player, calculateJumpDistance, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
+import { FloorPlatform, getRandomInRange, createFloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
 import { renderProgressBar } from './entities/ProgressBar';
 import { keyDownHandler, keyUpHandler } from './utils/InputHandlers';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
@@ -13,6 +14,7 @@ const gameLoop = (
   player: Player,
   obstacles: Obstacle[],
   powerUps: PowerUp[],
+  floorPlatforms: FloorPlatform[],
   checkpointLines: CheckpointLine[],
   gamePaused: boolean,
   setGamePaused: (paused: boolean) => void,
@@ -41,11 +43,12 @@ const gameLoop = (
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
-  updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused);
+  updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audio, floorPlatforms);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
-  updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType);  
-  updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
-  renderGame(ctx, player, obstacles, powerUps, checkpointLines, audioRef);
+  updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType); 
+  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused) ;
+  updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
+  renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
 
@@ -54,6 +57,7 @@ const renderGame = (
   player: Player,
   obstacles: Obstacle[],
   powerUps: PowerUp[],
+  floorPlatforms: FloorPlatform[],
   checkpointLines: CheckpointLine[],
   audioRef: MutableRefObject<HTMLAudioElement | null>
 ) => {
@@ -75,6 +79,11 @@ const renderGame = (
   powerUps.forEach(powerUp => {
     ctx.fillStyle = powerUp.color;
     ctx.fillRect(powerUp.x, powerUp.y, powerUp.width, powerUp.height);
+  });
+
+  floorPlatforms.forEach(floorPlatform => {
+    ctx.fillStyle = floorPlatform.color;
+    ctx.fillRect(floorPlatform.x, floorPlatform.y, floorPlatform.width, floorPlatform.height);
   });
 
   checkpointLines.forEach(checkpointLine => {
@@ -100,6 +109,7 @@ export const useGameLogic = () => {
   const player = useRef<Player | null>(null);
   const obstacles = useRef<Obstacle[]>([]);
   const powerUps = useRef<PowerUp[]>([]);
+  const floorPlatforms = useRef<FloorPlatform[]>([]);
   const checkpointLines = useRef<CheckpointLine[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
@@ -109,8 +119,15 @@ export const useGameLogic = () => {
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');  
 
+  const resetPlayer = (startingPlatform: FloorPlatform) => {
+    if (player.current) {
+      // Reinitialize player on the provided platform
+      player.current = createPlayer(startingPlatform); 
+    }
+  };
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
+  const resetFloorPlatforms = () => { floorPlatforms.current = []; };
   const resetCheckpointLines = () => { checkpointLines.current = []; };
 
   useEffect(() => {
@@ -129,13 +146,36 @@ export const useGameLogic = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;    
 
-    // Reset the game state when the game starts or resumes
-    if (!player.current) player.current = createPlayer(canvas.height);    
+    if (!floorPlatforms.current.length) {
+      // Ensure player exists
+      if (!player.current) {
+        const startingPlatform = createFloorPlatform(canvas.width, canvas.height, 0);
+        floorPlatforms.current.push(startingPlatform);
+        player.current = createPlayer(startingPlatform); // Create player if not already created
+      }
+    
+      // Position the first platform near the left of the canvas
+      if (!floorPlatforms.current.length) {
+        floorPlatforms.current.push(createFloorPlatform(canvas.width, canvas.height, 0));
+      }
+    
+      // Calculate a valid jumpable gap for the second platform
+      const horizontalSpeed = 1.8; // Platform movement speed
+      const jumpDistance = calculateJumpDistance(player.current!.jumpStrength, player.current!.gravity, horizontalSpeed);
+    
+      const maxGap = jumpDistance * 0.85; // Slightly less than player's max jump distance
+      const minGap = 50; // Ensure there is always some gap, but not too small
+      const gap = getRandomInRange(minGap, maxGap); // Random gap within the jumpable range
+    
+      // Spawn the second platform after the valid gap
+      floorPlatforms.current.push(createFloorPlatform(canvas.width, canvas.height, floorPlatforms.current[0].width + gap));
+    }
+
+    const startingPlatform = floorPlatforms.current[0]; // First platform
+    if (!player.current) player.current = createPlayer(startingPlatform);    
     player.current.isDead = false; // Reset player's death state
 
-    let lastTime = 0;    
-
-    console.log(checkpointLines);
+    let lastTime = 0;        
 
     // Initialize the game loop function
     gameLoopFunctionRef.current = (timestamp: number) => {
@@ -152,6 +192,7 @@ export const useGameLogic = () => {
             player.current,
             obstacles.current,
             powerUps.current,
+            floorPlatforms.current,
             checkpointLines.current,
             gamePaused,
             setGamePaused,
@@ -213,9 +254,12 @@ export const useGameLogic = () => {
     setGameStarted,
     gamePaused,
     setGamePaused,
+    resetPlayer,
     resetObstacles,
-    resetPowerUps,    
+    resetPowerUps,  
+    resetFloorPlatforms,  
     resetCheckpointLines,
-    isPowerUpActive
+    isPowerUpActive,
+    floorPlatforms
   };
 };

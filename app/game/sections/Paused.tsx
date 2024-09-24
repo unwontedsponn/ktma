@@ -1,6 +1,8 @@
 // Paused.tsx
 import React, { useCallback, useEffect } from 'react';
 import { musicSections } from '@/app/game/utils/Audio';
+import { FloorPlatform } from '../entities/FloorPlatforms';
+import { MutableRefObject } from 'react';
 
 interface GamePausedSectionProps {
   setGamePaused: (paused: boolean) => void;
@@ -8,9 +10,12 @@ interface GamePausedSectionProps {
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>;
   setCurrentSection: (section: number) => void;
+  resetPlayer: (startingPlatform: FloorPlatform) => void;
   resetObstacles: () => void;
   resetPowerUps: () => void;
+  resetFloorPlatforms: () => void;
   resetCheckpointLines: () => void;
+  floorPlatforms: MutableRefObject<FloorPlatform[]>; // Add this line to accept floor platforms
 }
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
@@ -19,17 +24,26 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   audioRef, 
   gameLoopFunctionRef, 
   setCurrentSection,
+  resetPlayer,
   resetObstacles,
   resetPowerUps,
-  resetCheckpointLines
+  resetFloorPlatforms,
+  resetCheckpointLines,
+  floorPlatforms
 }) => {
 
   const resumeGame = useCallback(async () => {
     if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
 
     setGamePaused(false);
+    
+    // Reset all game elements
+    const startingPlatform = floorPlatforms.current[0]; // Get the first platform
+    resetPlayer(startingPlatform); // Pass the first platform to resetPlayer
+
     resetObstacles();
     resetPowerUps();
+    resetFloorPlatforms();
     resetCheckpointLines();
 
     if (audioRef.current) {
@@ -57,10 +71,13 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     animationFrameIdRef,
     audioRef,
     gameLoopFunctionRef,
+    resetPlayer,
     resetObstacles,
     resetPowerUps,
+    resetFloorPlatforms,
     resetCheckpointLines,
     setCurrentSection,
+    floorPlatforms
   ]);
 
   // Handle the 'Space' key to resume the game

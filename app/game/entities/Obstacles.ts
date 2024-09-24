@@ -1,6 +1,6 @@
 // Obstacles.ts
 import { playRandomSfx, dyingSfx } from "@/app/game/utils/Audio";
-import { Player } from "@/app/game/entities/Player";
+import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
 
 export type Obstacle = {
   x: number;
@@ -12,19 +12,12 @@ export type Obstacle = {
 
 export const createObstacle = (canvasWidth: number, canvasHeight: number): Obstacle => ({
   x: canvasWidth,
-  y: canvasHeight - 40,
+  // y: canvasHeight - 40,
+  y: canvasHeight + 40,
   width: 20,
   height: 40,
   color: '#c15564', // dark-pink
 });
-
-const calculateJumpDistance = (jumpStrength: number, gravity: number, horizontalSpeed: number) => {
-  const timeToPeak = jumpStrength / gravity;
-  const totalTimeInAir = timeToPeak * 2;
-  const jumpDistance = horizontalSpeed * totalTimeInAir;
-
-  return jumpDistance;
-};
 
 export const updateObstacles = (
   obstacles: Obstacle[],

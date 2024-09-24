@@ -13,16 +13,19 @@ const MyGame: React.FC = () => {
     setGameStarted,
     gamePaused,
     setGamePaused,
+    resetPlayer,
     resetObstacles,
     resetPowerUps,
-    resetCheckpointLines 
+    resetFloorPlatforms,
+    resetCheckpointLines,
+    floorPlatforms
   } = useGameLogic();
 
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-  const [currentSection, setCurrentSection] = useState(0); // Track the current section
+  const [, setCurrentSection] = useState(0); // Track the current section
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
@@ -43,7 +46,7 @@ const MyGame: React.FC = () => {
           />
         )}
 
-        {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className="border-b-4 border-grey-black-brown"></canvas>}
+        {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
 
         {gamePaused && (
           <GamePausedSection 
@@ -52,9 +55,12 @@ const MyGame: React.FC = () => {
             audioRef={audioRef}
             gameLoopFunctionRef={gameLoopFunctionRef}            
             setCurrentSection={setCurrentSection}
+            resetPlayer={resetPlayer}
             resetObstacles={resetObstacles}
             resetPowerUps={resetPowerUps}
+            resetFloorPlatforms={resetFloorPlatforms}
             resetCheckpointLines={resetCheckpointLines}
+            floorPlatforms={floorPlatforms}
           />        
         )}
 
