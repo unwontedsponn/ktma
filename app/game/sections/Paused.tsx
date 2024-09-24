@@ -7,7 +7,6 @@ interface GamePausedSectionProps {
   animationFrameIdRef: React.MutableRefObject<number | null>;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>;
-  currentSection: number;
   setCurrentSection: (section: number) => void;
   resetObstacles: () => void;
   resetPowerUps: () => void;
@@ -19,7 +18,6 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   animationFrameIdRef, 
   audioRef, 
   gameLoopFunctionRef, 
-  currentSection, 
   setCurrentSection,
   resetObstacles,
   resetPowerUps,
