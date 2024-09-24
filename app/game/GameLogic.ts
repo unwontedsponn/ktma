@@ -23,7 +23,6 @@ const gameLoop = (
   audioRef: MutableRefObject<HTMLAudioElement | null>,   
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,
-  lastCompletedSection: number 
 ) => {
   if (gamePaused) {
     if (animationFrameIdRef.current !== null) {
@@ -46,7 +45,7 @@ const gameLoop = (
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
   updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType);  
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused)
-  renderGame(ctx, player, obstacles, powerUps, checkpointLines, audioRef, lastCompletedSection);
+  renderGame(ctx, player, obstacles, powerUps, checkpointLines, audioRef);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
 
@@ -56,8 +55,7 @@ const renderGame = (
   obstacles: Obstacle[],
   powerUps: PowerUp[],
   checkpointLines: CheckpointLine[],
-  audioRef: MutableRefObject<HTMLAudioElement | null>,
-  lastCompletedSection: number,
+  audioRef: MutableRefObject<HTMLAudioElement | null>
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -92,7 +90,7 @@ const renderGame = (
   const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1]; // Default to the last section end time
 
   // Render the progress bar with the current section filling as the player progresses
-  renderProgressBar(ctx, totalSections, progress, ctx.canvas.width, currentTime, nextSectionTime, lastCompletedSection);
+  renderProgressBar(ctx, totalSections, progress, ctx.canvas.width, currentTime, nextSectionTime);
 };
 
 export const useGameLogic = () => {
@@ -105,8 +103,6 @@ export const useGameLogic = () => {
   const checkpointLines = useRef<CheckpointLine[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-  
-  const lastCompletedSection = useRef(0);
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
@@ -165,8 +161,7 @@ export const useGameLogic = () => {
             setIsPowerUpActive,
             audioRef,           
             setAudioType,    
-            isPowerUpActive,             
-            lastCompletedSection.current      
+            isPowerUpActive,              
           );
         }        
       }

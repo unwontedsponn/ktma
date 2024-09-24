@@ -54,8 +54,7 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     }
 
     gameLoopFunctionRef.current(performance.now()); // Initialize the game loop
-  }, [
-    currentSection,
+  }, [    
     setGamePaused,
     animationFrameIdRef,
     audioRef,

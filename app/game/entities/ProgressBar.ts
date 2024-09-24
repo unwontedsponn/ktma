@@ -8,7 +8,6 @@ export const renderProgressBar = (
   canvasWidth: number,
   currentTime: number,
   nextSectionTime: number,
-  lastCompletedSection: number
 ) => {
   const barHeight = 20;
   const segmentColor = '#acddfb';
