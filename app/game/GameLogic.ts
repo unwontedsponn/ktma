@@ -106,7 +106,7 @@ export const useGameLogic = () => {
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
   
-  let lastCompletedSection = useRef(0);
+  const lastCompletedSection = useRef(0);
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
@@ -116,17 +116,6 @@ export const useGameLogic = () => {
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
   const resetCheckpointLines = () => { checkpointLines.current = []; };
-
-  const updateProgress = () => {
-    const currentTime = audioRef?.current?.currentTime || 0;
-    const progress = musicSections.findIndex(section => section > currentTime);
-  
-    if (progress - 1 > lastCompletedSection.current) {
-      lastCompletedSection.current = progress - 1; // Update last completed section
-    }
-
-    return progress;
-  };
 
   useEffect(() => {
     if (!gameStarted || gamePaused) return;

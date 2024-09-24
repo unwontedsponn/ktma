@@ -1,3 +1,4 @@
+// ProgressBar.ts
 import { musicSections } from "../utils/Audio";
 
 export const renderProgressBar = (
@@ -7,23 +8,26 @@ export const renderProgressBar = (
   canvasWidth: number,
   currentTime: number,
   nextSectionTime: number,
-  lastCompletedSection: number // Keep track of the last fully completed section
+  lastCompletedSection: number
 ) => {
   const barHeight = 20;
-  const segmentWidth = canvasWidth / totalSections;
-
-  // Set the bar's position at the top of the canvas
+  const segmentColor = '#acddfb';
+  const borderColor = '#3f423e';
+  const padding = 2; // Padding inside the segment for the fill
+  const barPaddingX = 10; // Horizontal padding for the whole progress bar
+  const availableWidth = canvasWidth - 2 * barPaddingX; // Adjust available width based on padding
+  const segmentWidth = availableWidth / totalSections; // Recalculate segment width based on the available width
   const yPosition = 10;
 
-  // Calculate how much of the current section is completed (progress within the current section)
-  const sectionStartTime = musicSections[progress - 1] || 0; // Start of the current section
-  const sectionProgress = (currentTime - sectionStartTime) / (nextSectionTime - sectionStartTime); // Progress in the section (0 to 1)
+  // Calculate how much of the current section is completed
+  const sectionStartTime = musicSections[progress - 1] || 0;
+  const sectionProgress = (currentTime - sectionStartTime) / (nextSectionTime - sectionStartTime);
 
   // ** First pass: Draw the borders for all segments **
   for (let i = 0; i < totalSections; i++) {
     ctx.beginPath();
-    ctx.rect(i * segmentWidth, yPosition, segmentWidth - 5, barHeight);
-    ctx.strokeStyle = '#000'; // Border color
+    ctx.rect(i * segmentWidth + barPaddingX, yPosition, segmentWidth, barHeight); // Shift by barPaddingX
+    ctx.strokeStyle = borderColor;
     ctx.stroke();
     ctx.closePath();
   }
@@ -32,31 +36,32 @@ export const renderProgressBar = (
   for (let i = 0; i < totalSections; i++) {
     ctx.beginPath();
 
-    // For completed sections, fill completely
+    // For completed sections, fill completely but leave padding for borders
     if (i < progress - 1) {
-      ctx.rect(i * segmentWidth, yPosition, segmentWidth - 5, barHeight);
-      ctx.fillStyle = '#407dbf'; // Dark blue for completed sections
+      ctx.rect(
+        i * segmentWidth + barPaddingX + padding,      // Add barPaddingX and padding for inner padding
+        yPosition + padding,                           // Add padding to top
+        segmentWidth - 2 * padding,                    // Subtract padding for both sides
+        barHeight - 2 * padding                        // Subtract padding for top and bottom
+      );
+      ctx.fillStyle = segmentColor;
       ctx.fill();
-
-      // Add a "pulse" effect for the most recently completed segment
-      if (i === lastCompletedSection) {
-        ctx.beginPath();
-        ctx.arc(i * segmentWidth + segmentWidth / 2 - 2.5, yPosition + barHeight / 2, barHeight, 0, Math.PI * 2); // Circle in the middle of the segment
-        ctx.strokeStyle = 'rgba(64, 125, 191, 0.5)'; // Light blue pulse/glow effect
-        ctx.lineWidth = 4; // Thicker border for the pulse
-        ctx.stroke();
-        ctx.closePath();
-      }
     }
+      
     // For the current section, fill according to progress within the section
     else if (i === progress - 1) {
-      const filledWidth = sectionProgress * (segmentWidth - 5); // Fill width based on section progress
-      ctx.rect(i * segmentWidth, yPosition, filledWidth, barHeight);
-      ctx.fillStyle = '#407dbf'; // Dark blue as it fills up
+      const filledWidth = sectionProgress * (segmentWidth - 2 * padding); // Fill width based on progress
+      ctx.rect(
+        i * segmentWidth + barPaddingX + padding,      // Add barPaddingX and padding
+        yPosition + padding,                           // Add padding to top
+        filledWidth,
+        barHeight - 2 * padding                        // Subtract padding for height
+      );
+      ctx.fillStyle = segmentColor;
       ctx.fill();
     }
 
-    // Remaining sections stay unfilled
+    // Close the path after drawing
     ctx.closePath();
   }
 };
