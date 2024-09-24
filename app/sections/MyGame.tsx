@@ -50,8 +50,7 @@ const MyGame: React.FC = () => {
             setGamePaused={setGamePaused}
             animationFrameIdRef={animationFrameIdRef}
             audioRef={audioRef}
-            gameLoopFunctionRef={gameLoopFunctionRef}
-            currentSection={currentSection}
+            gameLoopFunctionRef={gameLoopFunctionRef}            
             setCurrentSection={setCurrentSection}
             resetObstacles={resetObstacles}
             resetPowerUps={resetPowerUps}
