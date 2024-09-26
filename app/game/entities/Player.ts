@@ -22,7 +22,8 @@ export class Player {
 
   private readonly normalColor = '#acddfb';
   private readonly powerUpColor = '#ffd700';
-
+  private readonly moveSpeed = 5;
+  
   constructor(startingPlatform: FloorPlatform) {
     this.x = 100;
     this.y = startingPlatform.y - 100;
@@ -44,16 +45,20 @@ export class Player {
 
   handleKeyDown(event: KeyboardEvent) {
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(event.code)) event.preventDefault();
-    if (event.code === 'ArrowLeft') this.velocityX = -5;
-    if (event.code === 'ArrowRight') this.velocityX = 5;    
+    if (event.code === 'ArrowLeft') this.moveLeft();
+    if (event.code === 'ArrowRight') this.moveRight();
     if (event.code === 'Space') this.jump();
   }
   
   handleKeyUp(event: KeyboardEvent) {
-    if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') this.velocityX = 0;
+    if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') this.stopMoving();
   }
 
-  move(canvasWidth: number) {
+  moveLeft() {this.velocityX = -this.moveSpeed;}
+  moveRight() {this.velocityX = this.moveSpeed;}
+  stopMoving() {this.velocityX = 0;}
+  
+  updatePosition(canvasWidth: number) {
     this.x += this.velocityX;
     if (this.x < 0) this.x = 0;
     if (this.x + this.width > canvasWidth) this.x = canvasWidth - this.width;
@@ -146,13 +151,9 @@ export const updatePlayer = (
   if (gamePaused || player.isDead) return;
 
   player.applyPowerUp(isPowerUpActive);
-  player.move(canvasWidth);
-  
-  // Apply gravity and check for collisions
+  player.updatePosition(canvasWidth);
   player.applyGravity();
   player.checkPlatformCollision(floorPlatforms);
   
-  if (!player.isGrounded) {
-    player.handleFall(canvasHeight, setGamePaused, audio);
-  }
+  if (!player.isGrounded) player.handleFall(canvasHeight, setGamePaused, audio);
 };

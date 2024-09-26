@@ -1,4 +1,3 @@
-import { playRandomSfx, dyingSfx } from "@/app/game/utils/Audio";
 import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
 
 export type FloorPlatform = {
