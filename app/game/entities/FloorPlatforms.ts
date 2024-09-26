@@ -1,3 +1,4 @@
+
 import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
 
 export type FloorPlatform = {
@@ -36,24 +37,22 @@ export const updateFloorPlatforms = (
   floorPlatforms: FloorPlatform[],
   player: Player,
   canvasWidth: number,
-  canvasHeight: number,
-  setGamePaused: (paused: boolean) => void,
-  audio: HTMLAudioElement | null,
-  gamePaused: boolean
+  canvasHeight: number,    
+  gamePaused: boolean,
+  platformSpeed: number,
 ) => {
   if (gamePaused || player.isDead) return;
-
-  const horizontalSpeed = 1.8; // Adjust this to match actual platform speed
-  const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, horizontalSpeed);
+  
+  const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, platformSpeed);
 
   // Move each platform to the left
   floorPlatforms.forEach((floorPlatform, index) => {
-    floorPlatform.x -= horizontalSpeed;
+    floorPlatform.x -= platformSpeed;
 
     // Remove platform if it goes off the screen
     if (floorPlatform.x + floorPlatform.width < 0) floorPlatforms.splice(index, 1);
 
-    // Check for collision between player and platform (land on platform)
+    // Player land on platform
     if (
       player.x < floorPlatform.x + floorPlatform.width &&
       player.x + player.width > floorPlatform.x &&

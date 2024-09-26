@@ -14,8 +14,9 @@ interface GamePausedSectionProps {
   resetObstacles: () => void;
   resetPowerUps: () => void;
   resetFloorPlatforms: () => void;
-  resetCheckpointLines: () => void;
-  floorPlatforms: MutableRefObject<FloorPlatform[]>; // Add this line to accept floor platforms
+  resetCheckpointLines: () => void;  
+  floorPlatforms: MutableRefObject<FloorPlatform[]>;
+  resetPlatformSpeed: () => void;
 }
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
@@ -28,8 +29,9 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   resetObstacles,
   resetPowerUps,
   resetFloorPlatforms,
-  resetCheckpointLines,
-  floorPlatforms
+  resetCheckpointLines,  
+  floorPlatforms,
+  resetPlatformSpeed
 }) => {
 
   const resumeGame = useCallback(async () => {
@@ -44,7 +46,8 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     resetObstacles();
     resetPowerUps();
     resetFloorPlatforms();
-    resetCheckpointLines();
+    resetCheckpointLines(); 
+    resetPlatformSpeed();   
 
     if (audioRef.current) {
       if (!audioRef.current.paused) audioRef.current.pause();
@@ -75,9 +78,10 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
     resetObstacles,
     resetPowerUps,
     resetFloorPlatforms,
-    resetCheckpointLines,
+    resetCheckpointLines,    
     setCurrentSection,
-    floorPlatforms
+    floorPlatforms,
+    resetPlatformSpeed
   ]);
 
   // Handle the 'Space' key to resume the game

@@ -80,7 +80,7 @@ export const playRandomSfx = (srcArray: string[], type: keyof typeof AudioMixer[
  * ******************************************************************************************
 */
 type MusicType = 'normal' | '8bit';
-type SfxType = 'jump' | 'land' | 'dying' | 'checkpoint' | 'token';
+type SfxType = 'jump'| 'land' | 'dying' | 'checkpoint' | 'token';
 
 export const AudioMixer = {
   music: {
@@ -88,7 +88,7 @@ export const AudioMixer = {
     '8bit': 0.3,
   },
   sfx: {
-    jump: 0.3,
+    jump: 0.3,    
     land: 0.2,
     dying: 0.5,
     checkpoint: 0.5,
@@ -170,8 +170,4 @@ export const tokenSfx = [
   `${sfxBaseURL}7. Token/token2.wav`,
   `${sfxBaseURL}7. Token/token3.wav`,
   `${sfxBaseURL}7. Token/token4.wav`,
-];
-
-export const runningSfx = [
-  `${sfxBaseURL}8. Running/running1.aif`,
 ];

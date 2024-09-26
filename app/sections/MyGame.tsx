@@ -17,8 +17,9 @@ const MyGame: React.FC = () => {
     resetObstacles,
     resetPowerUps,
     resetFloorPlatforms,
-    resetCheckpointLines,
-    floorPlatforms
+    resetCheckpointLines,    
+    floorPlatforms,
+    resetPlatformSpeed,
   } = useGameLogic();
 
   const [showIntro, setShowIntro] = useState(true);
@@ -59,8 +60,9 @@ const MyGame: React.FC = () => {
             resetObstacles={resetObstacles}
             resetPowerUps={resetPowerUps}
             resetFloorPlatforms={resetFloorPlatforms}
-            resetCheckpointLines={resetCheckpointLines}
+            resetCheckpointLines={resetCheckpointLines}            
             floorPlatforms={floorPlatforms}
+            resetPlatformSpeed={resetPlatformSpeed}
           />        
         )}
 

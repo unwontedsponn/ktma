@@ -23,7 +23,8 @@ const gameLoop = (
   setIsPowerUpActive: (isActive: boolean) => void,
   audioRef: MutableRefObject<HTMLAudioElement | null>,   
   setAudioType: (type: 'normal' | '8bit') => void,
-  isPowerUpActive: boolean,
+  isPowerUpActive: boolean,  
+  platformSpeedRef: MutableRefObject<number>
 ) => {
   if (gamePaused) {
     if (animationFrameIdRef.current !== null) {
@@ -44,8 +45,8 @@ const gameLoop = (
 
   updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audio, floorPlatforms);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
-  updatePowerUps(powerUps, player, canvasWidth, canvasHeight, setIsPowerUpActive, audioRef, setAudioType); 
-  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused) ;
+  updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth); 
+  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current) ;
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
   renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef);
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
@@ -101,6 +102,11 @@ const renderGame = (
   renderProgressBar(ctx, totalSections, progress, ctx.canvas.width, currentTime, nextSectionTime);
 };
 
+// Define platform speed and control variables within the hook
+let initialPlatformSpeed = 2.8;
+const speedIncreaseRate = 0.001; // Rate at which the speed increases
+const maxSpeed = 10; // Maximum speed to cap at
+
 export const useGameLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -115,8 +121,14 @@ export const useGameLogic = () => {
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
-  const [isPowerUpActive, setIsPowerUpActive] = useState(false);
+  const [isPowerUpActive, setIsPowerUpActive] = useState(false);  
+  const platformSpeedRef = useRef(initialPlatformSpeed); // Use useRef instead of useState
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');  
+
+  // Function to reset the platform speed
+  const resetPlatformSpeed = () => {
+    platformSpeedRef.current = initialPlatformSpeed;
+  };
 
   const resetPlayer = (startingPlatform: FloorPlatform) => {
     if (player.current) {
@@ -127,7 +139,7 @@ export const useGameLogic = () => {
   const resetObstacles = () => { obstacles.current = []; };
   const resetPowerUps = () => { powerUps.current = []; };
   const resetFloorPlatforms = () => { floorPlatforms.current = []; };
-  const resetCheckpointLines = () => { checkpointLines.current = []; };
+  const resetCheckpointLines = () => { checkpointLines.current = []; };  
 
   useEffect(() => {
     if (!gameStarted || gamePaused) return;
@@ -140,7 +152,7 @@ export const useGameLogic = () => {
     if (!hasSetInitialVolume.current) {
       audio.volume = 0.4;
       hasSetInitialVolume.current = true;  // Mark the initial volume as set
-    }
+    }    
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;    
@@ -156,7 +168,7 @@ export const useGameLogic = () => {
       // Position the first platform near the left of the canvas
       if (!floorPlatforms.current.length) {
         floorPlatforms.current.push(createFloorPlatform(canvas.width, canvas.height, 0));
-      }
+      }      
     
       // Calculate a valid jumpable gap for the second platform
       const horizontalSpeed = 1.8; // Platform movement speed
@@ -184,6 +196,10 @@ export const useGameLogic = () => {
 
       if (deltaTime > 12) {
         lastTime = timestamp;
+
+        // Increase platform speed gradually using the ref
+        platformSpeedRef.current = Math.min(platformSpeedRef.current + speedIncreaseRate, maxSpeed);
+        console.log('Updated platformSpeed:', platformSpeedRef.current); // Debug log
         
         if (player.current) {
           gameLoop(
@@ -201,10 +217,12 @@ export const useGameLogic = () => {
             setIsPowerUpActive,
             audioRef,           
             setAudioType,    
-            isPowerUpActive,              
+            isPowerUpActive,
+            platformSpeedRef    
           );
         }        
       }
+      // Increase platform speed gradually in each frame      
       animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
     };
     
@@ -251,12 +269,14 @@ export const useGameLogic = () => {
     setGameStarted,
     gamePaused,
     setGamePaused,
+    resetPlatformSpeed, // Include resetPlatformSpeed here
+    platformSpeed: platformSpeedRef.current, // Provide platformSpeed to be used in other components    
     resetPlayer,
     resetObstacles,
     resetPowerUps,  
     resetFloorPlatforms,  
-    resetCheckpointLines,
-    isPowerUpActive,
+    resetCheckpointLines,    
+    isPowerUpActive,    
     floorPlatforms
   };
 };
