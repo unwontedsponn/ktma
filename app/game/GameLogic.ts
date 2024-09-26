@@ -103,7 +103,7 @@ const renderGame = (
 };
 
 // Define platform speed and control variables within the hook
-let initialPlatformSpeed = 2.8;
+const initialPlatformSpeed = 2.8;
 const speedIncreaseRate = 0.001; // Rate at which the speed increases
 const maxSpeed = 10; // Maximum speed to cap at
 
