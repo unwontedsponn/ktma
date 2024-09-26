@@ -18,8 +18,8 @@ export const getRandomInRange = (min: number, max: number) => {
 export const createFloorPlatform = (canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform => {
   const minWidth = 100;  
   const maxWidth = 600;  
-  const minHeight = 10; 
-  const maxHeight = 250; 
+  const minHeight = 30; 
+  const maxHeight = 200; 
 
   const width = getRandomInRange(minWidth, maxWidth);
   const height = getRandomInRange(minHeight, maxHeight);

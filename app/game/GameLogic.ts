@@ -5,7 +5,6 @@ import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/O
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
 import { FloorPlatform, getRandomInRange, createFloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
 import { renderProgressBar } from './entities/ProgressBar';
-import { keyDownHandler, keyUpHandler } from './utils/InputHandlers';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { checkMusicSection, musicSections } from './utils/Audio';
 
@@ -230,11 +229,9 @@ export const useGameLogic = () => {
 
     const playerInstance = player.current;
 
-    // Add event listeners for keydown and keyup
-    const handleKeyDown = (event: KeyboardEvent) => keyDownHandler(event, playerInstance);
-    const handleKeyUp = (event: KeyboardEvent) => keyUpHandler(event, playerInstance);
-    
-    // Add event listeners
+    // Add event listeners for keydown and keyup, using player's methods
+    const handleKeyDown = (event: KeyboardEvent) => playerInstance.handleKeyDown(event);
+    const handleKeyUp = (event: KeyboardEvent) => playerInstance.handleKeyUp(event);
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);    
 

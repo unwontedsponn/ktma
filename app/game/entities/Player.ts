@@ -2,7 +2,7 @@
 import { playRandomSfx, jumpSfx, landSfx, dyingSfx } from "@/app/game/utils/Audio";
 import { FloorPlatform } from "./FloorPlatforms";
 
-export type Player = {
+export class Player {
   x: number;
   y: number;
   width: number;
@@ -14,38 +14,125 @@ export type Player = {
   jumpStrength: number;
   rotation: number;
   rotationSpeed: number;
-  color: string;  
+  color: string;
   isInvincible: boolean;
   isDead: boolean;
   isGrounded: boolean;
-};
+  hasLanded: boolean;
 
-export const createPlayer = (startingPlatform: FloorPlatform): Player => ({
-  x: startingPlatform.x + startingPlatform.width / 2 - 12.5, // Center player on the first platform
-  y: startingPlatform.y - 100,  // Position player on top of the first platform
-  width: 25,
-  height: 25,
-  color: '#acddfb', // light-blue
-  velocityX: 0,
-  velocityY: 0,
-  isJumping: false,
-  gravity: 0.5,
-  jumpStrength: -10,
-  rotation: 0,
-  rotationSpeed: 0.1,
-  isInvincible: false,
-  isDead: false,
-  isGrounded: true,
-});
+  private readonly normalColor = '#acddfb';
+  private readonly powerUpColor = '#ffd700';
 
+  constructor(startingPlatform: FloorPlatform) {
+    this.x = 100;
+    this.y = startingPlatform.y - 100;
+    this.width = 25;
+    this.height = 25;
+    this.velocityX = 0;
+    this.velocityY = 0;
+    this.isJumping = false;
+    this.gravity = 0.5;
+    this.jumpStrength = -10;
+    this.rotation = 0;
+    this.rotationSpeed = 0.1;
+    this.color = this.normalColor;
+    this.isInvincible = false;
+    this.isDead = false;
+    this.isGrounded = false;
+    this.hasLanded = false;
+  }
+
+  handleKeyDown(event: KeyboardEvent) {
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(event.code)) event.preventDefault();
+    if (event.code === 'ArrowLeft') this.velocityX = -5;
+    if (event.code === 'ArrowRight') this.velocityX = 5;    
+    if (event.code === 'Space') this.jump();
+  }
+  
+  handleKeyUp(event: KeyboardEvent) {
+    if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') this.velocityX = 0;
+  }
+
+  move(canvasWidth: number) {
+    this.x += this.velocityX;
+    if (this.x < 0) this.x = 0;
+    if (this.x + this.width > canvasWidth) this.x = canvasWidth - this.width;
+  }
+
+  jump() {
+    this.velocityY = this.jumpStrength;
+    this.isJumping = true;
+    this.isGrounded = false;
+    this.hasLanded = false;
+    playRandomSfx(jumpSfx, 'jump');
+  }
+
+  applyGravity() {
+    if (!this.isGrounded) {
+      this.velocityY += this.gravity;
+      this.y += this.velocityY;
+      this.rotation += this.rotationSpeed;
+    } else {
+      this.rotation = 0; // Reset rotation when grounded
+    }
+  }
+
+  checkPlatformCollision(floorPlatforms: FloorPlatform[]) {
+    for (const platform of floorPlatforms) {
+      const isPlayerOnPlatform = 
+        this.y + this.height >= platform.y &&
+        this.y + this.height <= platform.y + platform.height &&
+        this.x + this.width > platform.x &&
+        this.x < platform.x + platform.width;
+
+      // Only reset isGrounded when falling down (velocityY >= 0)
+      if (isPlayerOnPlatform && this.velocityY >= 0) {
+        this.isGrounded = true;
+        this.isJumping = false;
+        this.velocityY = 0;
+        this.y = platform.y - this.height; // Adjust player's y position to the top of the platform
+        this.rotation = 0;
+
+        if (!this.hasLanded) {
+          playRandomSfx(landSfx, 'land');
+          this.hasLanded = true;
+        }
+
+        return;
+      }
+    }
+
+    // If no platform collision detected, the player is airborne
+    this.isGrounded = false;
+    this.hasLanded = false; // Reset the flag when the player is airborne
+  }
+
+  handleFall(canvasHeight: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
+    if (this.y >= canvasHeight - this.height) {
+      setGamePaused(true);
+      playRandomSfx(dyingSfx, 'dying');
+      if (audio) audio.pause();
+      this.isDead = true;
+    }
+  }
+
+  applyPowerUp(isPowerUpActive: boolean) {
+    this.color = isPowerUpActive ? this.powerUpColor : this.normalColor;
+    this.isInvincible = isPowerUpActive;
+  }
+}
+
+// Utility function to create a player instance
+export const createPlayer = (startingPlatform: FloorPlatform): Player => new Player(startingPlatform);
+
+// Utility function to calculate jump distance
 export const calculateJumpDistance = (jumpStrength: number, gravity: number, horizontalSpeed: number) => {
   const timeToPeak = jumpStrength / gravity;
   const totalTimeInAir = timeToPeak * 2;
-  const jumpDistance = horizontalSpeed * totalTimeInAir;
-
-  return jumpDistance;
+  return horizontalSpeed * totalTimeInAir;
 };
 
+// Main update function, simplified
 export const updatePlayer = (
   player: Player, 
   canvasWidth: number, 
@@ -55,84 +142,17 @@ export const updatePlayer = (
   setGamePaused: (paused: boolean) => void,
   audio: HTMLAudioElement | null,
   floorPlatforms: FloorPlatform[]
-) => {    
+) => {
   if (gamePaused || player.isDead) return;
 
-  // Power-up effects on Player
-  if (isPowerUpActive) {
-    player.color = '#ffd700'; // Set to gold
-    player.isInvincible = true;    
-  } else {
-    player.color = '#acddfb'; // Back to normal blue
-    player.isInvincible = false;
-  }
-
-  // Player movement (horizontal movement if needed)
-  player.x += player.velocityX;
-  if (player.x < 0) player.x = 0;
-  if (player.x + player.width > canvasWidth) player.x = canvasWidth - player.width;
-
-  let isOnPlatform = false; // Flag to check if the player is on a platform
-
-  // Check if the player is standing on a platform
-  for (const platform of floorPlatforms) {
-    // Check if player is on the platform
-    const isPlayerOnPlatform = player.y + player.height === platform.y &&
-                               player.x + player.width > platform.x &&
-                               player.x < platform.x + platform.width;
-
-    if (isPlayerOnPlatform) {
-      isOnPlatform = true; // Player is on a platform
-      player.isGrounded = true;
-      break; // Exit the loop as the player is on a platform
-    }
-  }
-
-  // If the player walks off the platform, start falling
-  if (!isOnPlatform && !player.isJumping) {
-    player.isJumping = true; // Player starts falling
-  }
-
-  // Player jumping/falling
-  if (player.isJumping) {
-    // Apply gravity to velocityY
-    player.velocityY += player.gravity;
-    player.y += player.velocityY;
-    
-    // Only apply rotation while in the air
-    player.rotation += player.rotationSpeed;
-
-    // Check for platform collision to land
-    for (const platform of floorPlatforms) {
-      // Check if player is falling onto a platform
-      const isFallingOntoPlatform = player.y + player.height <= platform.y &&
-                                    player.y + player.height + player.velocityY >= platform.y &&
-                                    player.x + player.width > platform.x &&
-                                    player.x < platform.x + platform.width;
-
-      if (isFallingOntoPlatform) {
-        // Player has landed on the platform
-        player.y = platform.y - player.height; // Set player on top of the platform
-        player.velocityY = 0; // Stop vertical movement
-        player.isJumping = false; // Player is no longer jumping
-        player.rotation = 0; // Reset rotation so player lands flat
-        player.isGrounded = true; // Player is grounded
-        playRandomSfx(landSfx, 'land'); // Play landing sound
-        return; // Exit the function since the player landed
-      }
-    }
-
-    // Check if player falls to the bottom of the canvas
-    if (player.y >= canvasHeight - player.height) {
-      // Player falls to the bottom (death)
-      setGamePaused(true);
-      playRandomSfx(dyingSfx, 'dying');
-      if (audio) audio.pause();
-      player.isDead = true;
-      return;
-    }
-  } else {
-    // If the player is grounded, ensure rotation stays at 0 (flat)
-    player.rotation = 0;
+  player.applyPowerUp(isPowerUpActive);
+  player.move(canvasWidth);
+  
+  // Apply gravity and check for collisions
+  player.applyGravity();
+  player.checkPlatformCollision(floorPlatforms);
+  
+  if (!player.isGrounded) {
+    player.handleFall(canvasHeight, setGamePaused, audio);
   }
 };
