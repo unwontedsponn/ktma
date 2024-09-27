@@ -4,7 +4,8 @@ import { FloorPlatform } from "./FloorPlatforms";
 
 export class Player {
   x: number;
-  y: number;
+  y: number;  
+  previousY: number;
   width: number;
   height: number;
   velocityX: number;
@@ -26,7 +27,8 @@ export class Player {
   
   constructor(startingPlatform: FloorPlatform) {
     this.x = 100;
-    this.y = startingPlatform.y - 100;
+    this.y = startingPlatform.y - 100;   
+    this.previousY = this.y; 
     this.width = 25;
     this.height = 25;
     this.velocityX = 0;
@@ -82,35 +84,60 @@ export class Player {
     }
   }
 
-  checkPlatformCollision(floorPlatforms: FloorPlatform[]) {
+  checkPlatformCollision(floorPlatforms: FloorPlatform[], platformSpeed: number) {
     for (const platform of floorPlatforms) {
-      const isPlayerOnPlatform = 
-        this.y + this.height >= platform.y &&
-        this.y + this.height <= platform.y + platform.height &&
-        this.x + this.width > platform.x &&
-        this.x < platform.x + platform.width;
-
-      // Only reset isGrounded when falling down (velocityY >= 0)
-      if (isPlayerOnPlatform && this.velocityY >= 0) {
+      // Check if player has collided with the left or right side of the platform
+      const isCollidingWithSide =
+        this.y + this.height > platform.y && // Player is within the vertical bounds of the platform
+        this.y < platform.y + platform.height && // Player is not completely above the platform
+        ((this.x + this.width >= platform.x && this.x < platform.x) || // Collides with the left side of the platform
+         (this.x <= platform.x + platform.width && this.x + this.width > platform.x + platform.width)); // Collides with the right side of the platform
+  
+      if (isCollidingWithSide) {
+        // Handle side collision
+        this.velocityX = -platformSpeed; // Move backward at the same speed as the platform
+        
+        if (!this.isGrounded) {
+          // If the player is not on a platform, allow them to fall
+          this.velocityY += this.gravity; // Apply gravity to make the player fall (slide down)
+          this.x = platform.x - this.width; // Stick to the side of the platform
+        } else {
+          // If the player is grounded, stop the downward movement
+          this.velocityY = 0;
+        }
+  
+        return; // Exit the function to prevent further checks
+      }
+  
+      // Check if player has landed on top of a platform
+      const isPlayerOnPlatform =
+        this.x < platform.x + platform.width && // Player's left side is to the left of platform's right side
+        this.x + this.width > platform.x && // Player's right side is to the right of platform's left side
+        this.previousY + this.height <= platform.y && // Ensure the player's bottom was above the platform's top in the previous frame
+        this.y + this.height >= platform.y && // Check if the player's bottom is exactly at the platform's top
+        this.velocityY >= 0; // Ensure the player is falling
+  
+      if (isPlayerOnPlatform) {
+        // Handle landing on the platform
         this.isGrounded = true;
         this.isJumping = false;
         this.velocityY = 0;
-        this.y = platform.y - this.height; // Adjust player's y position to the top of the platform
+        this.y = platform.y - this.height; // Position player on top of the platform
         this.rotation = 0;
-
+  
         if (!this.hasLanded) {
           playRandomSfx(landSfx, 'land');
           this.hasLanded = true;
         }
-
-        return;
+  
+        return; // Exit the function since the player has landed on a platform
       }
     }
-
+  
     // If no platform collision detected, the player is airborne
     this.isGrounded = false;
-    this.hasLanded = false; // Reset the flag when the player is airborne
-  }
+    this.hasLanded = false;
+  }    
 
   handleFall(canvasHeight: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
     if (this.y >= canvasHeight - this.height) {
@@ -146,14 +173,15 @@ export const updatePlayer = (
   gamePaused: boolean,
   setGamePaused: (paused: boolean) => void,
   audio: HTMLAudioElement | null,
-  floorPlatforms: FloorPlatform[]
+  floorPlatforms: FloorPlatform[],
+  platformSpeed: number
 ) => {
-  if (gamePaused || player.isDead) return;
+  if (gamePaused || player.isDead) return;  
 
   player.applyPowerUp(isPowerUpActive);
   player.updatePosition(canvasWidth);
   player.applyGravity();
-  player.checkPlatformCollision(floorPlatforms);
+  player.checkPlatformCollision(floorPlatforms, platformSpeed);
   
   if (!player.isGrounded) player.handleFall(canvasHeight, setGamePaused, audio);
 };
