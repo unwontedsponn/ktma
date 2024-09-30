@@ -1,4 +1,4 @@
-// NextLevelLine.ts
+// CheckpointLine.ts
 import { Player } from "./Player";
 
 export type CheckpointLine = {
