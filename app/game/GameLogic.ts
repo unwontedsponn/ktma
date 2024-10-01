@@ -2,12 +2,13 @@
 import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { renderGame } from '@/app/game/Renderer';
 import { gameLoop } from '@/app/game/GameLoop';
+import { initializePlatforms } from './entities/FloorPlatforms/FloorPlatformManager';
 import { resetPlayer, resetObstacles, resetPowerUps, resetFloorPlatforms, resetCheckpointLines, resetPlatformSpeed } from "@/app/game/GameReset";
 
 import { Player, calculateJumpDistance, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, updateObstacles } from '@/app/game/entities/notUsed/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
-import { FloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
+import { FloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms/FloorPlatforms';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { musicSections } from './audio/MusicLibrary';
 import AudioManager from './audio/AudioManager';
@@ -32,7 +33,7 @@ export const useGameLogic = () => {
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);  
-  const platformSpeedRef = useRef(initialPlatformSpeed); // Use useRef instead of useState
+  const platformSpeedRef = useRef<number>(initialPlatformSpeed); // Use useRef instead of useState
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');  
 
   // Instantiate the AudioManager
@@ -52,38 +53,15 @@ export const useGameLogic = () => {
     }    
 
     const ctx = canvas.getContext('2d');
-    if (!ctx) return;    
-
-    if (!floorPlatforms.current.length) {
-      // Ensure player exists
-      if (!player.current) {
-        const startingPlatform = FloorPlatform.createFloorPlatform(canvas.width, canvas.height, 0);
-        floorPlatforms.current.push(startingPlatform);
-        player.current = createPlayer(startingPlatform, audioManager); // Create player if not already created
-      }
+    if (!ctx) return; 
     
-      // Position the first platform near the left of the canvas
-      if (!floorPlatforms.current.length) {
-        floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvas.width, canvas.height, 0));
-      }      
-    
-      // Calculate a valid jumpable gap for the second platform
-      const horizontalSpeed = 1.8; // Platform movement speed
-      const jumpDistance = calculateJumpDistance(player.current!.jumpStrength, player.current!.gravity, horizontalSpeed);
-    
-      const maxGap = jumpDistance * 0.85; // Slightly less than player's max jump distance
-      const minGap = 50; // Ensure there is always some gap, but not too small
-      const gap = FloorPlatform.getRandomInRange(minGap, maxGap); // Random gap within the jumpable range
-    
-      // Spawn the second platform after the valid gap
-      floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvas.width, canvas.height, floorPlatforms.current[0].width + gap));
-    }
+    initializePlatforms(canvas.width, canvas.height, player, floorPlatforms, audioManager);
 
     const startingPlatform = floorPlatforms.current[0]; // First platform
     if (!player.current) player.current = createPlayer(startingPlatform, audioManager);    
     player.current.isDead = false; // Reset player's death state
 
-    let lastTime = 0;        
+    let lastTime = 0;     
 
     // Initialize the game loop function
     gameLoopFunctionRef.current = (timestamp: number) => {

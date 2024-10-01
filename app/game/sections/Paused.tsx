@@ -1,6 +1,6 @@
 // Paused.tsx
 import React, { useCallback, useEffect } from 'react';
-import { FloorPlatform } from '../entities/FloorPlatforms';
+import { FloorPlatform } from '../entities/FloorPlatforms/FloorPlatforms';
 import { MutableRefObject } from 'react';
 import { resumeGame } from "@/app/game/GameReset"; // Import the resumeGame function
 import { Player } from '../entities/Player';

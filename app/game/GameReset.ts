@@ -2,7 +2,7 @@
 import { Player, createPlayer } from "@/app/game/entities/Player";
 import { Obstacle } from "@/app/game/entities/notUsed/Obstacles";
 import { PowerUp } from "@/app/game/entities/PowerUps";
-import { FloorPlatform } from "@/app/game/entities/FloorPlatforms";
+import { FloorPlatform } from "@/app/game/entities/FloorPlatforms/FloorPlatforms";
 import { CheckpointLine } from "@/app/game/entities/CheckpointLine";
 import AudioManager from "@/app/game/audio/AudioManager";
 import { musicSections } from "@/app/game/audio/MusicLibrary";
@@ -10,30 +10,27 @@ import { MutableRefObject } from 'react';
 
 // Function to reset the platform speed
 export const resetPlatformSpeed = (platformSpeedRef: MutableRefObject<number>, initialPlatformSpeed: number) => {
-  platformSpeedRef.current = initialPlatformSpeed;
+  if (platformSpeedRef && platformSpeedRef.current !== undefined) platformSpeedRef.current = initialPlatformSpeed;
 };
 
 export const resetPlayer = (player: MutableRefObject<Player | null>, startingPlatform: FloorPlatform, audioManager: AudioManager) => {
-  if (player.current) {
-    // Reinitialize player on the provided platform
-    player.current = createPlayer(startingPlatform, audioManager); 
-  }
+  if (player && player.current) player.current = createPlayer(startingPlatform, audioManager);
 };
 
 export const resetObstacles = (obstacles: MutableRefObject<Obstacle[]>) => { 
-  obstacles.current = []; 
+  if (obstacles && obstacles.current) obstacles.current = []; 
 };
 
-export const resetPowerUps = (powerUps: MutableRefObject<PowerUp[]>) => { 
-  powerUps.current = []; 
+export const resetPowerUps = (powerUps: MutableRefObject<PowerUp[]>) => {   
+  if (powerUps && powerUps.current) powerUps.current = []; 
 };
 
-export const resetFloorPlatforms = (floorPlatforms: MutableRefObject<FloorPlatform[]>) => { 
-  floorPlatforms.current = []; 
+export const resetFloorPlatforms = (floorPlatforms: MutableRefObject<FloorPlatform[]>) => {   
+  if (floorPlatforms && floorPlatforms.current) floorPlatforms.current = []; 
 };
 
-export const resetCheckpointLines = (checkpointLines: MutableRefObject<CheckpointLine[]>) => { 
-  checkpointLines.current = []; 
+export const resetCheckpointLines = (checkpointLines: MutableRefObject<CheckpointLine[]>) => {   
+  if (checkpointLines && checkpointLines.current) checkpointLines.current = []; 
 };
 
 // Centralized function to reset the game

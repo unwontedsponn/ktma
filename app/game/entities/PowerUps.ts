@@ -2,7 +2,7 @@
 import { Player } from "@/app/game/entities/Player";
 import { tokenSfx } from '@/app/game/audio/SfxLibrary';
 import AudioManager from "../audio/AudioManager";
-import { FloorPlatform } from "./FloorPlatforms";
+import { FloorPlatform } from "./FloorPlatforms/FloorPlatforms";
 
 export class PowerUp {
   x: number;

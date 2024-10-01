@@ -1,7 +1,7 @@
 import { Player, updatePlayer } from "@/app/game/entities/Player";
 import { Obstacle, updateObstacles } from "@/app/game/entities/notUsed/Obstacles";
 import { PowerUp, updatePowerUps } from "@/app/game/entities/PowerUps";
-import { FloorPlatform, updateFloorPlatforms } from "@/app/game/entities/FloorPlatforms";
+import { FloorPlatform, updateFloorPlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatforms";
 import { CheckpointLine, updateCheckpointLines } from "@/app/game/entities/CheckpointLine";
 import { renderGame } from "@/app/game/Renderer";
 import AudioManager from "@/app/game/audio/AudioManager";

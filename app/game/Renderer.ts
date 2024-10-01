@@ -1,7 +1,7 @@
 import { Player } from "@/app/game/entities/Player";
 import { Obstacle } from "@/app/game/entities/notUsed/Obstacles";
 import { PowerUp } from "@/app/game/entities/PowerUps";
-import { FloorPlatform } from "@/app/game/entities/FloorPlatforms";
+import { FloorPlatform } from "@/app/game/entities/FloorPlatforms/FloorPlatforms";
 import { CheckpointLine } from "@/app/game/entities/CheckpointLine";
 import { ProgressBar } from "./entities/ProgressBar";
 import { musicSections } from "./audio/MusicLibrary";
