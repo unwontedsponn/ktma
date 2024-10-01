@@ -1,5 +1,6 @@
 // Obstacles.ts
-import { playRandomSfx, dyingSfx } from "@/app/game/utils/Audio";
+import { dyingSfx } from "@/app/game/audio/SfxLibrary";
+import AudioManager from "../../audio/AudioManager";
 import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
 
 export class Obstacle {
@@ -9,12 +10,15 @@ export class Obstacle {
   height: number;
   color: string;
 
-  constructor(x: number, y: number, width: number, height: number, color: string) {
+  private audioManager: AudioManager; // Add AudioManager instance
+
+  constructor(x: number, y: number, width: number, height: number, color: string, audioManager: AudioManager) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.color = color;
+    this.audioManager = audioManager; // Store the audioManager instance
   }
 
   // Method to update the obstacle's position
@@ -28,13 +32,14 @@ export class Obstacle {
   }
 
   // Static method to create a new obstacle
-  static createObstacle(canvasWidth: number, canvasHeight: number): Obstacle {
+  static createObstacle(canvasWidth: number, canvasHeight: number, audioManager: AudioManager): Obstacle {
     return new Obstacle(
       canvasWidth,
       canvasHeight + 40, // Adjust the y-position as needed
       20, // Width
       40, // Height
-      '#c15564' // Color: dark-pink
+      '#c15564', // Color: dark-pink
+      audioManager // Pass the audioManager instance
     );
   }
 
@@ -59,7 +64,8 @@ export const updateObstacles = (
   canvasHeight: number,
   setGamePaused: (paused: boolean) => void,
   audio: HTMLAudioElement | null,
-  gamePaused: boolean
+  gamePaused: boolean,
+  audioManager: AudioManager // Add audioManager as a parameter
 ) => {
   if (gamePaused || player.isDead) return; // Stop updating if the game is paused or player has already collided
 
@@ -76,7 +82,7 @@ export const updateObstacles = (
     // Check for collision
     if (obstacle.checkCollision(player)) {
       setGamePaused(true);
-      playRandomSfx(dyingSfx, 'dying');
+      audioManager.playRandomSfx(dyingSfx, 'dying'); // Use audioManager to play sound
       if (audio) audio.pause();
 
       // Mark the player as collided to prevent further sound triggering
@@ -91,7 +97,7 @@ export const updateObstacles = (
   if (!lastObstacle || lastObstacle.x < canvasWidth - jumpDistance - 20) {
     const spawnProbability = 0.0010; // Lower this value to reduce frequency
     if (Math.random() < spawnProbability) {
-      obstacles.push(Obstacle.createObstacle(canvasWidth, canvasHeight));
+      obstacles.push(Obstacle.createObstacle(canvasWidth, canvasHeight, audioManager)); // Pass audioManager here
     }
   }
 };

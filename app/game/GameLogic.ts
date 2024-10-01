@@ -6,7 +6,8 @@ import { PowerUp, updatePowerUps } from './entities/PowerUps';
 import { FloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
 import { ProgressBar } from './entities/ProgressBar';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
-import { checkMusicSection, musicSections } from './utils/Audio';
+import { musicSections } from './audio/MusicLibrary';
+import AudioManager from './audio/AudioManager';
 
 const gameLoop = (
   ctx: CanvasRenderingContext2D,
@@ -24,7 +25,8 @@ const gameLoop = (
   audioRef: MutableRefObject<HTMLAudioElement | null>,   
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,  
-  platformSpeedRef: MutableRefObject<number>
+  platformSpeedRef: MutableRefObject<number>,
+  audioManager: AudioManager
 ) => {
   if (gamePaused) {
     if (animationFrameIdRef.current !== null) {
@@ -38,14 +40,14 @@ const gameLoop = (
   const canvasHeight = ctx.canvas.height;
   const currentTime = audioRef?.current?.currentTime || 0; // Calculate currentTime once
 
-  checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
+  audioManager.checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
 
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
   updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audio, floorPlatforms, platformSpeedRef.current);
-  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused);
-  updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth); 
+  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused, audioManager);
+  updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager); 
   updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current) ;
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
   renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef);
@@ -128,6 +130,9 @@ export const useGameLogic = () => {
   const platformSpeedRef = useRef(initialPlatformSpeed); // Use useRef instead of useState
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');  
 
+  // Instantiate the AudioManager
+  const audioManager = new AudioManager(audioRef, 'normal'); 
+
   // Function to reset the platform speed
   const resetPlatformSpeed = () => {
     platformSpeedRef.current = initialPlatformSpeed;
@@ -136,7 +141,7 @@ export const useGameLogic = () => {
   const resetPlayer = (startingPlatform: FloorPlatform) => {
     if (player.current) {
       // Reinitialize player on the provided platform
-      player.current = createPlayer(startingPlatform); 
+      player.current = createPlayer(startingPlatform, audioManager); 
     }
   };
   const resetObstacles = () => { obstacles.current = []; };
@@ -165,7 +170,7 @@ export const useGameLogic = () => {
       if (!player.current) {
         const startingPlatform = FloorPlatform.createFloorPlatform(canvas.width, canvas.height, 0);
         floorPlatforms.current.push(startingPlatform);
-        player.current = createPlayer(startingPlatform); // Create player if not already created
+        player.current = createPlayer(startingPlatform, audioManager); // Create player if not already created
       }
     
       // Position the first platform near the left of the canvas
@@ -186,7 +191,7 @@ export const useGameLogic = () => {
     }
 
     const startingPlatform = floorPlatforms.current[0]; // First platform
-    if (!player.current) player.current = createPlayer(startingPlatform);    
+    if (!player.current) player.current = createPlayer(startingPlatform, audioManager);    
     player.current.isDead = false; // Reset player's death state
 
     let lastTime = 0;        
@@ -221,7 +226,8 @@ export const useGameLogic = () => {
             audioRef,           
             setAudioType,    
             isPowerUpActive,
-            platformSpeedRef    
+            platformSpeedRef,
+            audioManager 
           );
         }        
       }
@@ -237,7 +243,7 @@ export const useGameLogic = () => {
 
     // Set the obstacle spawning interval after the game starts
     const obstacleInterval = setInterval(() => {
-      obstacles.current.push(Obstacle.createObstacle(canvas.width, canvas.height));
+      obstacles.current.push(Obstacle.createObstacle(canvas.width, canvas.height, audioManager));
     }, 2000);        
 
     // Stop obstacles spawning and animation if the game is paused

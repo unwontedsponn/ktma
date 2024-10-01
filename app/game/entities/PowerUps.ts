@@ -1,6 +1,7 @@
 // PowerUps.ts
 import { Player } from "@/app/game/entities/Player";
-import { switchMusic, playRandomSfx, tokenSfx } from '@/app/game/utils/Audio';
+import { tokenSfx } from '@/app/game/audio/SfxLibrary';
+import AudioManager from "../audio/AudioManager";
 import { FloorPlatform } from "./FloorPlatforms";
 
 export class PowerUp {
@@ -12,7 +13,9 @@ export class PowerUp {
   platform: FloorPlatform;
   isActive: boolean;
 
-  constructor(platform: FloorPlatform) {
+  private audioManager: AudioManager; // Add AudioManager instance
+
+  constructor(platform: FloorPlatform, audioManager: AudioManager) {
     this.x = platform.x + 20;
     this.y = platform.y - 40;
     this.width = 20;
@@ -20,6 +23,7 @@ export class PowerUp {
     this.color = '#5f9251'; // green
     this.platform = platform;
     this.isActive = false;
+    this.audioManager = audioManager; // Store the AudioManager instance
   }
 
   updatePosition() {
@@ -47,22 +51,22 @@ export class PowerUp {
     setAudioType: (type: 'normal' | '8bit') => void
   ) {
     setIsPowerUpActive(true);
-    playRandomSfx(tokenSfx, 'token');
+    this.audioManager.playRandomSfx(tokenSfx, 'token');
     
     const currentTime = audioRef?.current?.currentTime || 0;
-    switchMusic(audioRef, currentTime, '8bit', setAudioType);
+    this.audioManager.switchMusic(audioRef, currentTime, '8bit', setAudioType);
 
     setTimeout(() => {
       const newCurrentTime = audioRef?.current?.currentTime || 0;
-      switchMusic(audioRef, newCurrentTime, 'normal', setAudioType);
+      this.audioManager.switchMusic(audioRef, newCurrentTime, 'normal', setAudioType);
       setIsPowerUpActive(false);
     }, 5000);
   }
 }
 
 // Utility function to create a new PowerUp
-export const createPowerUp = (platform: FloorPlatform): PowerUp => {
-  return new PowerUp(platform);
+export const createPowerUp = (platform: FloorPlatform, audioManager: AudioManager): PowerUp => {
+  return new PowerUp(platform, audioManager);
 };
 
 // PowerUp Manager
@@ -73,7 +77,8 @@ export const updatePowerUps = (
   audioRef: React.RefObject<HTMLAudioElement>,  
   setAudioType: (type: 'normal' | '8bit') => void,  
   floorPlatforms: FloorPlatform[],
-  canvasWidth: number
+  canvasWidth: number,
+  audioManager: AudioManager
 ) => {
   powerUps.forEach((powerUp, index) => {   
     powerUp.updatePosition();
@@ -93,6 +98,6 @@ export const updatePowerUps = (
   const spawnProbability = 0.1;
   if (Math.random() < spawnProbability) {
     const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth);
-    if (upcomingPlatform) powerUps.push(createPowerUp(upcomingPlatform));
+    if (upcomingPlatform) powerUps.push(createPowerUp(upcomingPlatform, audioManager));
   }
 };

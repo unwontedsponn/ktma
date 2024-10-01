@@ -1,5 +1,6 @@
 // Player.ts
-import { playRandomSfx, jumpSfx, landSfx, dyingSfx } from "@/app/game/utils/Audio";
+import { jumpSfx, landSfx, dyingSfx } from "@/app/game/audio/SfxLibrary";
+import AudioManager from "../audio/AudioManager";
 import { FloorPlatform } from "./FloorPlatforms";
 
 export class Player {
@@ -24,8 +25,9 @@ export class Player {
   private readonly normalColor = '#acddfb';
   private readonly powerUpColor = '#ffd700';
   private readonly moveSpeed = 5;
+  private audioManager: AudioManager; // Add AudioManager instance
   
-  constructor(startingPlatform: FloorPlatform) {
+  constructor(startingPlatform: FloorPlatform, audioManager: AudioManager) {
     this.x = 100;
     this.y = startingPlatform.y - 100;   
     this.previousY = this.y; 
@@ -43,6 +45,7 @@ export class Player {
     this.isDead = false;
     this.isGrounded = false;
     this.hasLanded = false;
+    this.audioManager = audioManager; // Store the AudioManager instance
   }
 
   handleKeyDown(event: KeyboardEvent) {
@@ -71,7 +74,7 @@ export class Player {
     this.isJumping = true;
     this.isGrounded = false;
     this.hasLanded = false;
-    playRandomSfx(jumpSfx, 'jump');
+    this.audioManager.playRandomSfx(jumpSfx, 'jump');
   }
 
   applyGravity() {
@@ -126,7 +129,7 @@ export class Player {
         this.rotation = 0;
   
         if (!this.hasLanded) {
-          playRandomSfx(landSfx, 'land');
+          this.audioManager.playRandomSfx(landSfx, 'land');
           this.hasLanded = true;
         }
   
@@ -142,7 +145,7 @@ export class Player {
   handleFall(canvasHeight: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
     if (this.y >= canvasHeight - this.height) {
       setGamePaused(true);
-      playRandomSfx(dyingSfx, 'dying');
+      this.audioManager.playRandomSfx(dyingSfx, 'dying');
       if (audio) audio.pause();
       this.isDead = true;
     }
@@ -155,7 +158,7 @@ export class Player {
 }
 
 // Factory / Utility function to create a player instance
-export const createPlayer = (startingPlatform: FloorPlatform): Player => new Player(startingPlatform);
+export const createPlayer = (startingPlatform: FloorPlatform, audioManager: AudioManager): Player => new Player(startingPlatform, audioManager);
 
 // Utility function to calculate jump distance
 export const calculateJumpDistance = (jumpStrength: number, gravity: number, horizontalSpeed: number) => {

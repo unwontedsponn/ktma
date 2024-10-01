@@ -1,6 +1,6 @@
 // Paused.tsx
 import React, { useCallback, useEffect } from 'react';
-import { musicSections } from '@/app/game/utils/Audio';
+import { musicSections } from '@/app/game/audio/MusicLibrary';
 import { FloorPlatform } from '../entities/FloorPlatforms';
 import { MutableRefObject } from 'react';
 

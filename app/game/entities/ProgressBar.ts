@@ -1,5 +1,5 @@
 // ProgressBar.ts
-import { musicSections } from "../utils/Audio";
+import { musicSections } from "../audio/MusicLibrary";
 
 export class ProgressBar {
   ctx: CanvasRenderingContext2D;
