@@ -154,7 +154,7 @@ export class Player {
   }
 }
 
-// Utility function to create a player instance
+// Factory / Utility function to create a player instance
 export const createPlayer = (startingPlatform: FloorPlatform): Player => new Player(startingPlatform);
 
 // Utility function to calculate jump distance

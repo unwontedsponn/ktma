@@ -1,5 +1,5 @@
 // Audio.ts
-import { CheckpointLine, createCheckpointLine } from "../entities/CheckpointLine";
+import { CheckpointLine } from "../entities/CheckpointLine";
 
 
 /**
@@ -31,8 +31,6 @@ export const switchMusic = (
   setAudioType(audioType);
 };
 
-
-
 let lineAddedForSection: number | null = null; // Keeps track of the section where a line was added
 
 export const checkMusicSection = (
@@ -47,7 +45,7 @@ export const checkMusicSection = (
   
   if (upcomingSection && lineAddedForSection !== upcomingSection) {
     // Only add a line if one hasn't been added for this section
-    checkpointLines.push(createCheckpointLine(canvasWidth, canvasHeight));
+    checkpointLines.push(CheckpointLine.createCheckpointLine(canvasWidth, canvasHeight));
     playRandomSfx(checkpointSfx, 'checkpoint');
 
     // Set the flag to the current section

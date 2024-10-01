@@ -1,38 +1,54 @@
-
 import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
 
-export type FloorPlatform = {
+export class FloorPlatform {
   x: number;
   y: number;
   width: number;
   height: number;
   color: string;
-};
 
-// Function to generate random numbers within a range
-export const getRandomInRange = (min: number, max: number) => {
-  return Math.random() * (max - min) + min;
-};
+  constructor(x: number, y: number, width: number, height: number, color: string) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+  }
+  
+  updatePosition(speed: number) {
+    this.x -= speed;
+  }
 
-// Create floor platform with variable width and height
-export const createFloorPlatform = (canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform => {
-  const minWidth = 100;  
-  const maxWidth = 600;  
-  const minHeight = 30; 
-  const maxHeight = 200; 
+  isOffScreen(): boolean {
+    return this.x + this.width < 0;
+  }
 
-  const width = getRandomInRange(minWidth, maxWidth);
-  const height = getRandomInRange(minHeight, maxHeight);
+  // Static method to create a new floor platform
+  static createFloorPlatform(canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform {
+    const minWidth = 100;
+    const maxWidth = 600;
+    const minHeight = 30;
+    const maxHeight = 200;
 
-  return {
-    x: startX !== undefined ? startX : canvasWidth, // If startX is provided, use it; otherwise, start off-screen
-    y: canvasHeight - height - 5,
-    width,
-    height,
-    color: '#3f423e',
-  };
-};
+    const width = FloorPlatform.getRandomInRange(minWidth, maxWidth);
+    const height = FloorPlatform.getRandomInRange(minHeight, maxHeight);
 
+    return new FloorPlatform(
+      startX !== undefined ? startX : canvasWidth,
+      canvasHeight - height - 5,
+      width,
+      height,
+      '#3f423e'
+    );
+  }
+
+  // Utility method to generate random numbers within a range
+  static getRandomInRange(min: number, max: number): number {
+    return Math.random() * (max - min) + min;
+  }
+}
+
+// Function to update all floor platforms
 export const updateFloorPlatforms = (
   floorPlatforms: FloorPlatform[],
   player: Player,
@@ -45,12 +61,10 @@ export const updateFloorPlatforms = (
 
   const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, platformSpeed);
 
-  // Move each platform to the left
+  // Move each platform to the left and remove it if it's off-screen
   floorPlatforms.forEach((floorPlatform, index) => {
-    floorPlatform.x -= platformSpeed;
-
-    // Remove platform if it goes off the screen
-    if (floorPlatform.x + floorPlatform.width < 0) floorPlatforms.splice(index, 1);
+    floorPlatform.updatePosition(platformSpeed);
+    if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
   });
 
   // Determine the max and min gaps based on the player's jump capabilities
@@ -64,12 +78,12 @@ export const updateFloorPlatforms = (
   // Only spawn a new platform if the last platform is far enough from the screen edge
   if (rightEdgeOfLastPlatform < canvasWidth - minGap) {
     // Calculate a random gap between the minimum and maximum allowed gap
-    const gap = getRandomInRange(minGap, maxGap);
+    const gap = FloorPlatform.getRandomInRange(minGap, maxGap);
     
     // Force the new platform to spawn fully off-screen
     const newPlatformX = canvasWidth + gap + 50; // Additional 50 units to ensure it's off-screen
 
     // Spawn a new platform at the calculated position
-    floorPlatforms.push(createFloorPlatform(canvasWidth, canvasHeight, newPlatformX));
+    floorPlatforms.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, newPlatformX));
   }
 };

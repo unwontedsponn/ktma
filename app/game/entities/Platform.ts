@@ -1,3 +1,4 @@
+// Platform.ts
 export class Platform {
   x: number;
   y: number;

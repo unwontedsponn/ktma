@@ -3,7 +3,7 @@ import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, calculateJumpDistance, createPlayer, updatePlayer } from '@/app/game/entities/Player';
 import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
-import { FloorPlatform, getRandomInRange, createFloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
+import { FloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
 import { renderProgressBar } from './entities/ProgressBar';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { checkMusicSection, musicSections } from './utils/Audio';
@@ -160,14 +160,14 @@ export const useGameLogic = () => {
     if (!floorPlatforms.current.length) {
       // Ensure player exists
       if (!player.current) {
-        const startingPlatform = createFloorPlatform(canvas.width, canvas.height, 0);
+        const startingPlatform = FloorPlatform.createFloorPlatform(canvas.width, canvas.height, 0);
         floorPlatforms.current.push(startingPlatform);
         player.current = createPlayer(startingPlatform); // Create player if not already created
       }
     
       // Position the first platform near the left of the canvas
       if (!floorPlatforms.current.length) {
-        floorPlatforms.current.push(createFloorPlatform(canvas.width, canvas.height, 0));
+        floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvas.width, canvas.height, 0));
       }      
     
       // Calculate a valid jumpable gap for the second platform
@@ -176,10 +176,10 @@ export const useGameLogic = () => {
     
       const maxGap = jumpDistance * 0.85; // Slightly less than player's max jump distance
       const minGap = 50; // Ensure there is always some gap, but not too small
-      const gap = getRandomInRange(minGap, maxGap); // Random gap within the jumpable range
+      const gap = FloorPlatform.getRandomInRange(minGap, maxGap); // Random gap within the jumpable range
     
       // Spawn the second platform after the valid gap
-      floorPlatforms.current.push(createFloorPlatform(canvas.width, canvas.height, floorPlatforms.current[0].width + gap));
+      floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvas.width, canvas.height, floorPlatforms.current[0].width + gap));
     }
 
     const startingPlatform = floorPlatforms.current[0]; // First platform
