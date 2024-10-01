@@ -14,7 +14,7 @@ export class PowerUp {
 
   constructor(platform: FloorPlatform) {
     this.x = platform.x + 20;
-    this.y = platform.y - 40; // Spawn the power-up slightly above the platform
+    this.y = platform.y - 40;
     this.width = 20;
     this.height = 20;
     this.color = '#5f9251'; // green
@@ -75,7 +75,6 @@ export const updatePowerUps = (
   floorPlatforms: FloorPlatform[],
   canvasWidth: number
 ) => {
-  
   powerUps.forEach((powerUp, index) => {   
     powerUp.updatePosition();
 
@@ -94,9 +93,6 @@ export const updatePowerUps = (
   const spawnProbability = 0.1;
   if (Math.random() < spawnProbability) {
     const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth);
-
-    if (upcomingPlatform) {
-      powerUps.push(createPowerUp(upcomingPlatform));
-    }
+    if (upcomingPlatform) powerUps.push(createPowerUp(upcomingPlatform));
   }
 };
