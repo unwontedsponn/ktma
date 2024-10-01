@@ -78,8 +78,14 @@ export const updatePowerUps = (
   setAudioType: (type: 'normal' | '8bit') => void,  
   floorPlatforms: FloorPlatform[],
   canvasWidth: number,
-  audioManager: AudioManager
+  audioManager: AudioManager,
+  isPowerUpActive: boolean // Pass this flag to indicate if a power-up is active
 ) => {
+  // Check if any power-up is currently active using the state flag
+  if (isPowerUpActive) {
+    return; // If a power-up is active, do not process or spawn new power-ups
+  }
+
   powerUps.forEach((powerUp, index) => {   
     powerUp.updatePosition();
 
@@ -87,14 +93,17 @@ export const updatePowerUps = (
       powerUps.splice(index, 1);
       return;
     }
-
+    
     if (powerUp.checkCollision(player)) {
       powerUp.activatePowerUp(setIsPowerUpActive, audioRef, setAudioType);
-      powerUps.splice(index, 1);
-    }
+      
+      // Clear all power-ups from the screen when one is activated
+      powerUps.length = 0; // This effectively deletes all power-ups
+      return; // Exit the loop
+    }          
   });
 
-  // Attempt to spawn a new power-up
+  // Attempt to spawn a new power-up if no power-up is active
   const spawnProbability = 0.1;
   if (Math.random() < spawnProbability) {
     const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth);

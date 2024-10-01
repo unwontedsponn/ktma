@@ -47,7 +47,7 @@ const gameLoop = (
 
   updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audio, floorPlatforms, platformSpeedRef.current);
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused, audioManager);
-  updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager); 
+  updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager, isPowerUpActive); 
   updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current) ;
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
   renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef);
