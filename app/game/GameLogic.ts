@@ -1,10 +1,10 @@
 // GameLogic.ts
 import { useEffect, MutableRefObject, useRef, useState } from 'react';
 import { Player, calculateJumpDistance, createPlayer, updatePlayer } from '@/app/game/entities/Player';
-import { Obstacle, createObstacle, updateObstacles } from '@/app/game/entities/Obstacles';
+import { Obstacle, updateObstacles } from '@/app/game/entities/notUsed/Obstacles';
 import { PowerUp, updatePowerUps } from './entities/PowerUps';
 import { FloorPlatform, updateFloorPlatforms} from './entities/FloorPlatforms';
-import { renderProgressBar } from './entities/ProgressBar';
+import { ProgressBar } from './entities/ProgressBar';
 import { CheckpointLine, updateCheckpointLines } from './entities/CheckpointLine';
 import { checkMusicSection, musicSections } from './utils/Audio';
 
@@ -98,8 +98,11 @@ const renderGame = (
   const progress = currentSection >= 0 ? currentSection : totalSections;
   const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1]; // Default to the last section end time
 
-  // Render the progress bar with the current section filling as the player progresses
-  renderProgressBar(ctx, totalSections, progress, ctx.canvas.width, currentTime, nextSectionTime);
+  // Create an instance of ProgressBar
+  const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
+
+  // Render the progress bar
+  progressBar.render(progress, currentTime, nextSectionTime);
 };
 
 // Define platform speed and control variables within the hook
@@ -234,7 +237,7 @@ export const useGameLogic = () => {
 
     // Set the obstacle spawning interval after the game starts
     const obstacleInterval = setInterval(() => {
-      obstacles.current.push(createObstacle(canvas.width, canvas.height));
+      obstacles.current.push(Obstacle.createObstacle(canvas.width, canvas.height));
     }, 2000);        
 
     // Stop obstacles spawning and animation if the game is paused
