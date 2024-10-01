@@ -1,8 +1,13 @@
 // Paused.tsx
 import React, { useCallback, useEffect } from 'react';
-import { musicSections } from '@/app/game/audio/MusicLibrary';
 import { FloorPlatform } from '../entities/FloorPlatforms';
 import { MutableRefObject } from 'react';
+import { resumeGame } from "@/app/game/GameReset"; // Import the resumeGame function
+import { Player } from '../entities/Player';
+import { Obstacle } from '../entities/notUsed/Obstacles';
+import { PowerUp } from '../entities/PowerUps';
+import { CheckpointLine } from '../entities/CheckpointLine';
+import AudioManager from '../audio/AudioManager';
 
 interface GamePausedSectionProps {
   setGamePaused: (paused: boolean) => void;
@@ -10,13 +15,14 @@ interface GamePausedSectionProps {
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>;
   setCurrentSection: (section: number) => void;
-  resetPlayer: (startingPlatform: FloorPlatform) => void;
-  resetObstacles: () => void;
-  resetPowerUps: () => void;
-  resetFloorPlatforms: () => void;
-  resetCheckpointLines: () => void;  
+  player: MutableRefObject<Player | null>;
+  obstacles: MutableRefObject<Obstacle[]>;
+  powerUps: MutableRefObject<PowerUp[]>;
   floorPlatforms: MutableRefObject<FloorPlatform[]>;
-  resetPlatformSpeed: () => void;
+  checkpointLines: MutableRefObject<CheckpointLine[]>;
+  platformSpeedRef: MutableRefObject<number>;
+  initialPlatformSpeed: number;
+  audioManager: AudioManager;
 }
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
@@ -25,79 +31,61 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   audioRef, 
   gameLoopFunctionRef, 
   setCurrentSection,
-  resetPlayer,
-  resetObstacles,
-  resetPowerUps,
-  resetFloorPlatforms,
-  resetCheckpointLines,  
+  player,
+  obstacles,
+  powerUps,
   floorPlatforms,
-  resetPlatformSpeed
+  checkpointLines,
+  platformSpeedRef,
+  initialPlatformSpeed,
+  audioManager
 }) => {
-
-  const resumeGame = useCallback(async () => {
-    if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
-
-    setGamePaused(false);
-    
-    // Reset all game elements
-    const startingPlatform = floorPlatforms.current[0]; // Get the first platform
-    resetPlayer(startingPlatform); // Pass the first platform to resetPlayer
-
-    resetObstacles();
-    resetPowerUps();
-    resetFloorPlatforms();
-    resetCheckpointLines(); 
-    resetPlatformSpeed();   
-
-    if (audioRef.current) {
-      if (!audioRef.current.paused) audioRef.current.pause();
-
-      // Find the nearest section timestamp before the current time
-      const currentTime = audioRef.current.currentTime;
-      const nearestSection = musicSections.reduce((prev, curr) => 
-        curr <= currentTime ? curr : prev, musicSections[0]
-      );
-
-      audioRef.current.currentTime = nearestSection;
-
-      // Update the current section state
-      const newSectionIndex = musicSections.indexOf(nearestSection);
-      setCurrentSection(newSectionIndex);
-
-      try {await audioRef.current.play();} 
-      catch (error) {console.error('Failed to play audio:', error);}
-    }
-
-    gameLoopFunctionRef.current(performance.now()); // Initialize the game loop
+  const handleResumeGame = useCallback(() => {
+    resumeGame(
+      setGamePaused,
+      animationFrameIdRef,
+      audioRef,
+      gameLoopFunctionRef,
+      setCurrentSection,
+      player,
+      obstacles,
+      powerUps,
+      floorPlatforms,
+      checkpointLines,
+      platformSpeedRef,
+      initialPlatformSpeed,
+      audioManager
+    );
   }, [    
     setGamePaused,
     animationFrameIdRef,
     audioRef,
     gameLoopFunctionRef,
-    resetPlayer,
-    resetObstacles,
-    resetPowerUps,
-    resetFloorPlatforms,
-    resetCheckpointLines,    
     setCurrentSection,
+    player,
+    obstacles,
+    powerUps,
     floorPlatforms,
-    resetPlatformSpeed
+    checkpointLines,
+    platformSpeedRef,
+    initialPlatformSpeed,
+    audioManager
   ]);
 
   // Handle the 'Space' key to resume the game
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.code === 'Space') resumeGame();
+      if (event.code === 'Space') handleResumeGame();
     };
     document.addEventListener('keydown', handleKeyDown);
 
     // Cleanup the event listener on component unmount
-    return () => {document.removeEventListener('keydown', handleKeyDown);};
-  }, [resumeGame]);
+    return () => { document.removeEventListener('keydown', handleKeyDown); };
+  }, [handleResumeGame]);
 
   return (
     <button 
-      onClick={resumeGame} 
+      onClick={handleResumeGame} 
       className="font-gopher-mono border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50"
     >
       Continue from last section... 

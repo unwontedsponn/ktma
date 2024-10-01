@@ -1,6 +1,6 @@
 import { CheckpointLine } from "../entities/CheckpointLine";
 import { musicSections } from "./MusicLibrary";
-import { jumpSfx, landSfx, dyingSfx, checkpointSfx, tokenSfx } from "@/app/game/audio/SfxLibrary";
+import { checkpointSfx } from "@/app/game/audio/SfxLibrary";
 
 type MusicType = 'normal' | '8bit';
 type SfxType = 'jump' | 'land' | 'dying' | 'checkpoint' | 'token';
