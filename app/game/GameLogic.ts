@@ -4,10 +4,8 @@ import { startGameLoop, stopGameLoop } from '@/app/game/AnimationFrameManager';
 import { createGameLoopFunction } from '@/app/game/GameLoopManager';
 import { getPlatformSpeed, resetPlatformSpeed } from './entities/FloorPlatforms/FloorPlatformManager';
 import { addPlayerInputListeners } from './entities/Player/PlayerInputManager';
-import { initializePlatforms } from './entities/FloorPlatforms/FloorPlatformManager';
 import { resetGame, resetPlayer, resetObstacles, resetPowerUps, resetFloorPlatforms, resetCheckpointLines } from "@/app/game/GameStateManager";
 import { setupAudioManager } from './audio/AudioManagerSetup';
-
 import { Player } from '@/app/game/entities/Player/Player';
 import { Obstacle } from '@/app/game/entities/Obstacles/Obstacles';
 import { startObstacleSpawning } from './entities/Obstacles/ObstacleManager';
@@ -19,6 +17,7 @@ import AudioManager from './audio/AudioManager';
 export const useGameLogic = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);  
+  const audioManagerRef = useRef<AudioManager | null>(null); // Use a ref to store audioManager
   const player = useRef<Player | null>(null);
   const obstacles = useRef<Obstacle[]>([]);
   const powerUps = useRef<PowerUp[]>([]);
@@ -26,15 +25,29 @@ export const useGameLogic = () => {
   const checkpointLines = useRef<CheckpointLine[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-
   const platformSpeedRef = useRef<number>(2.8); // Initial platform speed
   const initialPlatformSpeed = 2.8; // Define your initial platform speed
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);  
-  const [, setAudioType] = useState<'normal' | '8bit'>('normal');    
-  const audioManagerRef = useRef<AudioManager | null>(null); // Use a ref to store audioManager
+  const [, setAudioType] = useState<'normal' | '8bit'>('normal');   
+  const [isAudioManagerReady, setIsAudioManagerReady] = useState(false); 
+
+  // New: Try to set up audioManager every time audioRef changes
+  useEffect(() => {
+    if (!audioManagerRef.current && audioRef.current) {
+      console.log('Attempting to set up AudioManager...');
+      audioManagerRef.current = setupAudioManager(audioRef, 'normal');
+      
+      if (audioManagerRef.current) {
+        console.log('AudioManager successfully set up.');
+        setIsAudioManagerReady(true); // Mark as ready
+      } else {
+        console.error('Failed to set up AudioManager.');
+      }
+    }
+  }, [audioRef.current]); // Depend directly on audioRef.current
 
   useEffect(() => {
     if (!gameStarted || gamePaused) {
@@ -47,17 +60,7 @@ export const useGameLogic = () => {
     if (!canvas || !audio) {
       console.error('Canvas or audio element is not available. Exiting useEffect.');
       return;
-    }    
-  
-    // Setup audioManagerRef if not already set
-    if (!audioManagerRef.current && audioRef.current) {
-      console.log('Setting up AudioManager...');
-      audioManagerRef.current = setupAudioManager(audioRef, 'normal');
-      if (!audioManagerRef.current) {
-        console.error('Failed to set up AudioManager. Exiting useEffect.');
-        return; // If audioManager setup fails, exit early
-      }
-    }
+    }        
   
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -143,6 +146,6 @@ export const useGameLogic = () => {
     checkpointLines,
     audioManager: audioManagerRef.current ? audioManagerRef.current : undefined,
     platformSpeedRef,
-    initialPlatformSpeed
+    initialPlatformSpeed,
   };
 };

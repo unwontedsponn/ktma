@@ -20,7 +20,6 @@ const InstructionsSection: React.FC<InstructionsSectionProps> = ({ setGameStarte
   const handleStartGame = () => {
     const canvasWidth = canvasRef.current?.width || 0; // Get canvas width
     const canvasHeight = canvasRef.current?.height || 0; // Get canvas height
-
     startGame(setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasWidth, canvasHeight);
   };
 

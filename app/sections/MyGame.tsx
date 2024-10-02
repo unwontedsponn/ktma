@@ -20,7 +20,7 @@ const MyGame: React.FC = () => {
     checkpointLines,
     audioManager,
     platformSpeedRef,
-    initialPlatformSpeed
+    initialPlatformSpeed,
   } = useGameLogic();  
 
   const [showIntro, setShowIntro] = useState(true);
@@ -32,6 +32,10 @@ const MyGame: React.FC = () => {
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
       <div className="hidden md:flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
+
+        <audio ref={audioRef} src="/audio/game/All_Change.wav" preload="auto" loop>
+          <track kind="captions" srcLang="en" label="English captions" />
+        </audio>
         
         {showIntro && (
           <IntroSection 
@@ -40,7 +44,7 @@ const MyGame: React.FC = () => {
           />
         )}
 
-        {!showIntro && showInstructions && !gameStarted && (
+        {!showIntro && showInstructions && !gameStarted && audioManager && (
           <InstructionsSection 
             setGameStarted={setGameStarted} 
             setGamePaused={setGamePaused} 
@@ -54,7 +58,7 @@ const MyGame: React.FC = () => {
 
         {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
 
-        {gamePaused && (
+        {gamePaused && audioManager && (
           <GamePausedSection
             setGamePaused={setGamePaused}
             animationFrameIdRef={animationFrameIdRef}
@@ -72,11 +76,7 @@ const MyGame: React.FC = () => {
             canvasWidth={canvasRef.current?.width || 0} 
             canvasHeight={canvasRef.current?.height || 0}
           />             
-        )}
-
-        <audio ref={audioRef} src="/audio/game/All_Change.wav" preload="auto" loop>
-          <track kind="captions" srcLang="en" label="English captions" />
-        </audio>
+        )}        
 
       </div>
     </section>
