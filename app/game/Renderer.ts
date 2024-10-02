@@ -1,5 +1,5 @@
-import { Player } from "@/app/game/entities/Player";
-import { Obstacle } from "@/app/game/entities/notUsed/Obstacles";
+import { Player } from "@/app/game/entities/Player/Player";
+import { Obstacle } from "@/app/game/entities/Obstacles/Obstacles";
 import { PowerUp } from "@/app/game/entities/PowerUps";
 import { FloorPlatform } from "@/app/game/entities/FloorPlatforms/FloorPlatforms";
 import { CheckpointLine } from "@/app/game/entities/CheckpointLine";

@@ -1,21 +1,27 @@
 import React from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
 import TypewriterEffect from '@/app/components/TypewriterEffect';
+import { startGame } from '../GameStateManager';
+import { Player } from '../entities/Player/Player';
+import { FloorPlatform } from '../entities/FloorPlatforms/FloorPlatforms';
+import AudioManager from '../audio/AudioManager';
 
 interface InstructionsSectionProps {
   setGameStarted: (started: boolean) => void;
   setGamePaused: (paused: boolean) => void;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+  player: React.MutableRefObject<Player | null>;
+  floorPlatforms: React.MutableRefObject<FloorPlatform[]>;
+  audioManager: AudioManager;
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>; // Add canvasRef to props
 }
 
-const InstructionsSection: React.FC<InstructionsSectionProps> = ({ setGameStarted, setGamePaused, audioRef }) => {
-  const startGame = () => {
-    setGameStarted(true);
-    setGamePaused(false);
-    if (audioRef.current) {
-      audioRef.current.volume = 0.1;
-      audioRef.current.play().catch(error => console.error("Audio play error:", error));
-    }
+const InstructionsSection: React.FC<InstructionsSectionProps> = ({ setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasRef }) => {
+  const handleStartGame = () => {
+    const canvasWidth = canvasRef.current?.width || 0; // Get canvas width
+    const canvasHeight = canvasRef.current?.height || 0; // Get canvas height
+
+    startGame(setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasWidth, canvasHeight);
   };
 
   return (
@@ -36,7 +42,7 @@ const InstructionsSection: React.FC<InstructionsSectionProps> = ({ setGameStarte
 
       <div className="flex flex-col items-center">
         <SlideFadeIn direction="right" className="font-gopher-mono">
-          <button onClick={startGame} className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
+          <button onClick={handleStartGame} className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
             Play
           </button>
         </SlideFadeIn>

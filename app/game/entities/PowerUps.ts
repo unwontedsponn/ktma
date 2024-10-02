@@ -1,5 +1,5 @@
 // PowerUps.ts
-import { Player } from "@/app/game/entities/Player";
+import { Player } from "@/app/game/entities/Player/Player";
 import { tokenSfx } from '@/app/game/audio/SfxLibrary';
 import AudioManager from "../audio/AudioManager";
 import { FloorPlatform } from "./FloorPlatforms/FloorPlatforms";

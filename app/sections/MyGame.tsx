@@ -12,15 +12,16 @@ const MyGame: React.FC = () => {
     gameStarted,
     setGameStarted,
     gamePaused,
-    setGamePaused,
-    resetPlayer,
-    resetObstacles,
-    resetPowerUps,
-    resetFloorPlatforms,
-    resetCheckpointLines,    
-    floorPlatforms,
-    resetPlatformSpeed,
-  } = useGameLogic();
+    setGamePaused,    
+    floorPlatforms,    
+    player,
+    obstacles,
+    powerUps,
+    checkpointLines,
+    audioManager,
+    platformSpeedRef,
+    initialPlatformSpeed
+  } = useGameLogic();  
 
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -43,27 +44,34 @@ const MyGame: React.FC = () => {
           <InstructionsSection 
             setGameStarted={setGameStarted} 
             setGamePaused={setGamePaused} 
-            audioRef={audioRef} 
+            audioRef={audioRef}
+            player={player}
+            floorPlatforms={floorPlatforms}
+            audioManager={audioManager}
+            canvasRef={canvasRef}
           />
         )}
 
         {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
 
         {gamePaused && (
-          <GamePausedSection 
+          <GamePausedSection
             setGamePaused={setGamePaused}
             animationFrameIdRef={animationFrameIdRef}
             audioRef={audioRef}
-            gameLoopFunctionRef={gameLoopFunctionRef}            
+            gameLoopFunctionRef={gameLoopFunctionRef}
             setCurrentSection={setCurrentSection}
-            resetPlayer={resetPlayer}
-            resetObstacles={resetObstacles}
-            resetPowerUps={resetPowerUps}
-            resetFloorPlatforms={resetFloorPlatforms}
-            resetCheckpointLines={resetCheckpointLines}            
+            player={player}
+            obstacles={obstacles}
+            powerUps={powerUps}
             floorPlatforms={floorPlatforms}
-            resetPlatformSpeed={resetPlatformSpeed}
-          />        
+            checkpointLines={checkpointLines}
+            platformSpeedRef={platformSpeedRef}
+            initialPlatformSpeed={initialPlatformSpeed}
+            audioManager={audioManager}
+            canvasWidth={canvasRef.current?.width || 0} 
+            canvasHeight={canvasRef.current?.height || 0}
+          />             
         )}
 
         <audio ref={audioRef} src="/audio/game/All_Change.wav" preload="auto" loop>

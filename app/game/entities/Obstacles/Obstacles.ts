@@ -1,7 +1,7 @@
 // Obstacles.ts
 import { dyingSfx } from "@/app/game/audio/SfxLibrary";
 import AudioManager from "../../audio/AudioManager";
-import { Player, calculateJumpDistance } from "@/app/game/entities/Player";
+import { Player, calculateJumpDistance } from "@/app/game/entities/Player/Player";
 
 export class Obstacle {
   x: number;

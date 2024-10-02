@@ -1,5 +1,5 @@
 // CheckpointLine.ts
-import { Player } from "./Player";
+import { Player } from "@/app/game/entities/Player/Player";
 
 export class CheckpointLine {
   x: number;

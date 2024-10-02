@@ -2,9 +2,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { FloorPlatform } from '../entities/FloorPlatforms/FloorPlatforms';
 import { MutableRefObject } from 'react';
-import { resumeGame } from "@/app/game/GameReset"; // Import the resumeGame function
-import { Player } from '../entities/Player';
-import { Obstacle } from '../entities/notUsed/Obstacles';
+import { resumeGame } from "@/app/game/GameStateManager"; // Import the resumeGame function
+import { Player } from '../entities/Player/Player';
+import { Obstacle } from '../entities/Obstacles/Obstacles';
 import { PowerUp } from '../entities/PowerUps';
 import { CheckpointLine } from '../entities/CheckpointLine';
 import AudioManager from '../audio/AudioManager';
@@ -23,6 +23,8 @@ interface GamePausedSectionProps {
   platformSpeedRef: MutableRefObject<number>;
   initialPlatformSpeed: number;
   audioManager: AudioManager;
+  canvasWidth: number;  // Add canvasWidth
+  canvasHeight: number; // Add canvasHeight
 }
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
@@ -38,7 +40,9 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   checkpointLines,
   platformSpeedRef,
   initialPlatformSpeed,
-  audioManager
+  audioManager,
+  canvasWidth,
+  canvasHeight
 }) => {
   const handleResumeGame = useCallback(() => {
     resumeGame(
@@ -54,7 +58,9 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
       checkpointLines,
       platformSpeedRef,
       initialPlatformSpeed,
-      audioManager
+      audioManager,
+      canvasWidth,
+      canvasHeight
     );
   }, [    
     setGamePaused,

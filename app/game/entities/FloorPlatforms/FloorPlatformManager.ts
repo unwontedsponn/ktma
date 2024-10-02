@@ -1,37 +1,97 @@
 import { MutableRefObject } from 'react';
 import { FloorPlatform } from './FloorPlatforms';
-import { Player, createPlayer, calculateJumpDistance } from '@/app/game/entities/Player';
+import { Player, calculateJumpDistance } from '@/app/game/entities/Player/Player';
 import AudioManager from '@/app/game/audio/AudioManager';
+
+// Platform speed variables
+let platformSpeed = 2.8; // Initial platform speed
+const speedIncreaseRate = 0.001; // Rate at which the speed increases
+const maxSpeed = 10; // Maximum speed cap
+
+// Function to increase platform speed
+export const increasePlatformSpeed = () => {
+  platformSpeed = Math.min(platformSpeed + speedIncreaseRate, maxSpeed);
+};
+
+// Function to reset platform speed
+export const resetPlatformSpeed = () => {
+  platformSpeed = 2.8;
+};
+
+// Function to get the current platform speed
+export const getPlatformSpeed = () => {
+  return platformSpeed;
+};
 
 export const initializePlatforms = (
   canvasWidth: number,
   canvasHeight: number,
-  player: MutableRefObject<Player | null>,
-  floorPlatforms: MutableRefObject<FloorPlatform[]>,
-  audioManager: AudioManager
+  floorPlatforms: MutableRefObject<FloorPlatform[]>
 ) => {
-  if (!floorPlatforms.current.length) {
-    // Ensure player exists
-    if (!player.current) {
-      const startingPlatform = FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, 0);
-      floorPlatforms.current.push(startingPlatform);
-      player.current = createPlayer(startingPlatform, audioManager); // Create player if not already created
-    }
+  // Ensure platforms are reset
+  floorPlatforms.current = [];
 
-    // Position the first platform near the left of the canvas
-    if (!floorPlatforms.current.length) {
-      floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, 0));
-    }
+  // Create an initial platform near the left of the canvas
+  const initialPlatform = FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, 0);
+  floorPlatforms.current.push(initialPlatform);
 
-    // Calculate a valid jumpable gap for the second platform
-    const horizontalSpeed = 1.8; // Platform movement speed
-    const jumpDistance = calculateJumpDistance(player.current!.jumpStrength, player.current!.gravity, horizontalSpeed);
+  // Create additional platforms without depending on player properties
+  let currentX = initialPlatform.width; // Start after the initial platform
+  const horizontalSpeed = getPlatformSpeed();
 
-    const maxGap = jumpDistance * 0.85; // Slightly less than player's max jump distance
-    const minGap = 50; // Ensure there is always some gap, but not too small
-    const gap = FloorPlatform.getRandomInRange(minGap, maxGap); // Random gap within the jumpable range
+  const maxGap = 200; // Define default gap range (fixed values)
+  const minGap = 50; 
 
-    // Spawn the second platform after the valid gap
-    floorPlatforms.current.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, floorPlatforms.current[0].width + gap));
+  while (currentX < canvasWidth) {
+    const gap = FloorPlatform.getRandomInRange(minGap, maxGap);
+    currentX += gap; // Add gap to the current position
+
+    // Create and add a new platform
+    const newPlatform = FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, currentX);
+    floorPlatforms.current.push(newPlatform);
+    currentX += newPlatform.width; // Move past the new platform
+  }
+};
+
+// Function to update all floor platforms
+export const updateFloorPlatforms = (
+  floorPlatforms: FloorPlatform[],
+  player: Player,
+  canvasWidth: number,
+  canvasHeight: number,
+  gamePaused: boolean
+) => {
+  if (gamePaused || player.isDead) return;
+
+  // Increase platform speed gradually
+  increasePlatformSpeed();
+  const currentSpeed = getPlatformSpeed();
+
+  const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, currentSpeed);
+
+  // Determine the max and min gaps based on the player's jump capabilities
+  const maxGap = jumpDistance * 0.85; // Slightly smaller than the player's max jump distance
+  const minGap = 100; // Set a fixed minimum gap to prevent platforms from being too close
+
+  // Move each platform to the left and remove it if it's off-screen
+  floorPlatforms.forEach((floorPlatform, index) => {
+    floorPlatform.updatePosition(currentSpeed);
+    if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
+  });
+
+  // Check the rightmost edge of the last platform
+  const lastPlatform = floorPlatforms[floorPlatforms.length - 1];
+  const rightEdgeOfLastPlatform = lastPlatform ? lastPlatform.x + lastPlatform.width : 0;
+
+  // Only spawn a new platform if the last platform is far enough from the screen edge
+  if (rightEdgeOfLastPlatform < canvasWidth - minGap) {
+    // Calculate a random gap between the minimum and maximum allowed gap
+    const gap = FloorPlatform.getRandomInRange(minGap, maxGap);
+    
+    // Force the new platform to spawn fully off-screen
+    const newPlatformX = canvasWidth + gap + 50; // Additional 50 units to ensure it's off-screen
+
+    // Spawn a new platform at the calculated position
+    floorPlatforms.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, newPlatformX));
   }
 };
