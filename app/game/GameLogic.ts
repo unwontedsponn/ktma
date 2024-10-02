@@ -32,7 +32,7 @@ export const useGameLogic = () => {
   const [gamePaused, setGamePaused] = useState(false);
   const [isPowerUpActive, setIsPowerUpActive] = useState(false);  
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');   
-  const [isAudioManagerReady, setIsAudioManagerReady] = useState(false); 
+  const [, setIsAudioManagerReady] = useState(false); 
 
   // New: Try to set up audioManager every time audioRef changes
   useEffect(() => {
@@ -71,8 +71,7 @@ export const useGameLogic = () => {
     // Check if audioManagerRef.current is not null before using it
     if (audioManagerRef.current) {
       console.log('Initializing game elements...');      
-  
-      const startingPlatform = floorPlatforms.current[0];
+        
       resetGame(
         player,      
         obstacles,

@@ -1,7 +1,6 @@
 import { MutableRefObject } from 'react';
 import { FloorPlatform } from './FloorPlatforms';
 import { Player, calculateJumpDistance } from '@/app/game/entities/Player/Player';
-import AudioManager from '@/app/game/audio/AudioManager';
 
 // Platform speed variables
 let platformSpeed = 2.8; // Initial platform speed
@@ -36,8 +35,7 @@ export const initializePlatforms = (
   floorPlatforms.current.push(initialPlatform);
 
   // Create additional platforms without depending on player properties
-  let currentX = initialPlatform.width; // Start after the initial platform
-  const horizontalSpeed = getPlatformSpeed();
+  let currentX = initialPlatform.width; // Start after the initial platform  
 
   const maxGap = 200; // Define default gap range (fixed values)
   const minGap = 50; 

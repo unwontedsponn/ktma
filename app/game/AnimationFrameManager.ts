@@ -1,12 +1,14 @@
+import { Player } from '@/app/game/entities/Player/Player'; // Adjust the import path as needed
+
 // AnimationFrameManager.ts
 export const startGameLoop = (
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>,
   animationFrameIdRef: React.MutableRefObject<number | null>,
-  player: React.MutableRefObject<any>
+  player: React.MutableRefObject<Player | null>
 ) => {
   if (animationFrameIdRef.current === null) {
     animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
-    player.current.isDead = false;
+    if (player.current && 'isDead' in player.current) player.current.isDead = false;  
   }
 };
 

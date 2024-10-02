@@ -115,8 +115,7 @@ export const resumeGame = async (
 
   setGamePaused(false);
   
-  // Get the first platform to reset the player
-  const startingPlatform = floorPlatforms.current[0]; 
+  // Get the first platform to reset the player  
   resetGame(player, obstacles, powerUps, floorPlatforms, checkpointLines, platformSpeedRef, initialPlatformSpeed, audioManager, canvasWidth, canvasHeight);
 
   if (audioRef.current) {
