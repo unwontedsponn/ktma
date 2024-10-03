@@ -1,9 +1,9 @@
 // MyGame.tsx
 import React, { useState, useRef } from 'react';
 import { useGameLogic } from '@/app/game/GameLogic';
-import IntroSection from '@/app/game/sections/Intro';
-import InstructionsSection from '@/app/game/sections/Instructions';
-import GamePausedSection from '@/app/game/sections/Paused';
+import IntroSection from '@/app/game/sections/IntroSection';
+import InstructionsSection from '@/app/game/sections/InstructionsSection';
+import GamePausedSection from '@/app/game/sections/PausedSection';
 
 const MyGame: React.FC = () => {
   const {

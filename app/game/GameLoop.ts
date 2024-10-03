@@ -1,3 +1,4 @@
+// GameLoop.tsx
 import { Player, updatePlayer } from "@/app/game/entities/Player/Player";
 import { Obstacle, updateObstacles } from "@/app/game/entities/Obstacles/Obstacles";
 import { PowerUp, updatePowerUps } from "@/app/game/entities/PowerUps";

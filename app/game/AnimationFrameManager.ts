@@ -1,6 +1,6 @@
-import { Player } from '@/app/game/entities/Player/Player'; // Adjust the import path as needed
-
 // AnimationFrameManager.ts
+import { Player } from '@/app/game/entities/Player/Player';
+
 export const startGameLoop = (
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>,
   animationFrameIdRef: React.MutableRefObject<number | null>,

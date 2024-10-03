@@ -62,11 +62,24 @@ export class Player {
   moveLeft() {this.velocityX = -this.moveSpeed;}
   moveRight() {this.velocityX = this.moveSpeed;}
   stopMoving() {this.velocityX = 0;}
+
+  die(setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
+    setGamePaused(true);
+    this.audioManager.playRandomSfx(dyingSfx, 'dying');
+    if (audio) audio.pause();
+    this.isDead = true;
+  }
   
-  updatePosition(canvasWidth: number) {
+  updatePosition(canvasWidth: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
     this.x += this.velocityX;
-    if (this.x < 0) this.x = 0;
-    if (this.x + this.width > canvasWidth) this.x = canvasWidth - this.width;
+    if (this.x < 0) {
+      this.die(setGamePaused, audio);
+      return; // Exit early since the player has died
+    }
+    if (this.x + this.width > canvasWidth) {
+      this.die(setGamePaused, audio);
+      return; // Exit early since the player has died
+    };
   }
 
   jump() {
@@ -144,10 +157,7 @@ export class Player {
 
   handleFall(canvasHeight: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
     if (this.y >= canvasHeight - this.height) {
-      setGamePaused(true);
-      this.audioManager.playRandomSfx(dyingSfx, 'dying');
-      if (audio) audio.pause();
-      this.isDead = true;
+      this.die(setGamePaused, audio);
     }
   }
 
@@ -182,7 +192,7 @@ export const updatePlayer = (
   if (gamePaused || player.isDead) return;  
 
   player.applyPowerUp(isPowerUpActive);
-  player.updatePosition(canvasWidth);
+  player.updatePosition(canvasWidth, setGamePaused, audio);
   player.applyGravity();
   player.checkPlatformCollision(floorPlatforms, platformSpeed);
   

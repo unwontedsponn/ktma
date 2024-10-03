@@ -1,3 +1,4 @@
+// IntroSection.tsx
 import React from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
 

@@ -54,7 +54,6 @@ export const createGameLoopFunction = (
         );
       }
     }
-
     animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
   };
 };

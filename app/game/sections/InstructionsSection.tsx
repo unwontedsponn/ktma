@@ -1,3 +1,4 @@
+// InstructionsSection.tsx
 import React from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
 import TypewriterEffect from '@/app/components/TypewriterEffect';
@@ -17,6 +18,7 @@ interface InstructionsSectionProps {
 }
 
 const InstructionsSection: React.FC<InstructionsSectionProps> = ({ setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasRef }) => {
+  
   const handleStartGame = () => {
     const canvasWidth = canvasRef.current?.width || 0; // Get canvas width
     const canvasHeight = canvasRef.current?.height || 0; // Get canvas height

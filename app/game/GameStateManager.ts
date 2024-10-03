@@ -8,9 +8,8 @@ import AudioManager from "@/app/game/audio/AudioManager";
 import { musicSections } from "@/app/game/audio/MusicLibrary";
 import { MutableRefObject } from 'react';
 import { initializePlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
-import { initializePlayer } from "@/app/game/entities/Player/PlayerManager"; // Import initializePlayer
+import { initializePlayer } from "@/app/game/entities/Player/PlayerManager";
 
-// Function to reset the platform speed
 export const resetPlatformSpeed = (platformSpeedRef: MutableRefObject<number>, initialPlatformSpeed: number) => {
   if (platformSpeedRef && platformSpeedRef.current !== undefined) platformSpeedRef.current = initialPlatformSpeed;
 };
