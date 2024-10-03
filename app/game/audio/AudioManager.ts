@@ -14,7 +14,7 @@ class AudioManager {
   };
   private lineAddedForSection: number | null = null;
 
-  constructor(audioRef: React.RefObject<HTMLAudioElement>, audioType: MusicType) {
+  constructor(audioRef: React.RefObject<HTMLAudioElement>) {
     this.audioRef = audioRef;
     this.audioType = '8bit'; // Set initial type to '8bit'
 
