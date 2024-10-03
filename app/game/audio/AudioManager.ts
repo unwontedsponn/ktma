@@ -24,49 +24,6 @@ class AudioManager {
     } 
   }
 
-  // New method to fade the volume
-  crossFadeMusic(
-    audioRef: React.RefObject<HTMLAudioElement>,
-    newType: 'normal' | '8bit',
-    setAudioType: (type: 'normal' | '8bit') => void,
-    duration: number
-  ) {
-    if (!audioRef.current) return;
-    
-    const audio = audioRef.current;
-    const initialVolume = audio.volume;
-    const targetVolume = this.getVolume('music', newType);
-    const step = Math.abs(initialVolume - targetVolume) / (duration / 50); // Ensure step is positive
-  
-    // Create a new audio element for the new track
-    const newAudio = new Audio(newType === 'normal' ? '/audio/game/All_Change.wav' : '/audio/game/All Change 8-BIT.wav');
-    newAudio.volume = 0; // Start with volume 0
-    newAudio.currentTime = audio.currentTime;
-    newAudio.play();
-  
-    // Crossfade both tracks over the specified duration
-    let interval = setInterval(() => {
-      // Fade out the current track
-      if (audio.volume > 0) {
-        audio.volume = Math.max(audio.volume - step, 0); // Ensure volume doesn't go below 0
-      }
-  
-      // Fade in the new track
-      if (newAudio.volume < targetVolume) {
-        newAudio.volume = Math.min(newAudio.volume + step, targetVolume); // Ensure volume doesn't go above target
-      }
-  
-      // Stop crossfading when both fade-in and fade-out are complete
-      if (audio.volume <= 0 && newAudio.volume >= targetVolume) {
-        clearInterval(interval);
-        audio.pause();
-        audio.src = newAudio.src; // Set the audioRef to the new track
-        audio.volume = targetVolume; // Set final volume
-        setAudioType(newType);
-      }
-    }, 50); // Adjust interval duration for smoother transitions
-  }  
-
   switchMusic(
     audioRef: React.RefObject<HTMLAudioElement>,
     currentTime: number,

@@ -54,21 +54,16 @@ export class PowerUp {
   ) {
     setIsPowerUpActive(true);
     this.audioManager.playRandomSfx(tokenSfx, 'token');
-  
+    
     const currentTime = audioRef?.current?.currentTime || 0;
     this.audioManager.switchMusic(audioRef, currentTime, '8bit', setAudioType);
-  
-    // Set the duration for the power-up effect (e.g., 5000 ms)
-    const powerUpDuration = 5000;
-  
-    // Start crossfading 1 second before the power-up ends
+
     setTimeout(() => {
-      this.audioManager.crossFadeMusic(audioRef, 'normal', setAudioType, 1000); // Crossfade over 1 second
+      const newCurrentTime = audioRef?.current?.currentTime || 0;
+      this.audioManager.switchMusic(audioRef, newCurrentTime, 'normal', setAudioType);
       setIsPowerUpActive(false);
-    }, powerUpDuration - 1000);
+    }, 5000);
   }
-  
-  
 }
 
 // Utility function to create a new PowerUp
