@@ -67,33 +67,6 @@ export const startGame = (
   }
 };
 
-
-
-export const resetGame = (
-  player: MutableRefObject<Player | null>,
-  obstacles: MutableRefObject<Obstacle[]>,
-  powerUps: MutableRefObject<PowerUp[]>,
-  floorPlatforms: MutableRefObject<FloorPlatform[]>,
-  checkpointLines: MutableRefObject<CheckpointLine[]>,
-  platformSpeedRef: MutableRefObject<number>,
-  initialPlatformSpeed: number,
-  audioManager: AudioManager,
-  canvasWidth: number,
-  canvasHeight: number
-) => {
-  resetPlatformSpeed(platformSpeedRef, initialPlatformSpeed);
-  resetObstacles(obstacles);
-  resetPowerUps(powerUps);
-  resetFloorPlatforms(floorPlatforms);
-  resetCheckpointLines(checkpointLines);
-
-  // Initialize platforms and set the player on the first platform
-  initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
-  const startingPlatform = floorPlatforms.current[0];
-  resetPlayer(player, startingPlatform, audioManager);
-};
-
-// Function to resume the game
 export const resumeGame = async (
   setGamePaused: (paused: boolean) => void,
   animationFrameIdRef: MutableRefObject<number | null>,
@@ -108,16 +81,28 @@ export const resumeGame = async (
   platformSpeedRef: MutableRefObject<number>,
   initialPlatformSpeed: number,
   audioManager: AudioManager,
-  canvasWidth: number, // Add these parameters
+  canvasWidth: number,
   canvasHeight: number
 ) => {
+  // Cancel the current animation frame if it's running
   if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
 
+  // Unpause the game
   setGamePaused(false);
-  
-  // Get the first platform to reset the player  
-  resetGame(player, obstacles, powerUps, floorPlatforms, checkpointLines, platformSpeedRef, initialPlatformSpeed, audioManager, canvasWidth, canvasHeight);
 
+  // Reset the game state
+  resetPlatformSpeed(platformSpeedRef, initialPlatformSpeed);
+  resetObstacles(obstacles);
+  resetPowerUps(powerUps);
+  resetFloorPlatforms(floorPlatforms);
+  resetCheckpointLines(checkpointLines);
+
+  // Initialize platforms and set the player on the first platform
+  initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
+  const startingPlatform = floorPlatforms.current[0];
+  resetPlayer(player, startingPlatform, audioManager);
+
+  // Handle audio
   if (audioRef.current) {
     if (!audioRef.current.paused) audioRef.current.pause();
 
@@ -133,9 +118,13 @@ export const resumeGame = async (
     const newSectionIndex = musicSections.indexOf(nearestSection);
     setCurrentSection(newSectionIndex);
 
-    try { await audioRef.current.play(); } 
-    catch (error) { console.error('Failed to play audio:', error); }
+    try { 
+      await audioRef.current.play(); 
+    } catch (error) { 
+      console.error('Failed to play audio:', error); 
+    }
   }
 
-  gameLoopFunctionRef.current(performance.now()); // Initialize the game loop
+  // Start the game loop
+  gameLoopFunctionRef.current(performance.now());
 };

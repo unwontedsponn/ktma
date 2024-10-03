@@ -4,7 +4,7 @@ import { startGameLoop, stopGameLoop } from '@/app/game/AnimationFrameManager';
 import { createGameLoopFunction } from '@/app/game/GameLoopManager';
 import { getPlatformSpeed, resetPlatformSpeed } from './entities/FloorPlatforms/FloorPlatformManager';
 import { addPlayerInputListeners } from './entities/Player/PlayerInputManager';
-import { resetGame, resetPlayer, resetObstacles, resetPowerUps, resetFloorPlatforms, resetCheckpointLines } from "@/app/game/GameStateManager";
+import { resetPlayer, resetObstacles, resetPowerUps, resetFloorPlatforms, resetCheckpointLines } from "@/app/game/GameStateManager";
 import { setupAudioManager } from './audio/AudioManagerSetup';
 import { Player } from '@/app/game/entities/Player/Player';
 import { Obstacle } from '@/app/game/entities/Obstacles/Obstacles';
@@ -34,20 +34,11 @@ export const useGameLogic = () => {
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');   
   const [, setIsAudioManagerReady] = useState(false); 
 
-  // New: Try to set up audioManager every time audioRef changes
   useEffect(() => {
-    if (!audioManagerRef.current && audioRef.current) {
-      console.log('Attempting to set up AudioManager...');
-      audioManagerRef.current = setupAudioManager(audioRef, 'normal');
-      
-      if (audioManagerRef.current) {
-        console.log('AudioManager successfully set up.');
-        setIsAudioManagerReady(true); // Mark as ready
-      } else {
-        console.error('Failed to set up AudioManager.');
-      }
-    }
-  }, [audioRef.current]); // Depend directly on audioRef.current
+    if (audioManagerRef.current || !audioRef.current) return;
+    audioManagerRef.current = setupAudioManager(audioRef, 'normal');
+    if (audioManagerRef.current) setIsAudioManagerReady(true);
+  }, [audioRef]); // Ensure `audioRef` is the actual dependency, not `audioRef.current`  
 
   useEffect(() => {
     if (!gameStarted || gamePaused) {
@@ -69,22 +60,7 @@ export const useGameLogic = () => {
     }
   
     // Check if audioManagerRef.current is not null before using it
-    if (audioManagerRef.current) {
-      console.log('Initializing game elements...');      
-        
-      resetGame(
-        player,      
-        obstacles,
-        powerUps,
-        floorPlatforms,
-        checkpointLines,
-        platformSpeedRef,
-        initialPlatformSpeed,
-        audioManagerRef.current,
-        canvas.width,
-        canvas.height
-      );
-  
+    if (audioManagerRef.current) {                     
       // Initialize the game loop function
       gameLoopFunctionRef.current = createGameLoopFunction(
         ctx,
@@ -103,8 +79,7 @@ export const useGameLogic = () => {
         isPowerUpActive,
         audioManagerRef.current
       );
-  
-      console.log('Starting game loop...');
+        
       startGameLoop(gameLoopFunctionRef, animationFrameIdRef, player);
   
       const stopObstacleSpawning = startObstacleSpawning(obstacles, canvas.width, canvas.height, audioManagerRef.current);
@@ -118,8 +93,6 @@ export const useGameLogic = () => {
         removeInputListeners();
         stopGameLoop(animationFrameIdRef);
       };
-    } else {
-      console.error('AudioManager is not initialized. Exiting useEffect.');
     }
   }, [gameStarted, gamePaused, isPowerUpActive]);  
 
@@ -137,7 +110,6 @@ export const useGameLogic = () => {
     resetPowerUps,
     resetFloorPlatforms,
     resetCheckpointLines,
-    isPowerUpActive,
     floorPlatforms,
     player,
     obstacles,
