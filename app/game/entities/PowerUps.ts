@@ -54,11 +54,11 @@ export class PowerUp {
     this.audioManager.playRandomSfx(tokenSfx, 'token');
     
     const currentTime = audioRef?.current?.currentTime || 0;
-    this.audioManager.switchMusic(audioRef, currentTime, 'normal', setAudioType);
+    this.audioManager.switchMusic(audioRef, currentTime, '8bit', setAudioType);
 
     setTimeout(() => {
       const newCurrentTime = audioRef?.current?.currentTime || 0;
-      this.audioManager.switchMusic(audioRef, newCurrentTime, '8bit', setAudioType);
+      this.audioManager.switchMusic(audioRef, newCurrentTime, 'normal', setAudioType);
       setIsPowerUpActive(false);
     }, 5000);
   }

@@ -3,8 +3,8 @@ import { FloorPlatform } from './FloorPlatforms';
 import { Player, calculateJumpDistance } from '@/app/game/entities/Player/Player';
 
 // Platform speed variables
-let platformSpeed = 2.8; // Initial platform speed
-const speedIncreaseRate = 0.001; // Rate at which the speed increases
+let platformSpeed = 3.5; // Initial platform speed
+const speedIncreaseRate = 0.01; // Rate at which the speed increases
 const maxSpeed = 10; // Maximum speed cap
 
 // Function to increase platform speed
@@ -14,7 +14,7 @@ export const increasePlatformSpeed = () => {
 
 // Function to reset platform speed
 export const resetPlatformSpeed = () => {
-  platformSpeed = 2.8;
+  platformSpeed = 3.5;
 };
 
 // Function to get the current platform speed

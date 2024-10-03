@@ -112,7 +112,7 @@ export class Player {
       if (isCollidingWithSide) {
         // Handle side collision
         this.velocityX = -platformSpeed; // Move backward at the same speed as the platform
-        
+  
         if (!this.isGrounded) {
           // If the player is not on a platform, allow them to fall
           this.velocityY += this.gravity; // Apply gravity to make the player fall (slide down)
@@ -126,12 +126,15 @@ export class Player {
       }
   
       // Check if player has landed on top of a platform
+      const buffer = 2; // Small buffer to help with fast movement collisions
+      const nextYPosition = this.y + this.velocityY;
       const isPlayerOnPlatform =
         this.x < platform.x + platform.width && // Player's left side is to the left of platform's right side
         this.x + this.width > platform.x && // Player's right side is to the right of platform's left side
         this.previousY + this.height <= platform.y && // Ensure the player's bottom was above the platform's top in the previous frame
-        this.y + this.height >= platform.y && // Check if the player's bottom is exactly at the platform's top
+        nextYPosition + this.height >= platform.y - buffer && // Use a buffer to prevent missing collisions
         this.velocityY >= 0; // Ensure the player is falling
+
   
       if (isPlayerOnPlatform) {
         // Handle landing on the platform
@@ -153,7 +156,7 @@ export class Player {
     // If no platform collision detected, the player is airborne
     this.isGrounded = false;
     this.hasLanded = false;
-  }    
+  }  
 
   handleFall(canvasHeight: number, setGamePaused: (paused: boolean) => void, audio: HTMLAudioElement | null) {
     if (this.y >= canvasHeight - this.height) {
@@ -192,6 +195,10 @@ export const updatePlayer = (
   if (gamePaused || player.isDead) return;  
 
   player.applyPowerUp(isPowerUpActive);
+
+  // Update previousY before making any position changes
+  player.previousY = player.y;
+
   player.updatePosition(canvasWidth, setGamePaused, audio);
   player.applyGravity();
   player.checkPlatformCollision(floorPlatforms, platformSpeed);

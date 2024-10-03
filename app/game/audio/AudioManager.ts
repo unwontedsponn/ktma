@@ -16,7 +16,7 @@ class AudioManager {
 
   constructor(audioRef: React.RefObject<HTMLAudioElement>) {
     this.audioRef = audioRef;
-    this.audioType = '8bit'; // Set initial type to '8bit'
+    this.audioType = 'normal'; // Set initial type
 
     // Set the initial volume for the audio element
     if (audioRef.current) {
