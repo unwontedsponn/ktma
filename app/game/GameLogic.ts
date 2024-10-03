@@ -36,7 +36,7 @@ export const useGameLogic = () => {
 
   useEffect(() => {
     if (audioManagerRef.current || !audioRef.current) return;
-    audioManagerRef.current = setupAudioManager(audioRef, 'normal');
+    audioManagerRef.current = setupAudioManager(audioRef);
     if (audioManagerRef.current) setIsAudioManagerReady(true);
   }, [audioRef]); // Ensure `audioRef` is the actual dependency, not `audioRef.current`  
 
