@@ -12,14 +12,18 @@ export class PowerUp {
   color: string;
   platform: FloorPlatform;
   isActive: boolean;
-
+  private xOffset: number; // Store the randomized offset
   private audioManager: AudioManager; // Add AudioManager instance
 
   constructor(platform: FloorPlatform, audioManager: AudioManager) {
-    this.x = platform.x + 20;
-    this.y = platform.y - 40;
     this.width = 20;
     this.height = 20;
+
+    // Randomize x within the platform's width
+    this.xOffset = Math.random() * (platform.width - this.width);
+    this.x = platform.x + this.xOffset;
+    this.y = platform.y - 40;
+    
     this.color = '#5f9251'; // green
     this.platform = platform;
     this.isActive = false;
@@ -28,13 +32,11 @@ export class PowerUp {
 
   updatePosition() {
     // Move the power-up with its associated platform
-    this.x = this.platform.x + this.width; // Keep it slightly to the right of the platform's x position
+    this.x = this.platform.x + this.xOffset; // Keep the initial randomized position relative to the platform
     this.y = this.platform.y - this.height * 2; // Keep it slightly above the platform
   }
 
-  isOffScreen(): boolean {
-    return this.x + this.width < 0;
-  }
+  isOffScreen(): boolean {return this.x + this.width < 0;}
 
   checkCollision(player: Player): boolean {
     return (
@@ -79,12 +81,9 @@ export const updatePowerUps = (
   floorPlatforms: FloorPlatform[],
   canvasWidth: number,
   audioManager: AudioManager,
-  isPowerUpActive: boolean // Pass this flag to indicate if a power-up is active
+  isPowerUpActive: boolean 
 ) => {
-  // Check if any power-up is currently active using the state flag
-  if (isPowerUpActive) {
-    return; // If a power-up is active, do not process or spawn new power-ups
-  }
+  if (isPowerUpActive) return;
 
   powerUps.forEach((powerUp, index) => {   
     powerUp.updatePosition();
@@ -106,7 +105,10 @@ export const updatePowerUps = (
   // Attempt to spawn a new power-up if no power-up is active
   const spawnProbability = 0.1;
   if (Math.random() < spawnProbability) {
-    const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth);
-    if (upcomingPlatform) powerUps.push(createPowerUp(upcomingPlatform, audioManager));
+    const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth && !platform.hasPowerUp);
+    if (upcomingPlatform) {
+      powerUps.push(createPowerUp(upcomingPlatform, audioManager));
+      upcomingPlatform.hasPowerUp = true; // Mark the platform as having a power-up
+    }
   }
 };

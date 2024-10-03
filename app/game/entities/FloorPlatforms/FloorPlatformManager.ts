@@ -9,7 +9,7 @@ const maxSpeed = 10; // Maximum speed cap
 
 // Function to increase platform speed
 export const increasePlatformSpeed = () => {
-  platformSpeed = Math.min(platformSpeed + speedIncreaseRate, maxSpeed);
+  platformSpeed = Math.min(platformSpeed + speedIncreaseRate, maxSpeed);  
 };
 
 // Function to reset platform speed
@@ -22,10 +22,11 @@ export const getPlatformSpeed = () => {
   return platformSpeed;
 };
 
+// Makes all floorPlatforms first visible on screen
 export const initializePlatforms = (
   canvasWidth: number,
   canvasHeight: number,
-  floorPlatforms: MutableRefObject<FloorPlatform[]>
+  floorPlatforms: MutableRefObject<FloorPlatform[]>,
 ) => {
   // Ensure platforms are reset
   floorPlatforms.current = [];
@@ -63,7 +64,7 @@ export const updateFloorPlatforms = (
 
   // Increase platform speed gradually
   increasePlatformSpeed();
-  const currentSpeed = getPlatformSpeed();
+  const currentSpeed = getPlatformSpeed();  
 
   const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, currentSpeed);
 

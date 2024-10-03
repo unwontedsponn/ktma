@@ -27,7 +27,10 @@ export const resetPowerUps = (powerUps: MutableRefObject<PowerUp[]>) => {
 };
 
 export const resetFloorPlatforms = (floorPlatforms: MutableRefObject<FloorPlatform[]>) => {   
-  if (floorPlatforms && floorPlatforms.current) floorPlatforms.current = []; 
+  if (floorPlatforms && floorPlatforms.current) {
+    floorPlatforms.current.forEach(platform => platform.hasPowerUp = false); // Reset hasPowerUp
+    floorPlatforms.current = []; 
+  }
 };
 
 export const resetCheckpointLines = (checkpointLines: MutableRefObject<CheckpointLine[]>) => {   

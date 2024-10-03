@@ -6,6 +6,7 @@ export class FloorPlatform {
   width: number;
   height: number;
   color: string;
+  hasPowerUp: boolean;
 
   constructor(x: number, y: number, width: number, height: number, color: string) {
     this.x = x;
@@ -13,15 +14,11 @@ export class FloorPlatform {
     this.width = width;
     this.height = height;
     this.color = color;
+    this.hasPowerUp = false;
   }
   
-  updatePosition(speed: number) {
-    this.x -= speed;
-  }
-
-  isOffScreen(): boolean {
-    return this.x + this.width < 0;
-  }
+  updatePosition(speed: number) {this.x -= speed;}
+  isOffScreen(): boolean {return this.x + this.width < 0;}
 
   // Static method to create a new floor platform
   static createFloorPlatform(canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform {
