@@ -11,6 +11,7 @@ import AudioManager from '../audio/AudioManager';
 
 interface GamePausedSectionProps {
   setGamePaused: (paused: boolean) => void;
+  setIsPowerUpActive: (paused: boolean) => void;
   animationFrameIdRef: React.MutableRefObject<number | null>;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>;
@@ -29,6 +30,7 @@ interface GamePausedSectionProps {
 
 const GamePausedSection: React.FC<GamePausedSectionProps> = ({ 
   setGamePaused, 
+  setIsPowerUpActive,
   animationFrameIdRef, 
   audioRef, 
   gameLoopFunctionRef, 
@@ -47,6 +49,7 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   const handleResumeGame = useCallback(() => {
     resumeGame(
       setGamePaused,
+      setIsPowerUpActive,
       animationFrameIdRef,
       audioRef,
       gameLoopFunctionRef,

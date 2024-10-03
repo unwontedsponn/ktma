@@ -103,6 +103,7 @@ export const useGameLogic = () => {
     setGameStarted,
     gamePaused,
     setGamePaused,
+    setIsPowerUpActive,
     resetPlatformSpeed,
     platformSpeed: getPlatformSpeed(),
     resetPlayer,

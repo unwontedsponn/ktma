@@ -50,24 +50,20 @@ export const startGame = (
   
   // Now, safely get the starting platform
   const startingPlatform = floorPlatforms.current[0];
-  if (startingPlatform) {
-    initializePlayer(player, floorPlatforms, audioManager);
-  } else {
-    console.error('No platforms available to initialize the player');
-    return;
-  }
+  if (startingPlatform) initializePlayer(player, floorPlatforms, audioManager);
+  else return;
 
   setGameStarted(true);
   setGamePaused(false);
 
-  if (audioRef.current) {
-    audioRef.current.volume = 0.1;
+  if (audioRef.current) {    
     audioRef.current.play().catch(error => console.error("Audio play error:", error));
   }
 };
 
 export const resumeGame = async (
   setGamePaused: (paused: boolean) => void,
+  setIsPowerUpActive: (isActive: boolean) => void,
   animationFrameIdRef: MutableRefObject<number | null>,
   audioRef: MutableRefObject<HTMLAudioElement | null>,
   gameLoopFunctionRef: MutableRefObject<(timestamp: number) => void>,
@@ -88,6 +84,14 @@ export const resumeGame = async (
 
   // Unpause the game
   setGamePaused(false);
+
+  // Reset power-up state
+  setIsPowerUpActive(false);
+  
+  // Switch music back to default (e.g., 8-bit)
+  if (audioRef.current) {
+    audioManager.switchMusic(audioRef, 0, '8bit', () => {}); // Switch to '8bit' music at the start of the track
+  }
 
   // Reset the game state
   resetPlatformSpeed(platformSpeedRef, initialPlatformSpeed);

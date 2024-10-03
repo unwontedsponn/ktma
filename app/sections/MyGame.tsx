@@ -12,7 +12,8 @@ const MyGame: React.FC = () => {
     gameStarted,
     setGameStarted,
     gamePaused,
-    setGamePaused,    
+    setGamePaused, 
+    setIsPowerUpActive,   
     floorPlatforms,    
     player,
     obstacles,
@@ -33,7 +34,7 @@ const MyGame: React.FC = () => {
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
       <div className="hidden md:flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
 
-        <audio ref={audioRef} src="/audio/game/All_Change.wav" preload="auto" loop>
+        <audio ref={audioRef} src="/audio/game/All Change 8-BIT.wav" preload="auto" loop>
           <track kind="captions" srcLang="en" label="English captions" />
         </audio>
         
@@ -61,6 +62,7 @@ const MyGame: React.FC = () => {
         {gamePaused && audioManager && (
           <GamePausedSection
             setGamePaused={setGamePaused}
+            setIsPowerUpActive={setIsPowerUpActive}
             animationFrameIdRef={animationFrameIdRef}
             audioRef={audioRef}
             gameLoopFunctionRef={gameLoopFunctionRef}

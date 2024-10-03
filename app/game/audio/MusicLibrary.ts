@@ -14,5 +14,3 @@ export const musicSections: number[] = [
   207,  // 03:27
   228   // 03:48
 ];
-
-// Future additional music-related constants and functions can go here.

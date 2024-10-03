@@ -9,14 +9,19 @@ class AudioManager {
   private audioRef: React.RefObject<HTMLAudioElement>;
   private audioType: MusicType;
   private mixer = {
-    music: { normal: 0.4, '8bit': 0.3 },
+    music: { normal: 0.3, '8bit': 0.2 },
     sfx: { jump: 0.3, land: 0.2, dying: 0.5, checkpoint: 0.5, token: 0.5 },
   };
   private lineAddedForSection: number | null = null;
 
   constructor(audioRef: React.RefObject<HTMLAudioElement>, audioType: MusicType) {
     this.audioRef = audioRef;
-    this.audioType = audioType;
+    this.audioType = '8bit'; // Set initial type to '8bit'
+
+    // Set the initial volume for the audio element
+    if (audioRef.current) {
+      audioRef.current.volume = this.getVolume('music', this.audioType);
+    } 
   }
 
   switchMusic(
