@@ -25,7 +25,8 @@ export const gameLoop = (
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,  
   audioManager: AudioManager,
-  platformSpeedRef: React.MutableRefObject<number>
+  platformSpeedRef: React.MutableRefObject<number>,
+  deathCountRef: React.MutableRefObject<number>
 ) => {
   if (gamePaused) {
     if (animationFrameIdRef.current !== null) {
@@ -50,13 +51,26 @@ export const gameLoop = (
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
+  // Update Player
+  const previousPlayerState = player.isDead; // Track the previous state to detect changes
   updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audioRef.current, floorPlatforms, platformSpeedRef.current);
+
+  // If the player has just died, increase the death count
+  if (player.isDead && !previousPlayerState) {
+    deathCountRef.current += 1;
+    console.log(`Death count updated: ${deathCountRef.current}`);
+  }
+  
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audioRef.current, gamePaused, audioManager);
   updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager, isPowerUpActive);
-  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current);
+  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive);
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
 
-  renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef);
+  document.fonts.load('24px Gopher Mono').then(() => {
+    // Assuming the `renderGame` function is called after this point
+    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current);
+  });
+  
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };

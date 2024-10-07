@@ -13,7 +13,8 @@ export const renderGame = (
   powerUps: PowerUp[],
   floorPlatforms: FloorPlatform[],
   checkpointLines: CheckpointLine[],
-  audioRef: React.RefObject<HTMLAudioElement | null>
+  audioRef: React.RefObject<HTMLAudioElement | null>,
+  deathCount: number,
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -44,6 +45,11 @@ export const renderGame = (
     ctx.fillStyle = checkpointLine.color;
     ctx.fillRect(checkpointLine.x, checkpointLine.y, checkpointLine.width, checkpointLine.height);
   });
+  
+  // Render Death Count
+  ctx.fillStyle = '#000000';
+  ctx.font = '24px Gopher Mono';
+  ctx.fillText(`Deaths: ${deathCount}`, 10, 60);
 
   // Calculate current progress and the current time
   const totalSections = musicSections.length;

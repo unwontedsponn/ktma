@@ -12,7 +12,7 @@ export const initializePlatforms = (
   floorPlatforms.current = [];
 
   // Create an initial platform near the left of the canvas
-  const initialPlatform = new FloorPlatform(50, 500, 500, 500, '#3f423e'); // Adjust dimensions as needed
+  const initialPlatform = new FloorPlatform(50, 500, 600, 500, '#3f423e'); // Adjust dimensions as needed
   floorPlatforms.current.push(initialPlatform);
 
   // Create additional platforms without depending on player properties
@@ -40,13 +40,15 @@ export const updateFloorPlatforms = (
   canvasHeight: number,
   gamePaused: boolean,
   platformSpeed: number,
+  isPowerUpActive: boolean,
 ) => {
-  if (gamePaused || player.isDead) return;
+  if (gamePaused || player.isDead) return;  
 
   const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, platformSpeed);
 
   // Move each platform to the left and remove it if it's off-screen
   floorPlatforms.forEach((floorPlatform, index) => {
+    floorPlatform.applyPowerUp(isPowerUpActive);
     floorPlatform.updatePosition(platformSpeed);
     if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
   });

@@ -7,17 +7,24 @@ export class FloorPlatform {
   color: string;
   hasPowerUp: boolean;
 
+  private readonly normalColor = '#3f423e';
+  private readonly powerUpColor = '#c15564';
+
   constructor(x: number, y: number, width: number, height: number, color: string) {
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
-    this.color = color;
+    this.color = this.normalColor;
     this.hasPowerUp = false;
   }
   
   updatePosition(speed: number) {this.x -= speed;}
   isOffScreen(): boolean {return this.x + this.width < 0;}
+
+  applyPowerUp(isPowerUpActive: boolean) {
+    this.color = isPowerUpActive ? this.powerUpColor : this.normalColor;    
+  }
 
   // Static method to create a new floor platform
   static createFloorPlatform(canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform {

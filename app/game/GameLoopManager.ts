@@ -22,7 +22,8 @@ export const createGameLoopFunction = (
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,
   audioManager: AudioManager,
-  platformSpeedRef: React.MutableRefObject<number>
+  platformSpeedRef: React.MutableRefObject<number>,
+  deathCountRef: React.MutableRefObject<number>
 ) => {
   let lastTime = 0;
 
@@ -50,7 +51,8 @@ export const createGameLoopFunction = (
           setAudioType,
           isPowerUpActive,
           audioManager,
-          platformSpeedRef
+          platformSpeedRef,
+          deathCountRef
         );
       }
     }

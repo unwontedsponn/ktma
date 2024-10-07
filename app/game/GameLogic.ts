@@ -24,8 +24,9 @@ export const useGameLogic = () => {
   const checkpointLines = useRef<CheckpointLine[]>([]);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-  const platformSpeedRef = useRef<number>(2.8); // Initial platform speed
-  const initialPlatformSpeed = 2.8; // Define your initial platform speed
+  const platformSpeedRef = useRef<number>(2.8);
+  const initialPlatformSpeed = 2.8;
+  const deathCountRef = useRef<number>(0);
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
@@ -111,7 +112,8 @@ export const useGameLogic = () => {
         setAudioType,
         isPowerUpActive,
         audioManagerRef.current,
-        platformSpeedRef
+        platformSpeedRef,
+        deathCountRef
       );
   
       startGameLoop(gameLoopFunctionRef, animationFrameIdRef, player);
@@ -120,7 +122,7 @@ export const useGameLogic = () => {
   
       if (!player.current) return;
       const playerInstance = player.current;
-      const removeInputListeners = addPlayerInputListeners(playerInstance);
+      const removeInputListeners = addPlayerInputListeners(playerInstance);      
   
       return () => {
         stopObstacleSpawning();
