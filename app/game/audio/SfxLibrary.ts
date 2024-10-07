@@ -1,3 +1,4 @@
+// SfxLibrary.ts
 const sfxBaseURL = '/audio/game/sfx/';
 
 export const jumpSfx = [
@@ -36,3 +37,14 @@ export const tokenSfx = [
   `${sfxBaseURL}7. Token/token3.wav`,
   `${sfxBaseURL}7. Token/token4.wav`,
 ];
+
+// Preload all audio files
+export const preloadAudioFiles = (audioFiles: string[]) => {
+  audioFiles.forEach((src) => {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+  });
+};
+
+// Preloading all sound effects
+preloadAudioFiles([...jumpSfx, ...landSfx, ...dyingSfx, ...checkpointSfx, ...tokenSfx]);

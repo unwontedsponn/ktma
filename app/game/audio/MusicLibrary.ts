@@ -1,3 +1,4 @@
+// MusicLibrary.ts
 export const musicSections: number[] = [
   0,    // 00:00
   9,    // 00:09
@@ -14,3 +15,18 @@ export const musicSections: number[] = [
   207,  // 03:27
   228   // 03:48
 ];
+
+export const preloadMusicTracks = () => {
+  const musicTracks = [
+    '/audio/game/All_Change.mp3',
+    '/audio/game/All Change 8-BIT.mp3',
+  ];
+  
+  musicTracks.forEach((src) => {
+    const audio = new Audio(src);
+    audio.preload = 'auto';
+  });
+};
+
+// Call this function to preload the music tracks
+preloadMusicTracks();

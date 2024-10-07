@@ -1,3 +1,4 @@
+// AudioManager.ts
 import { CheckpointLine } from "../entities/CheckpointLine";
 import { musicSections } from "./MusicLibrary";
 import { checkpointSfx } from "@/app/game/audio/SfxLibrary";
