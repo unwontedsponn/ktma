@@ -17,16 +17,20 @@ export const musicSections: number[] = [
 ];
 
 export const preloadMusicTracks = () => {
-  const musicTracks = [
-    '/audio/game/All_Change.mp3',
-    '/audio/game/All Change 8-BIT.mp3',
-  ];
-  
-  musicTracks.forEach((src) => {
-    const audio = new Audio(src);
-    audio.preload = 'auto';
-  });
+  if (typeof window !== "undefined") {
+    const musicTracks = [
+      '/audio/game/All_Change.mp3',
+      '/audio/game/All Change 8-BIT.mp3',
+    ];
+
+    musicTracks.forEach((src) => {
+      const audio = new Audio(src);
+      audio.preload = 'auto';
+    });
+  }
 };
 
-// Call this function to preload the music tracks
-preloadMusicTracks();
+// Call this function only in a browser environment
+if (typeof window !== "undefined") {
+  preloadMusicTracks();
+}

@@ -40,11 +40,15 @@ export const tokenSfx = [
 
 // Preload all audio files
 export const preloadAudioFiles = (audioFiles: string[]) => {
-  audioFiles.forEach((src) => {
-    const audio = new Audio(src);
-    audio.preload = 'auto';
-  });
+  if (typeof window !== "undefined") {
+    audioFiles.forEach((src) => {
+      const audio = new Audio(src);
+      audio.preload = 'auto';
+    });
+  }  
 };
 
-// Preloading all sound effects
-preloadAudioFiles([...jumpSfx, ...landSfx, ...dyingSfx, ...checkpointSfx, ...tokenSfx]);
+// Call this function only in a browser environment
+if (typeof window !== "undefined") {
+  preloadAudioFiles([...jumpSfx, ...landSfx, ...dyingSfx, ...checkpointSfx, ...tokenSfx]);
+}
