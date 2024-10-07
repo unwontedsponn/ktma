@@ -33,7 +33,7 @@ class AudioManager {
     if (!audioRef.current) return;
   
     const audio = audioRef.current;
-    const src = newType === 'normal' ? '/audio/game/All_Change.wav' : '/audio/game/All Change 8-BIT.wav';
+    const src = newType === 'normal' ? '/audio/game/All_Change.mp3' : '/audio/game/All Change 8-BIT.mp3';
     const volume = this.getVolume('music', newType);
   
     audio.pause();
