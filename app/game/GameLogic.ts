@@ -68,6 +68,13 @@ export const useGameLogic = () => {
         audioManagerRef.current.audioRef.current.play();
       }
     }    
+
+    if (gamePaused) {
+      console.log('Game paused: stopping music');
+      if (audioManagerRef.current?.audioRef.current && !audioManagerRef.current.audioRef.current.paused) {
+        audioManagerRef.current.audioRef.current.pause();
+      }
+    }
   
     if (!gameStarted || gamePaused) {
       console.log('Game is not started or is paused. Exiting useEffect.');

@@ -47,6 +47,15 @@ const GamePausedSection: React.FC<GamePausedSectionProps> = ({
   canvasHeight
 }) => {
   const handleResumeGame = useCallback(() => {
+    if (audioManager.audioRef.current) {
+      // Resume the music if it was paused
+      if (audioManager.audioRef.current.paused) {
+        audioManager.audioRef.current.play().catch(err => {
+          console.error('Error resuming music:', err);
+        });
+      }
+    }
+    
     resumeGame(
       setGamePaused,
       setIsPowerUpActive,
