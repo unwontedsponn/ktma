@@ -17,12 +17,11 @@ export const gameLoop = (
   floorPlatforms: FloorPlatform[],
   checkpointLines: CheckpointLine[],
   gamePaused: boolean,
-  setGamePaused: (paused: boolean) => void,
-  audio: HTMLAudioElement | null,
+  setGamePaused: (paused: boolean) => void,  
+  audioRef: React.MutableRefObject<HTMLAudioElement | null>,
   animationFrameIdRef: React.MutableRefObject<number | null>,
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>,
-  setIsPowerUpActive: (isActive: boolean) => void,
-  audioRef: React.MutableRefObject<HTMLAudioElement | null>,
+  setIsPowerUpActive: (isActive: boolean) => void,  
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,  
   audioManager: AudioManager
@@ -32,6 +31,12 @@ export const gameLoop = (
       cancelAnimationFrame(animationFrameIdRef.current);
       animationFrameIdRef.current = null; // Clear the frame ID to fully stop the loop
     }
+
+    // Pause the current audio track via AudioManager
+    if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) {
+      audioManager.audioRef.current.pause();
+    }
+
     return;
   }
 
@@ -44,8 +49,8 @@ export const gameLoop = (
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
   const nextSectionTime = upcomingSection || musicSections[0]; // Default to first section if no upcoming one
 
-  updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audio, floorPlatforms, getPlatformSpeed());
-  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audio, gamePaused, audioManager);
+  updatePlayer(player, canvasWidth, canvasHeight, isPowerUpActive, gamePaused, setGamePaused, audioRef.current, floorPlatforms, getPlatformSpeed());
+  updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audioRef.current, gamePaused, audioManager);
   updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager, isPowerUpActive);
   updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, getPlatformSpeed());
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);

@@ -93,7 +93,8 @@ export const resumeGame = async (
   
   // Switch music back to default (e.g., 8-bit)
   if (audioRef.current) {
-    audioManager.switchMusic(audioRef, 0, 'normal', () => {}); // Switch to '8bit' music at the start of the track
+    const currentTime = audioRef.current.currentTime;
+    audioManager.switchMusic(audioRef, currentTime, 'normal', () => {});
   }
 
   // Reset the game state

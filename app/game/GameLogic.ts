@@ -41,17 +41,24 @@ export const useGameLogic = () => {
   }, [audioRef]); // Ensure `audioRef` is the actual dependency, not `audioRef.current`  
 
   useEffect(() => {
+    if (gameStarted && !gamePaused) {
+      console.log('Game started: playing or resuming music');
+      
+      if (audioManagerRef.current?.audioRef.current && audioManagerRef.current.audioRef.current.paused) {
+        audioManagerRef.current.audioRef.current.play();
+      }
+    }
+  
     if (!gameStarted || gamePaused) {
       console.log('Game is not started or is paused. Exiting useEffect.');
       return;
     }
   
     const canvas = canvasRef.current;
-    const audio = audioRef.current;
-    if (!canvas || !audio) {
-      console.error('Canvas or audio element is not available. Exiting useEffect.');
+    if (!canvas) {
+      console.error('Canvas element is not available. Exiting useEffect.');
       return;
-    }        
+    }
   
     const ctx = canvas.getContext('2d');
     if (!ctx) {
@@ -60,7 +67,7 @@ export const useGameLogic = () => {
     }
   
     // Check if audioManagerRef.current is not null before using it
-    if (audioManagerRef.current) {                     
+    if (audioManagerRef.current) {
       // Initialize the game loop function
       gameLoopFunctionRef.current = createGameLoopFunction(
         ctx,
@@ -70,16 +77,15 @@ export const useGameLogic = () => {
         floorPlatforms,
         checkpointLines,
         setGamePaused,
-        audio,
+        audioRef,
         animationFrameIdRef,
         gameLoopFunctionRef,
-        setIsPowerUpActive,
-        audioRef,
+        setIsPowerUpActive,        
         setAudioType,
         isPowerUpActive,
         audioManagerRef.current
       );
-        
+  
       startGameLoop(gameLoopFunctionRef, animationFrameIdRef, player);
   
       const stopObstacleSpawning = startObstacleSpawning(obstacles, canvas.width, canvas.height, audioManagerRef.current);
@@ -94,7 +100,8 @@ export const useGameLogic = () => {
         stopGameLoop(animationFrameIdRef);
       };
     }
-  }, [gameStarted, gamePaused, isPowerUpActive]);  
+  }, [gameStarted, gamePaused, isPowerUpActive]);
+  
 
   return {
     canvasRef,

@@ -7,7 +7,7 @@ type MusicType = 'normal' | '8bit';
 type SfxType = 'jump' | 'land' | 'dying' | 'checkpoint' | 'token';
 
 class AudioManager {
-  private audioRef: React.RefObject<HTMLAudioElement>;
+  public audioRef: React.RefObject<HTMLAudioElement>;
   private audioType: MusicType;
   private mixer = {
     music: { normal: 0.3, '8bit': 0.2 },

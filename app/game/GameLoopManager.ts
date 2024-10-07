@@ -15,11 +15,10 @@ export const createGameLoopFunction = (
   floorPlatforms: React.MutableRefObject<FloorPlatform[]>,
   checkpointLines: React.MutableRefObject<CheckpointLine[]>,
   setGamePaused: (paused: boolean) => void,
-  audio: HTMLAudioElement | null,
+  audioRef: React.MutableRefObject<HTMLAudioElement | null>,
   animationFrameIdRef: React.MutableRefObject<number | null>,
   gameLoopFunctionRef: React.MutableRefObject<(timestamp: number) => void>,
   setIsPowerUpActive: (isActive: boolean) => void,
-  audioRef: React.MutableRefObject<HTMLAudioElement | null>,
   setAudioType: (type: 'normal' | '8bit') => void,
   isPowerUpActive: boolean,
   audioManager: AudioManager
@@ -43,11 +42,10 @@ export const createGameLoopFunction = (
           checkpointLines.current,
           false, // gamePaused, handled in useEffect now
           setGamePaused,
-          audio,
+          audioRef,
           animationFrameIdRef,
           gameLoopFunctionRef,
-          setIsPowerUpActive,
-          audioRef,
+          setIsPowerUpActive,          
           setAudioType,
           isPowerUpActive,
           audioManager
