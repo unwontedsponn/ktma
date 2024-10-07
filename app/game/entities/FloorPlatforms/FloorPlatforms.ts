@@ -1,5 +1,4 @@
-import { Player, calculateJumpDistance } from "@/app/game/entities/Player/Player";
-
+// FloorPlatforms.ts
 export class FloorPlatform {
   x: number;
   y: number;
