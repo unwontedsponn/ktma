@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { startGameLoop, stopGameLoop } from '@/app/game/AnimationFrameManager';
 import { createGameLoopFunction } from '@/app/game/GameLoopManager';
-import { getPlatformSpeed, resetPlatformSpeed } from './entities/FloorPlatforms/FloorPlatformManager';
 import { addPlayerInputListeners } from './entities/Player/PlayerInputManager';
 import { resetPlayer, resetObstacles, resetPowerUps, resetFloorPlatforms, resetCheckpointLines } from "@/app/game/GameStateManager";
 import { setupAudioManager } from './audio/AudioManagerSetup';
@@ -34,11 +33,32 @@ export const useGameLogic = () => {
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');   
   const [, setIsAudioManagerReady] = useState(false); 
 
+  // Define the speed increase rate and max speed
+  const speedIncreaseRate = 0.1;
+  const maxSpeed = 10;
+
   useEffect(() => {
     if (audioManagerRef.current || !audioRef.current) return;
     audioManagerRef.current = setupAudioManager(audioRef);
     if (audioManagerRef.current) setIsAudioManagerReady(true);
   }, [audioRef]); // Ensure `audioRef` is the actual dependency, not `audioRef.current`  
+
+  // Separate useEffect to handle platform speed increment
+  useEffect(() => {
+    if (gameStarted && !gamePaused) {
+      console.log("Setting up platform speed increase interval");
+
+      const increaseSpeedInterval = setInterval(() => {
+        platformSpeedRef.current = Math.min(platformSpeedRef.current + speedIncreaseRate, maxSpeed);
+        console.log(`Platform speed increased to: ${platformSpeedRef.current}`);
+      }, 1000); // Increase speed every second
+
+      return () => {
+        console.log("Clearing platform speed increase interval");
+        clearInterval(increaseSpeedInterval);
+      };
+    }
+  }, [gameStarted, gamePaused, speedIncreaseRate, maxSpeed]);
 
   useEffect(() => {
     if (gameStarted && !gamePaused) {
@@ -47,7 +67,7 @@ export const useGameLogic = () => {
       if (audioManagerRef.current?.audioRef.current && audioManagerRef.current.audioRef.current.paused) {
         audioManagerRef.current.audioRef.current.play();
       }
-    }
+    }    
   
     if (!gameStarted || gamePaused) {
       console.log('Game is not started or is paused. Exiting useEffect.');
@@ -83,7 +103,8 @@ export const useGameLogic = () => {
         setIsPowerUpActive,        
         setAudioType,
         isPowerUpActive,
-        audioManagerRef.current
+        audioManagerRef.current,
+        platformSpeedRef
       );
   
       startGameLoop(gameLoopFunctionRef, animationFrameIdRef, player);
@@ -110,9 +131,7 @@ export const useGameLogic = () => {
     setGameStarted,
     gamePaused,
     setGamePaused,
-    setIsPowerUpActive,
-    resetPlatformSpeed,
-    platformSpeed: getPlatformSpeed(),
+    setIsPowerUpActive,      
     resetPlayer,
     resetObstacles,
     resetPowerUps,
