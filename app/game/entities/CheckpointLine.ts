@@ -21,15 +21,8 @@ export class CheckpointLine {
     return new CheckpointLine(canvasWidth, 0, 5, canvasHeight, '#334862'); // dark-blue
   }
 
-  // Method to update the checkpoint line position
-  update(speed: number) {
-    this.x -= speed;
-  }
-
-  // Check if the checkpoint line is off-screen
-  isOffScreen(): boolean {
-    return this.x + this.width < 0;
-  }
+  update(speed: number) {this.x -= speed;}
+  isOffScreen(): boolean {return this.x + this.width < 0;}
 }
 
 // Function to update the checkpoint lines

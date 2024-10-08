@@ -20,3 +20,18 @@ export const narration = [
   `${narrationBaseURL}15.mp3`,
   `${narrationBaseURL}16.mp3`
 ];
+
+// Preload all audio files
+export const preloadAudioFiles = (audioFiles: string[]) => {
+  if (typeof window !== "undefined") {
+    audioFiles.forEach((src) => {
+      const audio = new Audio(src);
+      audio.preload = 'auto';
+    });
+  }  
+};
+
+// Call this function only in a browser environment
+if (typeof window !== "undefined") {
+  preloadAudioFiles(narration);
+}

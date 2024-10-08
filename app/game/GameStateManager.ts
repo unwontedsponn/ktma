@@ -9,6 +9,7 @@ import { musicSections } from "@/app/game/audio/MusicLibrary";
 import { MutableRefObject } from 'react';
 import { initializePlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
 import { initializePlayer } from "@/app/game/entities/Player/PlayerManager";
+import { narration } from "./audio/NarrationLibrary";
 
 export const resetPlatformSpeed = (platformSpeedRef: MutableRefObject<number>, initialPlatformSpeed: number) => {
   if (platformSpeedRef && platformSpeedRef.current !== undefined) platformSpeedRef.current = initialPlatformSpeed;
@@ -59,9 +60,8 @@ export const startGame = (
   setGameStarted(true);
   setGamePaused(false);
 
-  if (audioRef.current) {    
-    audioRef.current.play().catch(error => console.error("Audio play error:", error));
-  }
+  if (audioRef.current) audioRef.current.play().catch(error => console.error("Audio play error:", error));
+  audioManager.playRandomNarration(narration);
 };
 
 export const resumeGame = async (
@@ -134,4 +134,5 @@ export const resumeGame = async (
 
   // Start the game loop
   gameLoopFunctionRef.current(performance.now());
+  audioManager.playRandomNarration(narration);
 };
