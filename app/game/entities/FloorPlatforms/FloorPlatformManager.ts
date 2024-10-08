@@ -12,7 +12,7 @@ export const initializePlatforms = (
   floorPlatforms.current = [];
 
   // Create an initial platform near the left of the canvas
-  const initialPlatform = new FloorPlatform(50, 500, 600, 500, '#3f423e'); // Adjust dimensions as needed
+  const initialPlatform = new FloorPlatform(50, 500, 600, 500);
   floorPlatforms.current.push(initialPlatform);
 
   // Create additional platforms without depending on player properties

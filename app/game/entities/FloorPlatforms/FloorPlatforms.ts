@@ -21,10 +21,7 @@ export class FloorPlatform {
   
   updatePosition(speed: number) {this.x -= speed;}
   isOffScreen(): boolean {return this.x + this.width < 0;}
-
-  applyPowerUp(isPowerUpActive: boolean) {
-    this.color = isPowerUpActive ? this.powerUpColor : this.normalColor;    
-  }
+  applyPowerUp(isPowerUpActive: boolean) {this.color = isPowerUpActive ? this.powerUpColor : this.normalColor;}
 
   // Static method to create a new floor platform
   static createFloorPlatform(canvasWidth: number, canvasHeight: number, startX?: number): FloorPlatform {
