@@ -2,18 +2,17 @@
 const sfxBaseURL = '/audio/game/sfx/';
 
 export const jumpSfx = [
-  `${sfxBaseURL}1. Jumping/jump1.mp3
-  `,
+  `${sfxBaseURL}1. Jumping/jump1.mp3`,
   `${sfxBaseURL}1. Jumping/jump2.mp3`,
   `${sfxBaseURL}1. Jumping/jump3.mp3`,  
 ];
 
 export const landSfx = [
   `${sfxBaseURL}2. Landing/land1.mp3`,
-  `${sfxBaseURL}2. Landing/land2.wav`,
-  `${sfxBaseURL}2. Landing/land3.wav`,
-  `${sfxBaseURL}2. Landing/land4.wav`,
-  `${sfxBaseURL}2. Landing/land5.wav`,
+  `${sfxBaseURL}2. Landing/land2.mp3`,
+  `${sfxBaseURL}2. Landing/land3.mp3`,
+  `${sfxBaseURL}2. Landing/land4.mp3`,
+  `${sfxBaseURL}2. Landing/land5.mp3`,
   `${sfxBaseURL}2. Landing/land6.wav`,
 ];
 
