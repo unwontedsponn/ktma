@@ -111,7 +111,11 @@ class AudioManager {
   }  
 
   playRandomSfx(srcArray: string[], type: SfxType) {this.playRandomAudio(srcArray, type, false);}
-  playRandomNarration(srcArray: string[]) {this.playRandomAudio(srcArray, 'narration', true);}
+  playRandomNarration(srcArray: string[], delay: number = 1000) { // Delay in milliseconds, default is 1000ms (1 second)
+    setTimeout(() => {
+      this.playRandomAudio(srcArray, 'narration', true);
+    }, delay);
+  }
 
   pauseNarration() {
     if (this.currentNarration && !this.currentNarration.paused) {
