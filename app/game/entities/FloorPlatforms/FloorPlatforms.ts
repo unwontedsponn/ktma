@@ -10,7 +10,7 @@ export class FloorPlatform {
   private readonly normalColor = '#3f423e';
   private readonly powerUpColor = '#c15564';
 
-  constructor(x: number, y: number, width: number, height: number, color: string) {
+  constructor(x: number, y: number, width: number, height: number) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -40,8 +40,7 @@ export class FloorPlatform {
       startX !== undefined ? startX : canvasWidth,
       canvasHeight - height - 5,
       width,
-      height,
-      '#3f423e'
+      height
     );
   }
 
