@@ -37,8 +37,7 @@ export const gameLoop = (
     // Pause the current audio track via AudioManager
     if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) {
       audioManager.audioRef.current.pause();
-    }
-
+    }    
     return;
   }
 
@@ -58,7 +57,7 @@ export const gameLoop = (
   // If the player has just died, increase the death count
   if (player.isDead && !previousPlayerState) {
     deathCountRef.current += 1;
-    console.log(`Death count updated: ${deathCountRef.current}`);
+    audioManager.pauseNarration();    
   }
   
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audioRef.current, gamePaused, audioManager);
