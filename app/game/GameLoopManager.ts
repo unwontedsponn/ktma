@@ -52,7 +52,7 @@ export const createGameLoopFunction = (
           isPowerUpActive,
           audioManager,
           platformSpeedRef,
-          deathCountRef
+          deathCountRef,          
         );
       }
     }

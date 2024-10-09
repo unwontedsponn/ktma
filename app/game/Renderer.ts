@@ -5,6 +5,7 @@ import { FloorPlatform } from "@/app/game/entities/FloorPlatforms/FloorPlatforms
 import { CheckpointLine } from "@/app/game/entities/CheckpointLine";
 import { ProgressBar } from "./entities/ProgressBar";
 import { musicSections } from "./audio/MusicLibrary";
+import AudioManager from "./audio/AudioManager";
 
 export const renderGame = (
   ctx: CanvasRenderingContext2D,
@@ -15,6 +16,8 @@ export const renderGame = (
   checkpointLines: CheckpointLine[],
   audioRef: React.RefObject<HTMLAudioElement | null>,
   deathCount: number,
+  audioManager: AudioManager,
+  canvasHeight: number
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -50,6 +53,37 @@ export const renderGame = (
   ctx.fillStyle = '#000000';
   ctx.font = '24px Gopher Mono';
   ctx.fillText(`Deaths: ${deathCount}`, 10, 60);
+
+  // Update the opacity of the narration text
+  const narrationTime = performance.now(); // Rename this to avoid conflict
+  audioManager.updateTextOpacity(narrationTime); // Update opacity over time
+
+  // Render the current typed narration text with fading opacity
+  if (audioManager.currentTypedText) {
+    ctx.font = '24px Gopher Mono';
+    ctx.fillStyle = `rgba(0, 0, 0, ${audioManager.textOpacity})`; // Apply fading opacity
+    const maxWidth = ctx.canvas.width - 100; // Set max width for text before wrapping
+    const lineHeight = 30; // Set the line height for wrapped text
+
+    const words = audioManager.currentTypedText.split(' ');
+    let line = '';
+    let yPos = canvasHeight / 2;
+
+    words.forEach(word => {
+      const testLine = line + word + ' ';
+      const testWidth = ctx.measureText(testLine).width;
+
+      if (testWidth > maxWidth) {
+        ctx.fillText(line, 50, yPos); // Draw the current line
+        line = word + ' '; // Start a new line
+        yPos += lineHeight;
+      } else {
+        line = testLine;
+      }
+    });
+
+    ctx.fillText(line, 50, yPos); // Draw the last line
+  }
 
   // Calculate current progress and the current time
   const totalSections = musicSections.length;

@@ -11,6 +11,15 @@ type NarrationType = 'narration';
 class AudioManager {
   public audioRef: React.RefObject<HTMLAudioElement>;
   private currentNarration: HTMLAudioElement | null = null;
+  public currentNarrationText: string | null = null;
+  public currentTypedText: string = ''; // The text being typed letter by letter
+  private charIndex: number = 0; // Current character index
+
+  public textOpacity: number = 1.0; // Opacity for fading text
+  private fadeOutDuration: number = 3000; // Duration to fade out in milliseconds
+  private fadeStartTime: number | null = null; // Track when to start fading out
+  private opacityFadeDelay: number = 3000;
+
   private audioType: MusicType;
   private originalMusicVolume: number | null = null;
   private originalSfxVolumes: { [key in SfxType]?: number } = {};
@@ -110,18 +119,73 @@ class AudioManager {
     audio.play();
   }  
 
-  playRandomSfx(srcArray: string[], type: SfxType) {this.playRandomAudio(srcArray, type, false);}
-  playRandomNarration(srcArray: string[], delay: number = 1000) { // Delay in milliseconds, default is 1000ms (1 second)
-    setTimeout(() => {
-      this.playRandomAudio(srcArray, 'narration', true);
-    }, delay);
-  }
+  playRandomSfx(srcArray: string[], type: SfxType) {this.playRandomAudio(srcArray, type, false);}  
 
   pauseNarration() {
     if (this.currentNarration && !this.currentNarration.paused) {
       this.currentNarration.pause();
     }
   }  
+
+  // Method to clear the text (if you want to hide it after some time)
+  clearNarrationText() {
+    this.currentNarrationText = null;
+  }
+
+  // Reset typing effect when new narration starts
+  startTypingEffect(text: string) {
+    this.clearTypedText();
+    this.currentNarrationText = text;
+    this.currentTypedText = '';
+    this.charIndex = 0;
+    this.textOpacity = 1.0; // Reset opacity to fully visible
+    this.fadeStartTime = null; // Don't start fading until after text is fully typed    
+  }
+
+  // Progress the typing effect by one letter
+  typeNextLetter() {
+    if (this.currentNarrationText && this.charIndex < this.currentNarrationText.length) {
+      this.currentTypedText += this.currentNarrationText[this.charIndex];
+      this.charIndex++;
+      // Start fade timer only when typing is fully complete
+      if (this.charIndex >= this.currentNarrationText.length) {
+        this.fadeStartTime = performance.now(); // Trigger fade after text is fully typed
+      }
+    }
+  }
+
+  // Start the fade-out process after a delay
+  startFadeOut() {
+    this.fadeStartTime = performance.now(); // Record the time when fading starts
+  }
+
+  // Update the opacity of the text over time
+  updateTextOpacity(currentTime: number) {
+    if (this.fadeStartTime && currentTime - this.fadeStartTime > this.opacityFadeDelay) {
+      const elapsed = currentTime - this.fadeStartTime - this.opacityFadeDelay;
+      this.textOpacity = Math.max(1 - elapsed / this.fadeOutDuration, 0); // Fade out opacity to 0
+    }
+  }
+
+  // Clear the current text when the narration ends
+  clearTypedText() {
+    this.currentTypedText = ''; 
+    this.currentNarrationText = null;
+    this.charIndex = 0; // Reset char index
+    this.textOpacity = 1.0;
+  }
+
+  playRandomNarration(narrationArray: { src: string, text: string }[], delay: number = 1000) {
+    const randomIndex = Math.floor(Math.random() * narrationArray.length);
+    const selectedNarration = narrationArray[randomIndex];
+
+    this.clearTypedText();
+
+    setTimeout(() => {
+      this.playRandomAudio([selectedNarration.src], 'narration', true);
+      this.startTypingEffect(selectedNarration.text); // Store the selected text
+    }, delay);
+  }
 
   setVolume(type: 'music' | 'sfx' | 'narration', key: MusicType | SfxType | NarrationType, volume: number) {
     if (type === 'music' && key in this.mixer.music) this.mixer.music[key as MusicType] = volume;

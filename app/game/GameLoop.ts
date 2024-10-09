@@ -26,7 +26,7 @@ export const gameLoop = (
   isPowerUpActive: boolean,  
   audioManager: AudioManager,
   platformSpeedRef: React.MutableRefObject<number>,
-  deathCountRef: React.MutableRefObject<number>
+  deathCountRef: React.MutableRefObject<number>,
 ) => {
   if (gamePaused) {
     if (animationFrameIdRef.current !== null) {
@@ -37,7 +37,7 @@ export const gameLoop = (
     // Pause the current audio track via AudioManager
     if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) {
       audioManager.audioRef.current.pause();
-    }    
+    }        
     return;
   }
 
@@ -65,11 +65,13 @@ export const gameLoop = (
   updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive);
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
 
+  // Progress the typing effect for narration
+  audioManager.typeNextLetter();
+
   document.fonts.load('24px Gopher Mono').then(() => {
     // Assuming the `renderGame` function is called after this point
-    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current);
-  });
-  
+    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current, audioManager, canvasHeight);
+  });  
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);
 };
