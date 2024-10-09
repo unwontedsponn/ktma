@@ -2,7 +2,6 @@
 import { CheckpointLine } from "../entities/CheckpointLine";
 import { musicSections } from "./MusicLibrary";
 import { checkpointSfx } from "@/app/game/audio/SfxLibrary";
-import { narration } from "./NarrationLibrary";
 
 type MusicType = 'normal' | '8bit';
 type SfxType = 'jump' | 'land' | 'dying' | 'checkpoint' | 'token';
@@ -189,7 +188,7 @@ class AudioManager {
     if (this.availableNarrations.length === 0) {
       this.resetNarrations();
     }
-    
+
     // Play the first narration if it hasn't been played yet
     if (!this.isFirstNarrationPlayed) {
       const firstNarration = this.availableNarrations[0]; // Select the first one
