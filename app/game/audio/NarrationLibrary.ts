@@ -2,9 +2,9 @@
 const narrationBaseURL = '/audio/game/narration/';
 
 export const narration = [
-  { src: `${narrationBaseURL}1.mp3`, text: "Oooohh... this is inspired!" },
-  { src: `${narrationBaseURL}2.mp3`, text: "Let's go, the creative juices are flowing" },
-  { src: `${narrationBaseURL}3.mp3`, text: "Ready, set, go. Today's the day we compose a great work, maybe, the greatest" },
+  { src: `${narrationBaseURL}1.mp3`, text: "Ready, set, go. Today's the day we compose a great work, maybe, the greatest" },
+  { src: `${narrationBaseURL}2.mp3`, text: "Oooohh... this is inspired!" },
+  { src: `${narrationBaseURL}3.mp3`, text: "Let's go, the creative juices are flowing" },  
   { src: `${narrationBaseURL}4.mp3`, text: "Ooooohh, tasty! That's sounding sweet!" },
   { src: `${narrationBaseURL}5.mp3`, text: "Mmmmmmmm... so pleasing to the ear" },
   { src: `${narrationBaseURL}6.mp3`, text: "What an earworm... hooky" },

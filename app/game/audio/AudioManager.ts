@@ -23,6 +23,11 @@ class AudioManager {
   private audioType: MusicType;
   private originalMusicVolume: number | null = null;
   private originalSfxVolumes: { [key in SfxType]?: number } = {};
+
+  private availableNarrations: { src: string, text: string }[] = []; // List of available narrations
+  private playedNarrations: { src: string, text: string }[] = []; // List of played narrations
+  private isFirstNarrationPlayed: boolean = false;
+
   private mixer = {
     music: { normal: 0.3, '8bit': 0.2 },
     sfx: { jump: 0.3, land: 0.2, dying: 0.5, checkpoint: 0.5, token: 0.5 },
@@ -30,13 +35,16 @@ class AudioManager {
   };
   private lineAddedForSection: number | null = null;
 
-  constructor(audioRef: React.RefObject<HTMLAudioElement>) {
+  constructor(audioRef: React.RefObject<HTMLAudioElement>, narrationArray: { src: string, text: string }[]) {
     this.audioRef = audioRef;
     this.audioType = 'normal'; // Set initial type
 
     if (audioRef.current) {
       audioRef.current.volume = this.getVolume('music', this.audioType);
     }
+
+    this.availableNarrations = [...narrationArray]; // Initialize available narrations
+    this.playedNarrations = []; // Start with an empty list of played narrations
   }
 
   switchMusic(
@@ -175,16 +183,48 @@ class AudioManager {
     this.textOpacity = 1.0;
   }
 
-  playRandomNarration(narrationArray: { src: string, text: string }[], delay: number = 1000) {
-    const randomIndex = Math.floor(Math.random() * narrationArray.length);
-    const selectedNarration = narrationArray[randomIndex];
+  // Select and play a random narration that hasn't been played yet
+  playRandomNarration(delay: number = 1000) {
+    // If all narrations have been played, reset the available list
+    if (this.availableNarrations.length === 0) {
+      this.resetNarrations();
+    }
+    
+    // Play the first narration if it hasn't been played yet
+    if (!this.isFirstNarrationPlayed) {
+      const firstNarration = this.availableNarrations[0]; // Select the first one
+      this.isFirstNarrationPlayed = true; // Set flag that the first narration is played
+      this.availableNarrations.splice(0, 1); // Remove it from available narrations
 
-    this.clearTypedText();
+      this.clearTypedText();
 
-    setTimeout(() => {
-      this.playRandomAudio([selectedNarration.src], 'narration', true);
-      this.startTypingEffect(selectedNarration.text); // Store the selected text
-    }, delay);
+      setTimeout(() => {
+        this.playRandomAudio([firstNarration.src], 'narration', true);
+        this.startTypingEffect(firstNarration.text); // Store the selected text
+      }, delay);
+    } else {      
+
+      // Select a random narration from the available narrations
+      const randomIndex = Math.floor(Math.random() * this.availableNarrations.length);
+      const selectedNarration = this.availableNarrations[randomIndex];
+
+      // Remove the selected narration from the available list and add it to the played list
+      this.availableNarrations.splice(randomIndex, 1); // Remove from available
+      this.playedNarrations.push(selectedNarration); // Add to played
+
+      this.clearTypedText();
+
+      setTimeout(() => {
+        this.playRandomAudio([selectedNarration.src], 'narration', true);
+        this.startTypingEffect(selectedNarration.text); // Store the selected text
+      }, delay);
+    }
+  }
+
+  // Reset the narration pool when all narrations have been played
+  resetNarrations() {
+    this.availableNarrations = [...this.playedNarrations]; // Move played narrations back to available
+    this.playedNarrations = []; // Reset played narrations list
   }
 
   setVolume(type: 'music' | 'sfx' | 'narration', key: MusicType | SfxType | NarrationType, volume: number) {
@@ -209,7 +249,7 @@ class AudioManager {
       // Add a checkpoint line and play the SFX
       checkpointLines.push(CheckpointLine.createCheckpointLine(canvasWidth, canvasHeight));
       this.playRandomSfx(checkpointSfx, 'checkpoint');
-      this.playRandomNarration(narration);
+      this.playRandomNarration();
 
       this.lineAddedForSection = upcomingSection;
     }

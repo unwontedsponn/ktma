@@ -61,7 +61,7 @@ export const startGame = (
   setGamePaused(false);
 
   if (audioRef.current) audioRef.current.play().catch(error => console.error("Audio play error:", error));
-  audioManager.playRandomNarration(narration);
+  audioManager.playRandomNarration(); // Plays narration upon starting the game
 };
 
 export const resumeGame = async (
@@ -134,5 +134,5 @@ export const resumeGame = async (
 
   // Start the game loop
   gameLoopFunctionRef.current(performance.now());
-  audioManager.playRandomNarration(narration);
+  audioManager.playRandomNarration(); // Plays narration upon resuming the game after a death
 };
