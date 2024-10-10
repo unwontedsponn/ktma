@@ -41,6 +41,7 @@ export const updateFloorPlatforms = (
   gamePaused: boolean,
   platformSpeed: number,
   isPowerUpActive: boolean,
+  isLastCheckpointReached: boolean
 ) => {
   if (gamePaused || player.isDead) return;  
 
@@ -52,6 +53,19 @@ export const updateFloorPlatforms = (
     floorPlatform.updatePosition(platformSpeed);
     if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
   });
+
+  // If the last checkpoint has been reached, add a large platform
+  if (isLastCheckpointReached) {
+    const safeZonePlatformWidth = canvasWidth * 0.8; // Large platform (80% of canvas width)
+    const safeZonePlatform = new FloorPlatform(
+      canvasWidth, 
+      canvasHeight - 50, // Adjust height to place near the bottom
+      safeZonePlatformWidth,
+      50 // Fixed height
+    );
+    floorPlatforms.push(safeZonePlatform);
+    return; // No more platforms need to be added once the safe zone is reached
+  }
 
   // Determine the max and min gaps based on the player's jump capabilities
   const maxGap = jumpDistance * 0.85; // Slightly smaller than the player's max jump distance

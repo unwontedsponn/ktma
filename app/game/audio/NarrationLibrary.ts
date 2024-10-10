@@ -14,7 +14,7 @@ export const narration = [
   { src: `${narrationBaseURL}10.mp3`, text: "To the naysayers, listen and weep. Mozart... who? Bach... what? " },
   { src: `${narrationBaseURL}11.mp3`, text: "I hope you like caviar Freckles.... meow! It's time for fame and fortune." },
   { src: `${narrationBaseURL}12.mp3`, text: "We're going to the top Freckles... Meow... We'll be known the world over. " },
-  { src: `${narrationBaseURL}13.mp3`, text: "Hey, Freckles... I'm a genius!" },
+  { src: `${narrationBaseURL}13.mp3`, text: "Hey, Freckles... meow... I'm a genius!" },
   { src: `${narrationBaseURL}14.mp3`, text: "Damn... this is easy... a black key, a white key... add a touch of... bass?" },
   { src: `${narrationBaseURL}15.mp3`, text: "Being a composer is effortless... the chords just come to me... I'm in flow!" },
   { src: `${narrationBaseURL}16.mp3`, text: "So simple, a sharp here, a flat here... this piece just writes itself!" },

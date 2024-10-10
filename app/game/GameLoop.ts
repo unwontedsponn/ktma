@@ -26,6 +26,7 @@ export const gameLoop = (
   isPowerUpActive: boolean,  
   audioManager: AudioManager,
   platformSpeedRef: React.MutableRefObject<number>,
+  highestSpeedRef: React.MutableRefObject<number>,
   deathCountRef: React.MutableRefObject<number>,
 ) => {
   if (gamePaused) {
@@ -45,6 +46,13 @@ export const gameLoop = (
   const canvasHeight = ctx.canvas.height;
   const currentTime = audioRef?.current?.currentTime || 0; // Calculate currentTime once
 
+  // Check if the player has reached the last section (last checkpoint)
+  const totalSections = musicSections.length;
+  const currentSection = musicSections.findIndex(section => section > currentTime);
+
+  // Use a strict comparison to ensure we only trigger on the last section
+  const isLastCheckpointReached = currentSection === totalSections; // Trigger only for the final section
+
   audioManager.checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
 
   const upcomingSection = musicSections.find(section => section - currentTime <= 1 && section - currentTime > 0);
@@ -62,7 +70,7 @@ export const gameLoop = (
   
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audioRef.current, gamePaused, audioManager);
   updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager, isPowerUpActive);
-  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive);
+  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive, isLastCheckpointReached);
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
 
   // Progress the typing effect for narration
@@ -70,7 +78,7 @@ export const gameLoop = (
 
   document.fonts.load('24px Gopher Mono').then(() => {
     // Assuming the `renderGame` function is called after this point
-    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current, audioManager, canvasHeight);
+    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current, audioManager, canvasHeight, platformSpeedRef, highestSpeedRef);
   });  
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);

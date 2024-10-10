@@ -17,7 +17,9 @@ export const renderGame = (
   audioRef: React.RefObject<HTMLAudioElement | null>,
   deathCount: number,
   audioManager: AudioManager,
-  canvasHeight: number
+  canvasHeight: number,
+  platformSpeedRef: React.MutableRefObject<number>,
+  highestSpeedRef: React.MutableRefObject<number>,
 ) => {
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
@@ -53,6 +55,12 @@ export const renderGame = (
   ctx.fillStyle = '#000000';
   ctx.font = '24px Gopher Mono';
   ctx.fillText(`Deaths: ${deathCount}`, 10, 60);
+
+  // Render Platform Speed
+  ctx.fillStyle = '#000000';
+  ctx.font = '18px Gopher Mono';
+  ctx.fillText(`Platform Speed: ${platformSpeedRef.current.toFixed(1)}`, 10, 90);
+  ctx.fillText(`Highest Speed: ${highestSpeedRef.current.toFixed(1)}`, 10, 120);
 
   // Update the opacity of the narration text
   const narrationTime = performance.now(); // Rename this to avoid conflict
@@ -92,9 +100,7 @@ export const renderGame = (
   const progress = currentSection >= 0 ? currentSection : totalSections;
   const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1]; // Default to the last section end time
 
-  // Create an instance of ProgressBar
+  // Create and render the ProgressBar
   const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
-
-  // Render the progress bar
   progressBar.render(progress, currentTime, nextSectionTime);
 };

@@ -25,6 +25,7 @@ export const useGameLogic = () => {
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
   const platformSpeedRef = useRef<number>(2.8);
+  const highestSpeedRef = useRef<number>(2.8);
   const initialPlatformSpeed = 2.8;
   const deathCountRef = useRef<number>(0);
   
@@ -34,7 +35,6 @@ export const useGameLogic = () => {
   const [, setAudioType] = useState<'normal' | '8bit'>('normal');   
   const [, setIsAudioManagerReady] = useState(false); 
 
-  // Define the speed increase rate and max speed
   const speedIncreaseRate = 0.1;
   const maxSpeed = 10;
 
@@ -51,7 +51,11 @@ export const useGameLogic = () => {
 
       const increaseSpeedInterval = setInterval(() => {
         platformSpeedRef.current = Math.min(platformSpeedRef.current + speedIncreaseRate, maxSpeed);
-        console.log(`Platform speed increased to: ${platformSpeedRef.current}`);
+        
+        // Update the highest speed if current speed exceeds the previous highest
+        if (platformSpeedRef.current > highestSpeedRef.current) {
+          highestSpeedRef.current = platformSpeedRef.current;
+        }
       }, 1000); // Increase speed every second
 
       return () => {
@@ -113,6 +117,7 @@ export const useGameLogic = () => {
         isPowerUpActive,
         audioManagerRef.current,
         platformSpeedRef,
+        highestSpeedRef,
         deathCountRef
       );
   
@@ -153,6 +158,7 @@ export const useGameLogic = () => {
     checkpointLines,
     audioManager: audioManagerRef.current ? audioManagerRef.current : undefined,
     platformSpeedRef,
+    highestSpeedRef,
     initialPlatformSpeed,
   };
 };

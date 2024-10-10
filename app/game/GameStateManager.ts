@@ -68,6 +68,7 @@ export const startGame = async (
 
     // Play background music and handle any audio errors
     if (audioRef.current) {
+      // audioRef.current.currentTime = 207; - this line is for testing only - so i can jump between checkpoints
       await audioRef.current.play().catch(error => console.error("Audio play error:", error));
     }
 

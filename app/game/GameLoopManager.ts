@@ -23,6 +23,7 @@ export const createGameLoopFunction = (
   isPowerUpActive: boolean,
   audioManager: AudioManager,
   platformSpeedRef: React.MutableRefObject<number>,
+  highestSpeedRef: React.MutableRefObject<number>,
   deathCountRef: React.MutableRefObject<number>
 ) => {
   let lastTime = 0;
@@ -52,6 +53,7 @@ export const createGameLoopFunction = (
           isPowerUpActive,
           audioManager,
           platformSpeedRef,
+          highestSpeedRef,
           deathCountRef,          
         );
       }
