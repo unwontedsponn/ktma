@@ -103,7 +103,7 @@ export const updatePowerUps = (
   });
 
   // Attempt to spawn a new power-up if no power-up is active
-  const spawnProbability = 0.1;
+  const spawnProbability = 0.01;
   if (Math.random() < spawnProbability) {
     const upcomingPlatform = floorPlatforms.find(platform => platform.x > canvasWidth && !platform.hasPowerUp);
     if (upcomingPlatform) {

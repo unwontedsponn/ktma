@@ -1,6 +1,7 @@
 // IntroSection.tsx
 import React from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
+import TypewriterEffect from '@/app/components/TypewriterEffect';
 
 interface IntroSectionProps {
   setShowIntro: (show: boolean) => void;
@@ -20,8 +21,12 @@ const IntroSection: React.FC<IntroSectionProps> = ({ setShowIntro, setShowInstru
         <h1 className="opacity-40">myGame</h1>
       </SlideFadeIn>
 
+      <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-3vw md:text-3xl md:pl-32">
+        <p><TypewriterEffect text="Keep The Music Alive..." /></p>
+      </SlideFadeIn>
+
       <SlideFadeIn direction="down" className="font-gopher-mono">
-        <p className="w-[40vw]">Keep The Music Alive tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving, overcoming obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this mini album.</p>
+        <p className="w-[40vw]">...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
       </SlideFadeIn>
 
       <div className="flex flex-col items-center">

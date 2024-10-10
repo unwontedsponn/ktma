@@ -11,25 +11,25 @@ class AudioManager {
   public audioRef: React.RefObject<HTMLAudioElement>;
   private currentNarration: HTMLAudioElement | null = null;
   public currentNarrationText: string | null = null;
-  public currentTypedText: string = ''; // The text being typed letter by letter
-  private charIndex: number = 0; // Current character index
+  public currentTypedText: string = '';
+  private charIndex: number = 0;
 
-  public textOpacity: number = 1.0; // Opacity for fading text
-  private fadeOutDuration: number = 3000; // Duration to fade out in milliseconds
-  private fadeStartTime: number | null = null; // Track when to start fading out
+  public textOpacity: number = 1.0;
+  private fadeOutDuration: number = 3000;
+  private fadeStartTime: number | null = null;
   private opacityFadeDelay: number = 3000;
 
   private audioType: MusicType;
   private originalMusicVolume: number | null = null;
   private originalSfxVolumes: { [key in SfxType]?: number } = {};
 
-  private availableNarrations: { src: string, text: string }[] = []; // List of available narrations
-  private playedNarrations: { src: string, text: string }[] = []; // List of played narrations
+  private availableNarrations: { src: string, text: string }[] = [];
+  private playedNarrations: { src: string, text: string }[] = [];
   private isFirstNarrationPlayed: boolean = false;
 
   private mixer = {
     music: { normal: 0.3, '8bit': 0.2 },
-    sfx: { jump: 0.3, land: 0.2, dying: 0.5, checkpoint: 0.5, token: 0.5 },
+    sfx: { jump: 0.2, land: 0.1, dying: 0.5, checkpoint: 0.5, token: 0.5 },
     narration: { narration: 0.6 }
   };
   private lineAddedForSection: number | null = null;
