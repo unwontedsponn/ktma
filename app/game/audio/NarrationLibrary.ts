@@ -20,17 +20,23 @@ export const narration = [
   { src: `${narrationBaseURL}16.mp3`, text: "So simple, a sharp here, a flat here... this piece just writes itself!" },
 ];
 
-// Preload all audio files
-export const preloadAudioFiles = (narrationArray: { src: string, text: string }[]) => {
-  if (typeof window !== "undefined") {
-    narrationArray.forEach(({ src }) => {
+// Preload all narration files and return a Promise to ensure they're fully loaded
+export const preloadNarrationFiles = (narrationArray: { src: string, text: string }[]): Promise<void[]> => {
+  if (typeof window === "undefined") return Promise.resolve([]); // Return an empty promise if not in the browser
+
+  const preloadPromises = narrationArray.map(({ src }) => {
+    return new Promise<void>((resolve, reject) => {
       const audio = new Audio(src);
       audio.preload = 'auto';
+      audio.addEventListener('canplaythrough', () => resolve(), { once: true });
+      audio.addEventListener('error', () => reject(new Error(`Failed to load: ${src}`)), { once: true });
     });
-  }  
+  });
+
+  return Promise.all(preloadPromises); // Wait until all narration files are preloaded
 };
 
-// Call this function only in a browser environment
-if (typeof window !== "undefined") {
-  preloadAudioFiles(narration);
-}
+// You can use this function to preload all narrations
+export const preloadAllNarrations = (): Promise<void[]> => {
+  return preloadNarrationFiles(narration);
+};

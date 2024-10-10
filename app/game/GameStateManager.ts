@@ -10,6 +10,8 @@ import { MutableRefObject } from 'react';
 import { initializePlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
 import { initializePlayer } from "@/app/game/entities/Player/PlayerManager";
 import { preloadMusicTracks } from "@/app/game/audio/MusicLibrary";
+import { preloadAllSfx } from "./audio/SfxLibrary";
+import { preloadAllNarrations } from "./audio/NarrationLibrary";
 
 export const resetPlatformSpeed = (platformSpeedRef: MutableRefObject<number>, initialPlatformSpeed: number) => {
   if (platformSpeedRef && platformSpeedRef.current !== undefined) platformSpeedRef.current = initialPlatformSpeed;
@@ -49,8 +51,8 @@ export const startGame = async (
   canvasHeight: number
 ) => {
   try {
-    // Wait for both tracks to preload before proceeding
-    await preloadMusicTracks();
+    // Wait for both tracks, sfx and narration before starting the game (before continuing with this function)
+    await Promise.all([preloadMusicTracks(), preloadAllSfx(), preloadAllNarrations()]);
 
     // Initialize platforms first to ensure they are available
     initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);

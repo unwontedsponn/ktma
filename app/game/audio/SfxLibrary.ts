@@ -37,17 +37,23 @@ export const tokenSfx = [
   `${sfxBaseURL}7. Token/token4.wav`,
 ];
 
-// Preload all audio files
-export const preloadAudioFiles = (audioFiles: string[]) => {
-  if (typeof window !== "undefined") {
-    audioFiles.forEach((src) => {
+// Preload all SFX files and return a Promise to ensure they're fully loaded
+export const preloadSfxFiles = (audioFiles: string[]): Promise<void[]> => {
+  if (typeof window === "undefined") return Promise.resolve([]); // Return an empty promise if not in the browser
+
+  const preloadPromises = audioFiles.map((src) => {
+    return new Promise<void>((resolve, reject) => {
       const audio = new Audio(src);
       audio.preload = 'auto';
+      audio.addEventListener('canplaythrough', () => resolve(), { once: true });
+      audio.addEventListener('error', () => reject(new Error(`Failed to load: ${src}`)), { once: true });
     });
-  }  
+  });
+
+  return Promise.all(preloadPromises); // Wait until all audio files are preloaded
 };
 
-// Call this function only in a browser environment
-if (typeof window !== "undefined") {
-  preloadAudioFiles([...jumpSfx, ...landSfx, ...dyingSfx, ...checkpointSfx, ...tokenSfx]);
-}
+// You can use this function to preload all SFX
+export const preloadAllSfx = (): Promise<void[]> => {
+  return preloadSfxFiles([...jumpSfx, ...landSfx, ...dyingSfx, ...checkpointSfx, ...tokenSfx]);
+};
