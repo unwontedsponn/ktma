@@ -38,9 +38,7 @@ class AudioManager {
     this.audioRef = audioRef;
     this.audioType = 'normal'; // Set initial type
 
-    if (audioRef.current) {
-      audioRef.current.volume = this.getVolume('music', this.audioType);
-    }
+    if (audioRef.current) audioRef.current.volume = this.getVolume('music', this.audioType);
 
     this.availableNarrations = [...narrationArray]; // Initialize available narrations
     this.playedNarrations = []; // Start with an empty list of played narrations
@@ -55,12 +53,14 @@ class AudioManager {
     if (!audioRef.current) return;
 
     const audio = audioRef.current;
-    const src = newType === 'normal' ? '/audio/game/All_Change.mp3' : '/audio/game/All Change 8-BIT.mp3';
-    const volume = this.getVolume('music', newType);
+    const src = newType === 'normal' ? '/audio/game/All_Change.wav' : '/audio/game/All Change 8-BIT.wav';
+    const volume = this.getVolume('music', newType);    
 
     audio.pause();
     audio.src = src;
     audio.volume = volume;
+
+    // Set the current time to where the last track left off
     audio.currentTime = currentTime;
     audio.play();
 

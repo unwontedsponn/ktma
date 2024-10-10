@@ -19,8 +19,8 @@ export const musicSections: number[] = [
 export const preloadMusicTracks = () => {
   if (typeof window !== "undefined") {
     const musicTracks = [
-      '/audio/game/All_Change.mp3',
-      '/audio/game/All Change 8-BIT.mp3',
+      '/audio/game/All_Change.wav',
+      '/audio/game/All Change 8-BIT.wav',
     ];
 
     musicTracks.forEach((src) => {
@@ -31,6 +31,4 @@ export const preloadMusicTracks = () => {
 };
 
 // Call this function only in a browser environment
-if (typeof window !== "undefined") {
-  preloadMusicTracks();
-}
+if (typeof window !== "undefined") preloadMusicTracks();

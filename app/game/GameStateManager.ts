@@ -90,7 +90,7 @@ export const resumeGame = async (
   // Reset power-up state
   setIsPowerUpActive(false);
   
-  // Switch music back to default (e.g., 8-bit)
+  // Switch music back to default (e.g., normal)
   if (audioRef.current) {
     const currentTime = audioRef.current.currentTime;
     audioManager.switchMusic(audioRef, currentTime, 'normal', () => {});
