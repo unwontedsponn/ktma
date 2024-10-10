@@ -16,17 +16,30 @@ export const musicSections: number[] = [
   228   // 03:48
 ];
 
-export const preloadMusicTracks = () => {
-  if (typeof window !== "undefined") {
-    const musicTracks = [
-      '/audio/game/All_Change.wav',
-      '/audio/game/All Change 8-BIT.wav',
-    ];
+export const preloadMusicTracks = async (): Promise<void> => {
+  if (typeof window === "undefined") return;
 
-    musicTracks.forEach((src) => {
+  const musicTracks = [
+    '/audio/game/All_Change.wav',
+    '/audio/game/All Change 8-BIT.wav',
+  ];
+
+  const loadTrack = (src: string): Promise<void> => {
+    return new Promise((resolve, reject) => {
       const audio = new Audio(src);
       audio.preload = 'auto';
+      audio.addEventListener('canplaythrough', () => resolve(), { once: true });
+      audio.addEventListener('error', () => reject(new Error(`Failed to load: ${src}`)), { once: true });
     });
+  };
+
+  try {
+    // Preload both tracks
+    await Promise.all(musicTracks.map((src) => loadTrack(src)));
+    console.log('Both tracks are preloaded!');
+    // Now you can safely start the game
+  } catch (error) {
+    console.error('Error preloading tracks:', error);
   }
 };
 

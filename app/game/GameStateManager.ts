@@ -9,6 +9,7 @@ import { musicSections } from "@/app/game/audio/MusicLibrary";
 import { MutableRefObject } from 'react';
 import { initializePlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
 import { initializePlayer } from "@/app/game/entities/Player/PlayerManager";
+import { preloadMusicTracks } from "@/app/game/audio/MusicLibrary";
 
 export const resetPlatformSpeed = (platformSpeedRef: MutableRefObject<number>, initialPlatformSpeed: number) => {
   if (platformSpeedRef && platformSpeedRef.current !== undefined) platformSpeedRef.current = initialPlatformSpeed;
@@ -37,8 +38,7 @@ export const resetCheckpointLines = (checkpointLines: MutableRefObject<Checkpoin
   if (checkpointLines && checkpointLines.current) checkpointLines.current = []; 
 };
 
-// Updated startGame function with required parameters
-export const startGame = (
+export const startGame = async (
   setGameStarted: (started: boolean) => void,
   setGamePaused: (paused: boolean) => void,
   audioRef: MutableRefObject<HTMLAudioElement | null>,
@@ -48,19 +48,33 @@ export const startGame = (
   canvasWidth: number,
   canvasHeight: number
 ) => {
-  // Initialize platforms first to ensure they are available
-  initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
-  
-  // Now, safely get the starting platform
-  const startingPlatform = floorPlatforms.current[0];
-  if (startingPlatform) initializePlayer(player, floorPlatforms, audioManager);
-  else return;
+  try {
+    // Wait for both tracks to preload before proceeding
+    await preloadMusicTracks();
 
-  setGameStarted(true);
-  setGamePaused(false);
+    // Initialize platforms first to ensure they are available
+    initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
+    
+    // Now, safely get the starting platform
+    const startingPlatform = floorPlatforms.current[0];
+    if (startingPlatform) initializePlayer(player, floorPlatforms, audioManager);
+    else return; // Exit if there's no platform to start on
 
-  if (audioRef.current) audioRef.current.play().catch(error => console.error("Audio play error:", error));
-  audioManager.playRandomNarration(); // Plays narration upon starting the game
+    // Start the game
+    setGameStarted(true);
+    setGamePaused(false);
+
+    // Play background music and handle any audio errors
+    if (audioRef.current) {
+      await audioRef.current.play().catch(error => console.error("Audio play error:", error));
+    }
+
+    // Play a random narration at the start of the game
+    audioManager.playRandomNarration();
+  } catch (error) {
+    console.error("Error during game start:", error);
+    // Handle error if preloading fails
+  }
 };
 
 export const resumeGame = async (
