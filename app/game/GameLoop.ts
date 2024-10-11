@@ -34,11 +34,7 @@ export const gameLoop = (
       cancelAnimationFrame(animationFrameIdRef.current);
       animationFrameIdRef.current = null; // Clear the frame ID to fully stop the loop
     }
-
-    // Pause the current audio track via AudioManager
-    if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) {
-      audioManager.audioRef.current.pause();
-    }        
+    if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) audioManager.audioRef.current.pause();
     return;
   }
 
@@ -51,7 +47,7 @@ export const gameLoop = (
   const currentSection = musicSections.findIndex(section => section > currentTime);
 
   // Use a strict comparison to ensure we only trigger on the last section
-  const isLastCheckpointReached = currentSection === totalSections; // Trigger only for the final section
+  const isLastCheckpointReached = currentSection === totalSections -1; // Trigger only for the final section
 
   audioManager.checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
 
@@ -78,7 +74,7 @@ export const gameLoop = (
 
   document.fonts.load('24px Gopher Mono').then(() => {
     // Assuming the `renderGame` function is called after this point
-    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current, audioManager, canvasHeight, platformSpeedRef, highestSpeedRef);
+    renderGame(ctx, player, obstacles, powerUps, floorPlatforms, checkpointLines, audioRef, deathCountRef.current, audioManager, canvasWidth, canvasHeight, platformSpeedRef, highestSpeedRef);
   });  
 
   animationFrameIdRef.current = requestAnimationFrame(gameLoopFunctionRef.current);

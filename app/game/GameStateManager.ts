@@ -68,7 +68,11 @@ export const startGame = async (
 
     // Play background music and handle any audio errors
     if (audioRef.current) {
-      // audioRef.current.currentTime = 207; - this line is for testing only - so i can jump between checkpoints
+
+      // this line is for testing only - so i can jump between checkpoints
+      audioRef.current.currentTime = 180;
+
+
       await audioRef.current.play().catch(error => console.error("Audio play error:", error));
     }
 
@@ -101,10 +105,7 @@ export const resumeGame = async (
   // Cancel the current animation frame if it's running
   if (animationFrameIdRef.current) cancelAnimationFrame(animationFrameIdRef.current);
 
-  // Unpause the game
   setGamePaused(false);
-
-  // Reset power-up state
   setIsPowerUpActive(false);
   
   // Switch music back to default (e.g., normal)
@@ -141,14 +142,11 @@ export const resumeGame = async (
     const newSectionIndex = musicSections.indexOf(nearestSection);
     setCurrentSection(newSectionIndex);
 
-    try { 
-      await audioRef.current.play(); 
-    } catch (error) { 
-      console.error('Failed to play audio:', error); 
-    }
+    try {await audioRef.current.play();} 
+    catch (error) {console.error('Failed to play audio:', error);}
   }
 
   // Start the game loop
   gameLoopFunctionRef.current(performance.now());
-  audioManager.playRandomNarration(); // Plays narration upon resuming the game after a death
+  audioManager.playRandomNarration();
 };

@@ -17,6 +17,7 @@ export const renderGame = (
   audioRef: React.RefObject<HTMLAudioElement | null>,
   deathCount: number,
   audioManager: AudioManager,
+  canvasWidth: number,
   canvasHeight: number,
   platformSpeedRef: React.MutableRefObject<number>,
   highestSpeedRef: React.MutableRefObject<number>,
@@ -94,7 +95,7 @@ export const renderGame = (
   }
 
   // Calculate current progress and the current time
-  const totalSections = musicSections.length;
+  const totalSections = musicSections.length - 1;
   const currentTime = audioRef?.current?.currentTime || 0;
   const currentSection = musicSections.findIndex(section => section > currentTime);
   const progress = currentSection >= 0 ? currentSection : totalSections;
@@ -103,4 +104,10 @@ export const renderGame = (
   // Create and render the ProgressBar
   const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
   progressBar.render(progress, currentTime, nextSectionTime);
+
+  // // Render YOU WIN!!
+  ctx.fillStyle = '#000000';
+  ctx.font = '100px Gopher Mono';
+  ctx.textAlign = 'center'; // Center the text horizontally
+  ctx.fillText(`YOU WIN!`, canvasWidth / 2, canvasHeight / 2);
 };

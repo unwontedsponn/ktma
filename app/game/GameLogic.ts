@@ -47,58 +47,33 @@ export const useGameLogic = () => {
   // Separate useEffect to handle platform speed increment
   useEffect(() => {
     if (gameStarted && !gamePaused) {
-      console.log("Setting up platform speed increase interval");
 
       const increaseSpeedInterval = setInterval(() => {
         platformSpeedRef.current = Math.min(platformSpeedRef.current + speedIncreaseRate, maxSpeed);
-        
-        // Update the highest speed if current speed exceeds the previous highest
-        if (platformSpeedRef.current > highestSpeedRef.current) {
-          highestSpeedRef.current = platformSpeedRef.current;
-        }
+                
+        if (platformSpeedRef.current > highestSpeedRef.current) highestSpeedRef.current = platformSpeedRef.current;
       }, 1000); // Increase speed every second
-
-      return () => {
-        console.log("Clearing platform speed increase interval");
-        clearInterval(increaseSpeedInterval);
-      };
+      return () => {clearInterval(increaseSpeedInterval);};
     }
   }, [gameStarted, gamePaused, speedIncreaseRate, maxSpeed]);
 
   useEffect(() => {
-    if (gameStarted && !gamePaused) {
-      console.log('Game started: playing or resuming music');
-      
-      if (audioManagerRef.current?.audioRef.current && audioManagerRef.current.audioRef.current.paused) {
-        audioManagerRef.current.audioRef.current.play();
-      }
+    if (gameStarted && !gamePaused) {     
+      if (audioManagerRef.current?.audioRef.current && audioManagerRef.current.audioRef.current.paused) audioManagerRef.current.audioRef.current.play();
     }    
 
     if (gamePaused) {
-      console.log('Game paused: stopping music');
-      if (audioManagerRef.current?.audioRef.current && !audioManagerRef.current.audioRef.current.paused) {
-        audioManagerRef.current.audioRef.current.pause();
-      }
+      if (audioManagerRef.current?.audioRef.current && !audioManagerRef.current.audioRef.current.paused) audioManagerRef.current.audioRef.current.pause();
     }
   
-    if (!gameStarted || gamePaused) {
-      console.log('Game is not started or is paused. Exiting useEffect.');
-      return;
-    }
+    if (!gameStarted || gamePaused) return;
   
     const canvas = canvasRef.current;
-    if (!canvas) {
-      console.error('Canvas element is not available. Exiting useEffect.');
-      return;
-    }
+    if (!canvas) return;
   
     const ctx = canvas.getContext('2d');
-    if (!ctx) {
-      console.error('Failed to get canvas context. Exiting useEffect.');
-      return;
-    }
+    if (!ctx) return;
   
-    // Check if audioManagerRef.current is not null before using it
     if (audioManagerRef.current) {
       // Initialize the game loop function
       gameLoopFunctionRef.current = createGameLoopFunction(
@@ -137,7 +112,6 @@ export const useGameLogic = () => {
     }
   }, [gameStarted, gamePaused, isPowerUpActive]);
   
-
   return {
     canvasRef,
     audioRef,
