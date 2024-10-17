@@ -24,7 +24,8 @@ export const createGameLoopFunction = (
   audioManager: AudioManager,
   platformSpeedRef: React.MutableRefObject<number>,
   highestSpeedRef: React.MutableRefObject<number>,
-  deathCountRef: React.MutableRefObject<number>
+  deathCountRef: React.MutableRefObject<number>,
+  isBeyondLastCheckpointRef: React.MutableRefObject<boolean>,
 ) => {
   let lastTime = 0;
 
@@ -54,7 +55,8 @@ export const createGameLoopFunction = (
           audioManager,
           platformSpeedRef,
           highestSpeedRef,
-          deathCountRef,          
+          deathCountRef,     
+          isBeyondLastCheckpointRef     
         );
       }
     }

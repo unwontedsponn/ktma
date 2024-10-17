@@ -3,11 +3,12 @@ import { Player, updatePlayer } from "@/app/game/entities/Player/Player";
 import { Obstacle, updateObstacles } from "@/app/game/entities/Obstacles/Obstacles";
 import { PowerUp, updatePowerUps } from "@/app/game/entities/PowerUps";
 import { FloorPlatform } from "@/app/game/entities/FloorPlatforms/FloorPlatforms";
-import { updateFloorPlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
+import { updateFloorPlatforms, updateSafeFloorPlatforms } from "@/app/game/entities/FloorPlatforms/FloorPlatformManager";
 import { CheckpointLine, updateCheckpointLines } from "@/app/game/entities/CheckpointLine";
 import { renderGame } from "@/app/game/Renderer";
 import AudioManager from "@/app/game/audio/AudioManager";
 import { musicSections } from "@/app/game/audio/MusicLibrary";
+import { stopGameLoop } from "./AnimationFrameManager";
 
 export const gameLoop = (
   ctx: CanvasRenderingContext2D,
@@ -28,26 +29,30 @@ export const gameLoop = (
   platformSpeedRef: React.MutableRefObject<number>,
   highestSpeedRef: React.MutableRefObject<number>,
   deathCountRef: React.MutableRefObject<number>,
+  isBeyondLastCheckpointRef: React.MutableRefObject<boolean>,
 ) => {
   if (gamePaused) {
-    if (animationFrameIdRef.current !== null) {
-      cancelAnimationFrame(animationFrameIdRef.current);
-      animationFrameIdRef.current = null; // Clear the frame ID to fully stop the loop
-    }
+    stopGameLoop(animationFrameIdRef);  // Use stopGameLoop instead of cancelAnimationFrame
     if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) audioManager.audioRef.current.pause();
     return;
   }
 
   const canvasWidth = ctx.canvas.width;
   const canvasHeight = ctx.canvas.height;
-  const currentTime = audioRef?.current?.currentTime || 0; // Calculate currentTime once
+  const currentTime = audioRef?.current?.currentTime || 0; // Calculate currentTime once  
 
   // Check if the player has reached the last section (last checkpoint)
   const totalSections = musicSections.length;
   const currentSection = musicSections.findIndex(section => section > currentTime);
 
   // Use a strict comparison to ensure we only trigger on the last section
-  const isLastCheckpointReached = currentSection === totalSections -1; // Trigger only for the final section
+  const isLastCheckpointReached = currentSection === totalSections - 1;
+
+  // If the last checkpoint has been reached, set the flag to `true`
+  if (isLastCheckpointReached && !isBeyondLastCheckpointRef.current) {
+    console.log("Last checkpoint reached, switching to safe zone platforms.");
+    isBeyondLastCheckpointRef.current = true;  // Ensure we don’t switch back
+  }
 
   audioManager.checkMusicSection(currentTime, checkpointLines, canvasWidth, canvasHeight); // Use currentTime here
 
@@ -66,7 +71,16 @@ export const gameLoop = (
   
   updateObstacles(obstacles, player, canvasWidth, canvasHeight, setGamePaused, audioRef.current, gamePaused, audioManager);
   updatePowerUps(powerUps, player, setIsPowerUpActive, audioRef, setAudioType, floorPlatforms, canvasWidth, audioManager, isPowerUpActive);
-  updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive, isLastCheckpointReached);
+
+  // Conditionally update platforms
+  if (isBeyondLastCheckpointRef.current) {
+    // ** Continue adding safe platforms until the end of the track **
+    updateSafeFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive, audioRef);
+  } else {
+    // ** Regular platform creation **
+    updateFloorPlatforms(floorPlatforms, player, canvasWidth, canvasHeight, gamePaused, platformSpeedRef.current, isPowerUpActive);
+  }
+
   updateCheckpointLines(checkpointLines, player, canvasWidth, currentTime, nextSectionTime, gamePaused);
 
   // Progress the typing effect for narration

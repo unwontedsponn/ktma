@@ -28,6 +28,7 @@ export const useGameLogic = () => {
   const highestSpeedRef = useRef<number>(2.8);
   const initialPlatformSpeed = 2.8;
   const deathCountRef = useRef<number>(0);
+  const isBeyondLastCheckpointRef = useRef<boolean>(false);
   
   const [gameStarted, setGameStarted] = useState(false);
   const [gamePaused, setGamePaused] = useState(false);
@@ -93,7 +94,8 @@ export const useGameLogic = () => {
         audioManagerRef.current,
         platformSpeedRef,
         highestSpeedRef,
-        deathCountRef
+        deathCountRef,
+        isBeyondLastCheckpointRef
       );
   
       startGameLoop(gameLoopFunctionRef, animationFrameIdRef, player);

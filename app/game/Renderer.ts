@@ -105,9 +105,9 @@ export const renderGame = (
   const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
   progressBar.render(progress, currentTime, nextSectionTime);
 
-  // // Render YOU WIN!!
-  ctx.fillStyle = '#000000';
-  ctx.font = '100px Gopher Mono';
-  ctx.textAlign = 'center'; // Center the text horizontally
-  ctx.fillText(`YOU WIN!`, canvasWidth / 2, canvasHeight / 2);
+  // // // Render YOU WIN!!
+  // ctx.fillStyle = '#000000';
+  // ctx.font = '100px Gopher Mono';
+  // ctx.textAlign = 'center'; // Center the text horizontally
+  // ctx.fillText(`YOU WIN!`, canvasWidth / 2, canvasHeight / 2);
 };

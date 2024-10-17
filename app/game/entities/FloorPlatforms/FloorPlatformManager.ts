@@ -40,8 +40,7 @@ export const updateFloorPlatforms = (
   canvasHeight: number,
   gamePaused: boolean,
   platformSpeed: number,
-  isPowerUpActive: boolean,
-  isLastCheckpointReached: boolean
+  isPowerUpActive: boolean,  
 ) => {
   if (gamePaused || player.isDead) return;  
 
@@ -53,19 +52,6 @@ export const updateFloorPlatforms = (
     floorPlatform.updatePosition(platformSpeed);
     if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
   });
-
-  // If the last checkpoint has been reached, add a large platform
-  if (isLastCheckpointReached) {
-    const safeZonePlatformWidth = canvasWidth * 0.8; // Large platform (80% of canvas width)
-    const safeZonePlatform = new FloorPlatform(
-      canvasWidth, 
-      canvasHeight - 50, // Adjust height to place near the bottom
-      safeZonePlatformWidth,
-      50 // Fixed height
-    );
-    floorPlatforms.push(safeZonePlatform);
-    return; // No more platforms need to be added once the safe zone is reached
-  }
 
   // Determine the max and min gaps based on the player's jump capabilities
   const maxGap = jumpDistance * 0.85; // Slightly smaller than the player's max jump distance
@@ -82,5 +68,56 @@ export const updateFloorPlatforms = (
 
     // Spawn a new platform at the calculated position
     floorPlatforms.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, newPlatformX));
+  }
+};
+
+// Function to update all floor platforms
+export const updateSafeFloorPlatforms = (
+  floorPlatforms: FloorPlatform[],
+  player: Player,
+  canvasWidth: number,
+  canvasHeight: number,
+  gamePaused: boolean,
+  platformSpeed: number,
+  isPowerUpActive: boolean,  
+  audioRef: React.MutableRefObject<HTMLAudioElement | null>,
+) => {
+  if (gamePaused || player.isDead) return;  
+
+  // Move each platform to the left and remove it if it's off-screen
+  floorPlatforms.forEach((floorPlatform, index) => {
+    floorPlatform.applyPowerUp(isPowerUpActive);
+    floorPlatform.updatePosition(platformSpeed);
+    if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
+  });
+
+  const safeZonePlatformWidth = canvasWidth * 0.8; // Large platform (80% of canvas width)
+  
+  // Get the rightmost edge of the last platform to ensure we extend it seamlessly
+  const lastPlatform = floorPlatforms[floorPlatforms.length - 1];
+  const rightEdgeOfLastPlatform = lastPlatform ? lastPlatform.x + lastPlatform.width : 0;
+
+  // Only add another safe zone platform if we haven't reached the end of the track
+  const currentTime = audioRef.current?.currentTime || 0;
+  const audioDuration = audioRef.current?.duration || 0;
+
+  // Keep adding safe zone platforms until the track ends
+  if (rightEdgeOfLastPlatform < canvasWidth && currentTime < audioDuration) {
+    const safeZonePlatform = new FloorPlatform(
+      rightEdgeOfLastPlatform, // Start right after the last platform
+      canvasHeight - 50,       // Adjust height to place near the bottom
+      safeZonePlatformWidth,   // Keep the large platform width
+      50                       // Fixed height
+    );
+    floorPlatforms.push(safeZonePlatform);
+
+    // Optionally, you can log the added platforms for debugging
+    console.log("Safe Zone Platform Extended:", safeZonePlatform);
+  }
+  
+  // Stop adding platforms once the audio ends
+  if (currentTime >= audioDuration) {
+    console.log("Reached end of track, no more platforms needed.");
+    return;
   }
 };
