@@ -29,9 +29,15 @@ export class ProgressBar {
     const availableWidth = this.canvasWidth - 2 * this.barPaddingX; // Adjust available width based on padding
     const segmentWidth = availableWidth / this.totalSections; // Recalculate segment width based on the available width
 
+    // Ensure the progress does not exceed the total sections
+    const clampedProgress = Math.min(progress, this.totalSections);
+
     // Calculate how much of the current section is completed
-    const sectionStartTime = musicSections[progress - 1] || 0;
-    const sectionProgress = (currentTime - sectionStartTime) / (nextSectionTime - sectionStartTime);
+    const sectionStartTime = musicSections[clampedProgress - 1] || 0;
+    const sectionProgress = Math.min(
+      (currentTime - sectionStartTime) / (nextSectionTime - sectionStartTime),
+      1 // Ensure the section progress does not exceed 100%
+    );
 
     // ** First pass: Draw the borders for all segments **
     for (let i = 0; i < this.totalSections; i++) {
@@ -43,35 +49,31 @@ export class ProgressBar {
     }
 
     // ** Second pass: Fill the segments based on progress **
-    for (let i = 0; i < this.totalSections; i++) {
+    for (let i = 0; i < clampedProgress - 1; i++) {
       this.ctx.beginPath();
+      this.ctx.rect(
+        i * segmentWidth + this.barPaddingX + this.padding,
+        this.yPosition + this.padding,
+        segmentWidth - 2 * this.padding,
+        this.barHeight - 2 * this.padding
+      );
+      this.ctx.fillStyle = this.segmentColor;
+      this.ctx.fill();
+      this.ctx.closePath();
+    }
 
-      // For completed sections, fill completely but leave padding for borders
-      if (i < progress - 1) {
-        this.ctx.rect(
-          i * segmentWidth + this.barPaddingX + this.padding,
-          this.yPosition + this.padding,
-          segmentWidth - 2 * this.padding,
-          this.barHeight - 2 * this.padding
-        );
-        this.ctx.fillStyle = this.segmentColor;
-        this.ctx.fill();
-      }
-      
-      // For the current section, fill according to progress within the section
-      else if (i === progress - 1) {
-        const filledWidth = sectionProgress * (segmentWidth - 2 * this.padding);
-        this.ctx.rect(
-          i * segmentWidth + this.barPaddingX + this.padding,
-          this.yPosition + this.padding,
-          filledWidth,
-          this.barHeight - 2 * this.padding
-        );
-        this.ctx.fillStyle = this.segmentColor;
-        this.ctx.fill();
-      }
-
-      // Close the path after drawing
+    // For the current section, fill according to progress within the section
+    if (clampedProgress > 0) {
+      this.ctx.beginPath();
+      const filledWidth = sectionProgress * (segmentWidth - 2 * this.padding);
+      this.ctx.rect(
+        (clampedProgress - 1) * segmentWidth + this.barPaddingX + this.padding,
+        this.yPosition + this.padding,
+        filledWidth,
+        this.barHeight - 2 * this.padding
+      );
+      this.ctx.fillStyle = this.segmentColor;
+      this.ctx.fill();
       this.ctx.closePath();
     }
   }
