@@ -56,8 +56,8 @@ export class Player {
 
   handleKeyDown(event: KeyboardEvent) {
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].includes(event.code)) event.preventDefault();
-    if (event.code === 'ArrowLeft') this.moveLeft();
-    if (event.code === 'ArrowRight') this.moveRight();
+    // if (event.code === 'ArrowLeft') this.moveLeft();
+    // if (event.code === 'ArrowRight') this.moveRight();
     if (event.code === 'Space' && !this.isSpacePressed) {
       this.isSpacePressed = true;
       this.jump();
@@ -65,7 +65,7 @@ export class Player {
   }
   
   handleKeyUp(event: KeyboardEvent) {
-    if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') this.stopMoving();
+    // if (event.code === 'ArrowLeft' || event.code === 'ArrowRight') this.stopMoving();
     if (event.code === 'Space') this.isSpacePressed = false;
   }
 
