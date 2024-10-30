@@ -244,7 +244,7 @@ class AudioManager {
       section => section - currentTime <= 1 && section - currentTime > 0
     );
 
-    if (upcomingSection && this.lineAddedForSection !== upcomingSection) {
+    if (upcomingSection && this.lineAddedForSection !== upcomingSection && upcomingSection !== musicSections[musicSections.length - 1]) {
       // Add a checkpoint line and play the SFX
       checkpointLines.push(CheckpointLine.createCheckpointLine(canvasWidth, canvasHeight));
       this.playRandomSfx(checkpointSfx, 'checkpoint');

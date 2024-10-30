@@ -70,7 +70,7 @@ export const startGame = async (
     if (audioRef.current) {
 
       // this line is for testing only - so i can jump between checkpoints
-      // audioRef.current.currentTime = 0;
+      audioRef.current.currentTime = 210;
 
 
       await audioRef.current.play().catch(error => console.error("Audio play error:", error));
