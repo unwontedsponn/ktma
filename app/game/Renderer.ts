@@ -7,6 +7,8 @@ import { ProgressBar } from "./entities/ProgressBar";
 import { musicSections } from "./audio/MusicLibrary";
 import AudioManager from "./audio/AudioManager";
 
+let youWinOpacity = 0.0;
+
 export const renderGame = (
   ctx: CanvasRenderingContext2D,
   player: Player,
@@ -105,9 +107,17 @@ export const renderGame = (
   const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
   progressBar.render(progress, currentTime, nextSectionTime);
 
-  // // // Render YOU WIN!!
-  // ctx.fillStyle = '#000000';
-  // ctx.font = '100px Gopher Mono';
-  // ctx.textAlign = 'center'; // Center the text horizontally
-  // ctx.fillText(`YOU WIN!`, canvasWidth / 2, canvasHeight / 2);
+  // Render YOU WIN!!! when reaching the penultimate checkpoint, with fading effect
+  if (progress === totalSections) {
+    // Increment opacity for fade-in, but keep it capped at 1.0
+    youWinOpacity = Math.min(youWinOpacity + 0.0001, 1.0);
+
+    ctx.save(); // Save the current state of the canvas
+    ctx.fillStyle = `rgba(0, 0, 0, ${youWinOpacity})`; // Apply opacity using rgba
+    ctx.font = '100px Gopher Mono';
+    ctx.textAlign = 'center'; // Center the text horizontally
+    ctx.textBaseline = 'middle'; // Center the text vertically
+    ctx.fillText(`YOU WIN!!!`, canvasWidth / 2, canvasHeight / 2);
+    ctx.restore(); // Restore the canvas state
+  }
 };
