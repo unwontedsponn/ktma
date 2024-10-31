@@ -26,7 +26,7 @@ const InstructionsSection: React.FC<InstructionsSectionProps> = ({
         <p className="">
           To keep the music alive you must overcome the obstacles in your path, by jumping over them, or moving around them. Simple right? Not really, you&apos;ll see...
         </p>
-        <p>Jump = SPACE BAR</p>
+        <p>Jump = SPACE BAR (Player can double jump)</p>                
         {/* <p>Left/Right = ARROW KEYS</p> */}
         <p>
           Tokens transform the music you&apos;re creating. Each colour in a different way for you to discover. They also make you invincible against any obstacle. Each time you complete a level, you have completed an entire piece of music.

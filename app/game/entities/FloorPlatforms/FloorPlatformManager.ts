@@ -14,12 +14,20 @@ export const initializePlatforms = (
   // Create an initial platform near the left of the canvas
   const initialPlatform = new FloorPlatform(50, 500, 600, 500);
   floorPlatforms.current.push(initialPlatform);
+  
+  // Define a fixed, jumpable gap for the first platform pair
+  const firstGap = -700; // Don't know why, but I have to set this weird number for the second platform to not be too far away???
 
-  // Create additional platforms without depending on player properties
-  let currentX = initialPlatform.width; // Start after the initial platform  
+  // Position the second platform after the initial gap
+  let currentX = initialPlatform.x + initialPlatform.width + firstGap;
 
-  const maxGap = 200; // Define default gap range (fixed values)
+  // Create the second platform using the fixed gap
+  const secondPlatform = FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, currentX);
+  floorPlatforms.current.push(secondPlatform);
+  currentX += secondPlatform.width;
+
   const minGap = 50; 
+  const maxGap = 200; // Define default gap range (fixed values)
 
   while (currentX < canvasWidth) {
     const gap = FloorPlatform.getRandomInRange(minGap, maxGap);
