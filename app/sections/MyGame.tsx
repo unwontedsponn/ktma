@@ -1,9 +1,9 @@
-// MyGame.tsx
 import React, { useState, useRef } from 'react';
 import { useGameLogic } from '@/app/game/GameLogic';
 import IntroSection from '@/app/game/sections/IntroSection';
 import InstructionsSection from '@/app/game/sections/InstructionsSection';
 import GamePausedSection from '@/app/game/sections/PausedSection';
+import CompletedSection from '../game/sections/CompletedSection';
 import { stopGameLoop } from '../game/AnimationFrameManager';
 
 const MyGame: React.FC = () => {
@@ -27,9 +27,10 @@ const MyGame: React.FC = () => {
 
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showCompleted, setShowCompleted] = useState(false); // New state to manage CompletedSection visibility
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
-  const [, setCurrentSection] = useState(0); // Track the current section
+  const [, setCurrentSection] = useState(0);
 
   // Function to handle the end of the audio
   const handleAudioEnd = () => {
@@ -38,11 +39,11 @@ const MyGame: React.FC = () => {
     // Stop the game loop
     stopGameLoop(animationFrameIdRef);
 
-    // Reset the game state and stop player actions
+    // Reset player state and position
     if (player.current) {
-      player.current.isDead = true;  // Prevent further player actions
-      player.current.x = 0;          // Reset player position if needed
-      player.current.y = 0;          // Reset player position if needed
+      player.current.isDead = true;
+      player.current.x = 0;
+      player.current.y = 0;
     }
 
     // Pause the audio if it's still playing
@@ -50,16 +51,17 @@ const MyGame: React.FC = () => {
       audioRef.current.pause();
     }
 
-    // Clear or reset other game entities like platforms, obstacles, etc., if needed
-    if (floorPlatforms.current) floorPlatforms.current = [];
-    if (obstacles.current) obstacles.current = [];
-    if (powerUps.current) powerUps.current = [];
-    if (checkpointLines.current) checkpointLines.current = [];
+    // Clear other game entities
+    floorPlatforms.current = [];
+    obstacles.current = [];
+    powerUps.current = [];
+    checkpointLines.current = [];
 
-    // Reset game state and show the intro again
+    // Reset game state, hide intro and instructions, and show completed section
     setGameStarted(false);
-    setShowIntro(true);
-    setShowInstructions(false); // Optionally reset instructions view
+    setShowIntro(false);
+    setShowInstructions(false);
+    setShowCompleted(true); // Show the completed section
   };
 
   return (
@@ -70,8 +72,8 @@ const MyGame: React.FC = () => {
           ref={audioRef} 
           src="/audio/game/All_Change.wav" 
           preload="auto" 
-          loop={false}  // Ensure looping is off
-          onEnded={handleAudioEnd}  // Handle the audio end event
+          loop={false}
+          onEnded={handleAudioEnd} // Handle the audio end event
         >
           <track kind="captions" srcLang="en" label="English captions" />
         </audio>
@@ -79,19 +81,21 @@ const MyGame: React.FC = () => {
         {showIntro && (
           <IntroSection 
             setShowIntro={setShowIntro} 
-            setShowInstructions={setShowInstructions} 
-          />
-        )}
-
-        {!showIntro && showInstructions && !gameStarted && audioManager && (
-          <InstructionsSection 
+            setShowInstructions={setShowInstructions}
             setGameStarted={setGameStarted} 
             setGamePaused={setGamePaused} 
             audioRef={audioRef}
             player={player}
             floorPlatforms={floorPlatforms}
-            audioManager={audioManager}
+            audioManager={audioManager || undefined} // Pass audioManager only if defined
             canvasRef={canvasRef}
+          />
+        )}
+
+        {!showIntro && showInstructions && !gameStarted && audioManager && (
+          <InstructionsSection 
+            setShowIntro={setShowIntro} 
+            setShowInstructions={setShowInstructions}
           />
         )}
 
@@ -116,10 +120,15 @@ const MyGame: React.FC = () => {
             canvasWidth={canvasRef.current?.width || 0} 
             canvasHeight={canvasRef.current?.height || 0}
           />             
-        )}        
+        )}
+
+        {showCompleted && (
+          <CompletedSection />
+        )}
 
       </div>
     </section>
   );
 };
+
 export default MyGame;

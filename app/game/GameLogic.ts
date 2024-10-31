@@ -132,7 +132,7 @@ export const useGameLogic = () => {
     obstacles,
     powerUps,
     checkpointLines,
-    audioManager: audioManagerRef.current ? audioManagerRef.current : undefined,
+    audioManager: audioManagerRef.current || undefined, // Use audioManagerRef.current only if defined
     platformSpeedRef,
     highestSpeedRef,
     initialPlatformSpeed,
