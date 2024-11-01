@@ -9,34 +9,30 @@ import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
 
 const Home: React.FC = () => {
-  const [showFooter, setShowFooter] = useState(true);
+  const [showFooter, setShowFooter] = useState(true);  
+  const [isGamePlaying, setIsGamePlaying] = useState(false);
 
   useEffect(() => {
-    const checkViewportHeight = () => {
-      setShowFooter(window.innerHeight >= 702);
-    };
+    const isSmallViewport = window.innerHeight <= 702;    
+  }, [isGamePlaying]);
 
-    // Check viewport height on mount
-    checkViewportHeight();
+  const handleGamePlayChange = (playing: boolean) => {
+    setIsGamePlaying(playing);
 
-    // Add resize event listener
-    window.addEventListener('resize', checkViewportHeight);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', checkViewportHeight);
-    };
-  }, []);
+    // Hide footer when game is actively playing
+    setShowFooter(!playing);
+  };
 
   return (
     <GlobalProvider>
       <main className="background-light flex justify-center">
-        <div className="h-screen overflow-y-auto overflow-x-hidden max-w-screen-2xl scroll-snap-y scroll-snap-mandatory">
+        <div className="h-screen overflow-y-auto overflow-x-hidden max-w-screen-2xl scroll-snap-y scroll-snap-mandatory">          
           <Header />
           <Homepage />
           <AboutMe />
           <MyBook />
-          <MyGame />
+          <MyGame onPlayChange={handleGamePlayChange} />
+          {/* Render footer only if showFooter is true */}
           {showFooter && <Footer />}
         </div>
       </main>

@@ -53,47 +53,54 @@ export const renderGame = (
     ctx.fillStyle = checkpointLine.color;
     ctx.fillRect(checkpointLine.x, checkpointLine.y, checkpointLine.width, checkpointLine.height);
   });
-  
+
+  // Define positions based on screen height
+  const isSmallScreen = canvasHeight <= 702;
+  const textOffsetY = isSmallScreen ? 90 : 60; // Offset the text lower for small screens
+  const speedOffsetY = isSmallScreen ? 120 : 90;
+  const highestSpeedOffsetY = isSmallScreen ? 150 : 120;
+  const progressBarY = isSmallScreen ? 40 : 20; // Position progress bar closer to the bottom for small screens
+
   // Render Death Count
   ctx.fillStyle = '#000000';
   ctx.font = '24px Gopher Mono';
-  ctx.fillText(`Deaths: ${deathCount}`, 10, 60);
+  ctx.fillText(`Deaths: ${deathCount}`, 10, textOffsetY);
 
   // Render Platform Speed
   ctx.fillStyle = '#000000';
   ctx.font = '18px Gopher Mono';
-  ctx.fillText(`Platform Speed: ${platformSpeedRef.current.toFixed(1)}`, 10, 90);
-  ctx.fillText(`Highest Speed: ${highestSpeedRef.current.toFixed(1)}`, 10, 120);
+  ctx.fillText(`Platform Speed: ${platformSpeedRef.current.toFixed(1)}`, 10, speedOffsetY);
+  ctx.fillText(`Highest Speed: ${highestSpeedRef.current.toFixed(1)}`, 10, highestSpeedOffsetY);
 
   // Update the opacity of the narration text
-  const narrationTime = performance.now(); // Rename this to avoid conflict
-  audioManager.updateTextOpacity(narrationTime); // Update opacity over time
+  const narrationTime = performance.now();
+  audioManager.updateTextOpacity(narrationTime);
 
   // Render the current typed narration text with fading opacity
   if (audioManager.currentTypedText) {
     ctx.font = '24px Gopher Mono';
-    ctx.fillStyle = `rgba(0, 0, 0, ${audioManager.textOpacity})`; // Apply fading opacity
-    const maxWidth = ctx.canvas.width - 100; // Set max width for text before wrapping
-    const lineHeight = 30; // Set the line height for wrapped text
+    ctx.fillStyle = `rgba(0, 0, 0, ${audioManager.textOpacity})`;
+    const maxWidth = ctx.canvas.width - 100;
+    const lineHeight = 30;
 
     const words = audioManager.currentTypedText.split(' ');
     let line = '';
-    let yPos = canvasHeight / 2;
+    let yPos = isSmallScreen ? canvasHeight / 2 + 50 : canvasHeight / 2; // Adjust y position for small screens
 
     words.forEach(word => {
       const testLine = line + word + ' ';
       const testWidth = ctx.measureText(testLine).width;
 
       if (testWidth > maxWidth) {
-        ctx.fillText(line, 50, yPos); // Draw the current line
-        line = word + ' '; // Start a new line
+        ctx.fillText(line, 50, yPos);
+        line = word + ' ';
         yPos += lineHeight;
       } else {
         line = testLine;
       }
     });
 
-    ctx.fillText(line, 50, yPos); // Draw the last line
+    ctx.fillText(line, 50, yPos);
   }
 
   // Calculate current progress and the current time
@@ -101,23 +108,21 @@ export const renderGame = (
   const currentTime = audioRef?.current?.currentTime || 0;
   const currentSection = musicSections.findIndex(section => section > currentTime);
   const progress = currentSection >= 0 ? currentSection : totalSections;
-  const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1]; // Default to the last section end time
+  const nextSectionTime = musicSections[progress] || musicSections[totalSections - 1];
 
   // Create and render the ProgressBar
   const progressBar = new ProgressBar(ctx, totalSections, ctx.canvas.width);
-  progressBar.render(progress, currentTime, nextSectionTime);
+  progressBar.render(progress, currentTime, nextSectionTime, progressBarY);
 
   // Render YOU WIN!!! when reaching the penultimate checkpoint, with fading effect
   if (progress === totalSections) {
-    // Increment opacity for fade-in, but keep it capped at 1.0
     youWinOpacity = Math.min(youWinOpacity + 0.0001, 1.0);
-
-    ctx.save(); // Save the current state of the canvas
-    ctx.fillStyle = `rgba(0, 0, 0, ${youWinOpacity})`; // Apply opacity using rgba
+    ctx.save();
+    ctx.fillStyle = `rgba(0, 0, 0, ${youWinOpacity})`;
     ctx.font = '100px Gopher Mono';
-    ctx.textAlign = 'center'; // Center the text horizontally
-    ctx.textBaseline = 'middle'; // Center the text vertically
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(`YOU WIN!!!`, canvasWidth / 2, canvasHeight / 2);
-    ctx.restore(); // Restore the canvas state
+    ctx.restore();
   }
 };

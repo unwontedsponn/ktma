@@ -19,15 +19,15 @@ export class ProgressBar {
     this.segmentColor = '#acddfb';
     this.borderColor = '#3f423e';
     this.barHeight = 20;
-    this.padding = 2; // Padding inside the segment for the fill
-    this.barPaddingX = 10; // Horizontal padding for the whole progress bar
+    this.padding = 2;
+    this.barPaddingX = 10;
     this.yPosition = 10;
   }
 
-  // Method to render the progress bar
-  render(progress: number, currentTime: number, nextSectionTime: number) {
-    const availableWidth = this.canvasWidth - 2 * this.barPaddingX; // Adjust available width based on padding
-    const segmentWidth = availableWidth / this.totalSections; // Recalculate segment width based on the available width
+  // Updated render method to accept an optional yPosition
+  render(progress: number, currentTime: number, nextSectionTime: number, yPosition: number = this.yPosition) {
+    const availableWidth = this.canvasWidth - 2 * this.barPaddingX;
+    const segmentWidth = availableWidth / this.totalSections;
 
     // Ensure the progress does not exceed the total sections
     const clampedProgress = Math.min(progress, this.totalSections);
@@ -36,13 +36,13 @@ export class ProgressBar {
     const sectionStartTime = musicSections[clampedProgress - 1] || 0;
     const sectionProgress = Math.min(
       (currentTime - sectionStartTime) / (nextSectionTime - sectionStartTime),
-      1 // Ensure the section progress does not exceed 100%
+      1
     );
 
     // ** First pass: Draw the borders for all segments **
     for (let i = 0; i < this.totalSections; i++) {
       this.ctx.beginPath();
-      this.ctx.rect(i * segmentWidth + this.barPaddingX, this.yPosition, segmentWidth, this.barHeight);
+      this.ctx.rect(i * segmentWidth + this.barPaddingX, yPosition, segmentWidth, this.barHeight);
       this.ctx.strokeStyle = this.borderColor;
       this.ctx.stroke();
       this.ctx.closePath();
@@ -53,7 +53,7 @@ export class ProgressBar {
       this.ctx.beginPath();
       this.ctx.rect(
         i * segmentWidth + this.barPaddingX + this.padding,
-        this.yPosition + this.padding,
+        yPosition + this.padding,
         segmentWidth - 2 * this.padding,
         this.barHeight - 2 * this.padding
       );
@@ -68,7 +68,7 @@ export class ProgressBar {
       const filledWidth = sectionProgress * (segmentWidth - 2 * this.padding);
       this.ctx.rect(
         (clampedProgress - 1) * segmentWidth + this.barPaddingX + this.padding,
-        this.yPosition + this.padding,
+        yPosition + this.padding,
         filledWidth,
         this.barHeight - 2 * this.padding
       );

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useGameLogic } from '@/app/game/GameLogic';
 import IntroSection from '@/app/game/sections/IntroSection';
 import InstructionsSection from '@/app/game/sections/InstructionsSection';
@@ -6,7 +6,11 @@ import GamePausedSection from '@/app/game/sections/PausedSection';
 import CompletedSection from '../game/sections/CompletedSection';
 import { stopGameLoop } from '../game/AnimationFrameManager';
 
-const MyGame: React.FC = () => {
+interface MyGameProps {
+  onPlayChange: (playing: boolean) => void;
+}
+
+const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
   const {
     canvasRef,
     audioRef,
@@ -25,50 +29,50 @@ const MyGame: React.FC = () => {
     initialPlatformSpeed,
   } = useGameLogic();  
 
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
-  const [showCompleted, setShowCompleted] = useState(false); // New state to manage CompletedSection visibility
+  const [showCompleted, setShowCompleted] = useState(false);
   const animationFrameIdRef = useRef<number | null>(null);
   const gameLoopFunctionRef = useRef<(timestamp: number) => void>(() => {});
   const [, setCurrentSection] = useState(0);
 
-  // Function to handle the end of the audio
-  const handleAudioEnd = () => {
-    console.log("Audio track ended. Stopping the game.");
+  // Track game play status and update onPlayChange only during active gameplay
+  useEffect(() => {
+    if (gameStarted && !gamePaused) {
+      onPlayChange(true); // Actively playing
+    } else {
+      onPlayChange(false); // Not playing (includes paused, intro, instructions)
+    }
+  }, [gameStarted, gamePaused, onPlayChange]);
 
-    // Stop the game loop
+  const handleAudioEnd = () => {
     stopGameLoop(animationFrameIdRef);
 
-    // Reset player state and position
     if (player.current) {
       player.current.isDead = true;
       player.current.x = 0;
       player.current.y = 0;
     }
 
-    // Pause the audio if it's still playing
     if (audioRef.current && !audioRef.current.paused) {
       audioRef.current.pause();
     }
 
-    // Clear other game entities
     floorPlatforms.current = [];
     obstacles.current = [];
     powerUps.current = [];
     checkpointLines.current = [];
 
-    // Reset game state, hide intro and instructions, and show completed section
     setGameStarted(false);
     setShowIntro(false);
     setShowInstructions(false);
-    setShowCompleted(true); // Show the completed section
+    setShowCompleted(true);
   };
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
       <div className="hidden md:flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
-
         {loading && (
           <div className="fixed inset-0 font-gopher-mono flex items-center justify-center color-dark text-2xl">
             Loading...
@@ -77,67 +81,68 @@ const MyGame: React.FC = () => {
         
         {!loading && (
           <div className="game-container">
-             <audio 
-                ref={audioRef} 
-                src="/audio/game/All_Change.wav" 
-                preload="auto" 
-                loop={false}
-                onEnded={handleAudioEnd} // Handle the audio end event
-              >
-                <track kind="captions" srcLang="en" label="English captions" />
-              </audio>
+            <audio 
+              ref={audioRef} 
+              src="/audio/game/All_Change.wav" 
+              preload="auto" 
+              loop={false}
+              onEnded={handleAudioEnd}
+            >
+              <track kind="captions" srcLang="en" label="English captions" />
+            </audio>
               
-              {showIntro && (
-                <IntroSection 
-                  setShowIntro={setShowIntro} 
-                  setShowInstructions={setShowInstructions}
-                  setGameStarted={setGameStarted} 
-                  setGamePaused={setGamePaused} 
-                  setLoading={setLoading}
-                  audioRef={audioRef}
-                  player={player}
-                  floorPlatforms={floorPlatforms}
-                  audioManager={audioManager || undefined} // Pass audioManager only if defined
-                  canvasRef={canvasRef}
-                />
-              )}
+            {showIntro && (
+              <IntroSection 
+                setShowIntro={setShowIntro} 
+                setShowInstructions={setShowInstructions}
+                setGameStarted={setGameStarted} 
+                setGamePaused={setGamePaused} 
+                setLoading={setLoading}
+                audioRef={audioRef}
+                player={player}
+                floorPlatforms={floorPlatforms}
+                audioManager={audioManager || undefined}
+                canvasRef={canvasRef}
+              />
+            )}
 
-              {!showIntro && showInstructions && !gameStarted && audioManager && (
-                <InstructionsSection 
-                  setShowIntro={setShowIntro} 
-                  setShowInstructions={setShowInstructions}
-                />
-              )}
+            {!showIntro && showInstructions && !gameStarted && audioManager && (
+              <InstructionsSection 
+                setShowIntro={setShowIntro} 
+                setShowInstructions={setShowInstructions}
+              />
+            )}
 
-              {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
+            {gameStarted && !gamePaused && (
+              <canvas ref={canvasRef} id="gameCanvas" width="800" height="600"></canvas>
+            )}
 
-              {gamePaused && audioManager && (
-                <GamePausedSection
-                  setGamePaused={setGamePaused}
-                  setIsPowerUpActive={setIsPowerUpActive}
-                  animationFrameIdRef={animationFrameIdRef}
-                  audioRef={audioRef}
-                  gameLoopFunctionRef={gameLoopFunctionRef}
-                  setCurrentSection={setCurrentSection}
-                  player={player}
-                  obstacles={obstacles}
-                  powerUps={powerUps}
-                  floorPlatforms={floorPlatforms}
-                  checkpointLines={checkpointLines}
-                  platformSpeedRef={platformSpeedRef}
-                  initialPlatformSpeed={initialPlatformSpeed}
-                  audioManager={audioManager}
-                  canvasWidth={canvasRef.current?.width || 0} 
-                  canvasHeight={canvasRef.current?.height || 0}
-                />             
-              )}
+            {gamePaused && audioManager && (
+              <GamePausedSection
+                setGamePaused={setGamePaused}
+                setIsPowerUpActive={setIsPowerUpActive}
+                animationFrameIdRef={animationFrameIdRef}
+                audioRef={audioRef}
+                gameLoopFunctionRef={gameLoopFunctionRef}
+                setCurrentSection={setCurrentSection}
+                player={player}
+                obstacles={obstacles}
+                powerUps={powerUps}
+                floorPlatforms={floorPlatforms}
+                checkpointLines={checkpointLines}
+                platformSpeedRef={platformSpeedRef}
+                initialPlatformSpeed={initialPlatformSpeed}
+                audioManager={audioManager}
+                canvasWidth={canvasRef.current?.width || 0} 
+                canvasHeight={canvasRef.current?.height || 0}
+              />
+            )}
 
-              {showCompleted && (
-                <CompletedSection />
-              )}
+            {showCompleted && (
+              <CompletedSection />
+            )}
           </div>
         )}       
-
       </div>
     </section>
   );
