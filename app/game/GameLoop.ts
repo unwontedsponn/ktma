@@ -31,7 +31,7 @@ export const gameLoop = (
   deathCountRef: React.MutableRefObject<number>,
   isBeyondLastCheckpointRef: React.MutableRefObject<boolean>,
 ) => {
-  if (gamePaused) {
+  if (gamePaused || player.isDead) {
     stopGameLoop(animationFrameIdRef);  // Use stopGameLoop instead of cancelAnimationFrame
     if (audioManager.audioRef.current && !audioManager.audioRef.current.paused) audioManager.audioRef.current.pause();
     return;

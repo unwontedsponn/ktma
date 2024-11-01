@@ -33,6 +33,7 @@ export const resetFloorPlatforms = (floorPlatforms: MutableRefObject<FloorPlatfo
   if (floorPlatforms && floorPlatforms.current) {
     floorPlatforms.current.forEach(platform => platform.hasPowerUp = false); // Reset hasPowerUp
     floorPlatforms.current = []; 
+    console.log("Floor platforms have been reset:", floorPlatforms.current); // Confirm platforms are reset
   }
 };
 
@@ -52,7 +53,7 @@ export const startGame = async (
 ) => {
   try {
     // Wait for both tracks, sfx and narration before starting the game (before continuing with this function)
-    await Promise.all([preloadMusicTracks(), preloadAllSfx(), preloadAllNarrations()]);
+    await Promise.all([preloadMusicTracks(), preloadAllSfx(), preloadAllNarrations()]);    
 
     // Initialize platforms first to ensure they are available
     initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
@@ -105,21 +106,15 @@ export const resumeGame = async (
 
   setGamePaused(false);
   setIsPowerUpActive(false);
-  
-  // Switch music back to default (e.g., normal)
-  if (audioRef.current) {
-    const currentTime = audioRef.current.currentTime;
-    audioManager.switchMusic(audioRef, currentTime, 'normal', () => {});
-  }
 
   // Reset the game state
   resetPlatformSpeed(platformSpeedRef, initialPlatformSpeed);
   resetObstacles(obstacles);
   resetPowerUps(powerUps);
-  resetFloorPlatforms(floorPlatforms);
+  resetFloorPlatforms(floorPlatforms);  // Clear the platforms to prevent duplicates
   resetCheckpointLines(checkpointLines);
 
-  // Initialize platforms and set the player on the first platform
+  // Initialize platforms
   initializePlatforms(canvasWidth, canvasHeight, floorPlatforms);
   const startingPlatform = floorPlatforms.current[0];
   resetPlayer(player, startingPlatform, audioManager);
@@ -127,7 +122,7 @@ export const resumeGame = async (
   // Handle audio
   if (audioRef.current) {
     if (!audioRef.current.paused) audioRef.current.pause();
-
+    
     // Find the nearest section timestamp before the current time
     const currentTime = audioRef.current.currentTime;
     const nearestSection = musicSections.reduce((prev, curr) => 
@@ -135,8 +130,6 @@ export const resumeGame = async (
     );
 
     audioRef.current.currentTime = nearestSection;
-
-    // Update the current section state
     const newSectionIndex = musicSections.indexOf(nearestSection);
     setCurrentSection(newSectionIndex);
 

@@ -8,21 +8,25 @@ export const initializePlatforms = (
   canvasHeight: number,
   floorPlatforms: MutableRefObject<FloorPlatform[]>,
 ) => {
-  // Ensure platforms are reset
-  floorPlatforms.current = [];
+  console.log('InitializePlatforms triggered');
+
+  if (floorPlatforms.current.length > 0) {
+    console.warn("Warning: Platforms were not fully reset before initializing.");
+    floorPlatforms.current = []; // Ensure it is empty
+  }
 
   // Create an initial platform near the left of the canvas
   const initialPlatform = new FloorPlatform(50, 500, 600, 500);
   floorPlatforms.current.push(initialPlatform);
   
   // Define a fixed, jumpable gap for the first platform pair
-  const firstGap = -700; // Don't know why, but I have to set this weird number for the second platform to not be too far away???
+  const firstGap = 200;
 
   // Position the second platform after the initial gap
-  let currentX = initialPlatform.x + initialPlatform.width + firstGap;
+  let currentX = initialPlatform.x + initialPlatform.width + firstGap;  
 
   // Create the second platform using the fixed gap
-  const secondPlatform = FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, currentX);
+  const secondPlatform = new FloorPlatform(0, canvasWidth, canvasHeight, currentX);
   floorPlatforms.current.push(secondPlatform);
   currentX += secondPlatform.width;
 
@@ -41,6 +45,7 @@ export const initializePlatforms = (
 };
 
 // Function to update all floor platforms
+// Function to update all floor platforms
 export const updateFloorPlatforms = (
   floorPlatforms: FloorPlatform[],
   player: Player,
@@ -48,9 +53,11 @@ export const updateFloorPlatforms = (
   canvasHeight: number,
   gamePaused: boolean,
   platformSpeed: number,
-  isPowerUpActive: boolean,  
+  isPowerUpActive: boolean  
 ) => {
-  if (gamePaused || player.isDead) return;  
+  console.log('updateFloorPlatforms triggered');
+
+  if (gamePaused || player.isDead) return;
 
   const jumpDistance = calculateJumpDistance(player.jumpStrength, player.gravity, platformSpeed);
 
@@ -61,23 +68,21 @@ export const updateFloorPlatforms = (
     if (floorPlatform.isOffScreen()) floorPlatforms.splice(index, 1);
   });
 
-  // Determine the max and min gaps based on the player's jump capabilities
-  const maxGap = jumpDistance * 0.85; // Slightly smaller than the player's max jump distance
-  const minGap = 100; // Set a fixed minimum gap to prevent platforms from being too close
+  const maxGap = jumpDistance * 0.85;
+  const minGap = 100;
 
-  // Check the rightmost edge of the last platform
+  // Add new platforms only if the rightmost platform is near the edge of the canvas
   const lastPlatform = floorPlatforms[floorPlatforms.length - 1];
   const rightEdgeOfLastPlatform = lastPlatform ? lastPlatform.x + lastPlatform.width : 0;
 
-  // Only spawn a new platform if the last platform is far enough from the screen edge
-  if (rightEdgeOfLastPlatform < canvasWidth - minGap) {    
-    const gap = FloorPlatform.getRandomInRange(minGap, maxGap);    
-    const newPlatformX = canvasWidth + gap + 50; // Additional 50 units to ensure it's off-screen
+  if (rightEdgeOfLastPlatform < canvasWidth - minGap) {
+    const gap = FloorPlatform.getRandomInRange(minGap, maxGap);
+    const newPlatformX = canvasWidth + gap;
 
-    // Spawn a new platform at the calculated position
     floorPlatforms.push(FloorPlatform.createFloorPlatform(canvasWidth, canvasHeight, newPlatformX));
   }
 };
+
 
 // Function to update all floor platforms
 export const updateSafeFloorPlatforms = (
@@ -90,6 +95,8 @@ export const updateSafeFloorPlatforms = (
   isPowerUpActive: boolean,  
   audioRef: React.MutableRefObject<HTMLAudioElement | null>,
 ) => {
+  console.log('updateSafeFloorPlatforms triggered');
+
   if (gamePaused || player.isDead) return;  
 
   // Move each platform to the left and remove it if it's off-screen
