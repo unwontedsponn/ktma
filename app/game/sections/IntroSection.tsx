@@ -1,5 +1,5 @@
 // IntroSection.tsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
 import TypewriterEffect from '@/app/components/TypewriterEffect';
 import { startGame } from '../GameStateManager';
@@ -24,6 +24,23 @@ const IntroSection: React.FC<IntroSectionProps> = ({
   setShowIntro, setShowInstructions, setGameStarted, setGamePaused, setLoading, audioRef, player, floorPlatforms, audioManager, canvasRef
 }) => {
 
+  const [isSmallViewport, setIsSmallViewport] = useState(false);  
+
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setIsSmallViewport(window.innerHeight <= 700 || window.innerWidth <= 970);
+    };
+
+    // Check initial height
+    updateViewportHeight();
+
+    // Add resize event listener
+    window.addEventListener('resize', updateViewportHeight);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', updateViewportHeight);
+  }, []);
+
   const handleStartGame = () => {
     if (!audioManager) {
       console.error("AudioManager is not initialized.");
@@ -42,12 +59,12 @@ const IntroSection: React.FC<IntroSectionProps> = ({
 
   return (
     <div className="space-y-4">
-      <SlideFadeIn direction="left" className="font-gopher-mono-semi leading-none text-11xl relative">
+      <SlideFadeIn direction="left" className="font-gopher-mono-semi leading-none text-7xl md:text-11xl relative">
         <h1 className="opacity-40 color-blue ">myGame</h1>
         
         {/* BETA cross-out effect */}
         <span 
-          className="absolute text-5xl font-gopher-mono color-pink opacity-70 transform rotate-12" 
+          className="absolute text-xl md:text-5xl font-gopher-mono color-pink opacity-70 transform rotate-12" 
           style={{
             top: '50%', 
             left: '10%', 
@@ -62,27 +79,32 @@ const IntroSection: React.FC<IntroSectionProps> = ({
         <p><TypewriterEffect text="Keep The Music Alive..." /></p>
       </SlideFadeIn>
 
-      <SlideFadeIn direction="down" className="font-gopher-mono">
-        <p className="w-[40vw]">...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
+      {/* This text is only visible on screens smaller than md */}
+      <SlideFadeIn direction="down" className="md:hidden text-center font-gopher-mono text-xl color-dark">
+        <p>Only playable on larger screens (min-width: 820px)</p>
       </SlideFadeIn>
 
-      <div className="flex flex-col items-center space-y-4">
+      <SlideFadeIn direction="down" className="hidden md:block font-gopher-mono">
+        <p className={`${isSmallViewport ? 'hidden' : 'block'} w-[60vw] 2xl:w-[40vw]`}>...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
+      </SlideFadeIn>
+
+      <div className="hidden md:flex flex-col items-center space-y-4">
         <SlideFadeIn direction="right" className="font-gopher-mono">
           <div className="flex space-x-4">
             <button 
               onClick={handleStartGame} 
-              className="border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75"
+              className={`${isSmallViewport ? 'text-xs' : 'text-base'} border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75`}
             >
               Level 1: All Change
             </button>
             <button 
-              className="border-3 border-thick-border-gray py-2 px-4 text-gray-400 cursor-not-allowed opacity-50"
+              className={`${isSmallViewport ? 'text-xs' : 'text-base'} border-3 border-thick-border-gray py-2 px-4 text-gray-400 cursor-not-allowed opacity-50`}
               disabled
             >
               Level 2: Apprehension
             </button>
             <button 
-              className="border-3 border-thick-border-gray py-2 px-4 text-gray-400 cursor-not-allowed opacity-50"
+              className={`${isSmallViewport ? 'text-xs' : 'text-base'} border-3 border-thick-border-gray py-2 px-4 text-gray-400 cursor-not-allowed opacity-50`}
               disabled
             >
               Level 3: Resolve
@@ -91,7 +113,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({
           <div className="flex justify-center mt-4">
             <button 
               onClick={showHowToPlay} 
-              className="border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75"
+              className={`${isSmallViewport ? 'text-xs' : 'text-base'} border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75`}
             >
               How To Play
             </button>
@@ -103,23 +125,3 @@ const IntroSection: React.FC<IntroSectionProps> = ({
   );
 };
 export default IntroSection;
-
-
-
-{/* <div className="flex flex-col items-center">
-        <SlideFadeIn direction="right" className="font-gopher-mono">
-          <div className="flex flex-col md:grid md:grid-cols-2 gap-4 w-[500px]">
-            <button className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
-              Play All Change
-            </button>
-            <button className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
-              Play Apprehension          </button>
-            <button className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
-              Play Resolve
-            </button>
-            <button onClick={showHowToPlay} className="border-3 border-thick-border-gray py-2 px-3 hover:cursor-pointer hover:opacity-50">
-              How To Play
-            </button>    
-          </div>                
-        </SlideFadeIn>
-      </div> */}

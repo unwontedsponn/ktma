@@ -72,7 +72,7 @@ const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
 
   return (
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
-      <div className="hidden md:flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
+      <div className="flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
         {loading && (
           <div className="fixed inset-0 font-gopher-mono flex items-center justify-center color-dark text-2xl">
             Loading...

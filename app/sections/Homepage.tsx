@@ -1,15 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
 
 const Homepage: React.FC = () => {
+  const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   const words = ["things", "websites", "music", "books", "films", "games", "sketches"];
 
-  return (
-    <section id="homepage" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">         
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setIsSmallViewport(window.innerHeight <= 700);
+    };
 
+    // Check initial height
+    updateViewportHeight();
+
+    // Add resize event listener
+    window.addEventListener('resize', updateViewportHeight);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', updateViewportHeight);
+  }, []);
+
+  return (
+    <section id="homepage" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
       <div className="flex flex-row justify-center gap-x-8 px-0 items-center h-screen overflow-hidden">
       
         {/* Left Column */}
@@ -33,13 +48,14 @@ const Homepage: React.FC = () => {
           <Image
             src='/images/homepage-pic.jpeg'
             alt="homepage picture"
-            width={500}
-            height={500}
+            width={isSmallViewport ? 300 : 500} // Smaller size for small viewports
+            height={isSmallViewport ? 300 : 500}
             priority
           />
         </SlideFadeIn>      
       </div>         
     </section>
-  )
-}
+  );
+};
+
 export default Homepage;
