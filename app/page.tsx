@@ -10,14 +10,10 @@ import { GlobalProvider } from './contexts/GlobalContext';
 
 const Home: React.FC = () => {
   const [showFooter, setShowFooter] = useState(true);
-  // const [showHeader, setShowHeader] = useState(true);
 
   const handleGamePlayChange = (playing: boolean) => {
-    const isSmallViewport = window.innerHeight <= 700;
-
     // Conditionally hide footer and header when game is actively playing on a small viewport
     setShowFooter(!playing);
-    // setShowHeader(!(playing && isSmallViewport));
   };
 
   return (
