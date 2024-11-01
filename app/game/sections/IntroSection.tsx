@@ -12,6 +12,7 @@ interface IntroSectionProps {
   setShowInstructions: (show: boolean) => void;
   setGameStarted: (started: boolean) => void;
   setGamePaused: (paused: boolean) => void;
+  setLoading: (loading: boolean) => void,
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   player: React.MutableRefObject<Player | null>;
   floorPlatforms: React.MutableRefObject<FloorPlatform[]>;
@@ -20,7 +21,7 @@ interface IntroSectionProps {
 }
 
 const IntroSection: React.FC<IntroSectionProps> = ({ 
-  setShowIntro, setShowInstructions, setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasRef
+  setShowIntro, setShowInstructions, setGameStarted, setGamePaused, setLoading, audioRef, player, floorPlatforms, audioManager, canvasRef
 }) => {
 
   const handleStartGame = () => {
@@ -30,7 +31,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({
     }
     const canvasWidth = canvasRef.current?.width || 0; // Get canvas width
     const canvasHeight = canvasRef.current?.height || 0; // Get canvas height
-    startGame(setGameStarted, setGamePaused, audioRef, player, floorPlatforms, audioManager, canvasWidth, canvasHeight);
+    startGame(setGameStarted, setGamePaused, setLoading, audioRef, player, floorPlatforms, audioManager, canvasWidth, canvasHeight);
     setShowIntro(false);
   };
   

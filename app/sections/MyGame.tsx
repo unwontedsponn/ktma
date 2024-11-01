@@ -25,6 +25,7 @@ const MyGame: React.FC = () => {
     initialPlatformSpeed,
   } = useGameLogic();  
 
+  const [loading, setLoading] = useState(false); // Loading state
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
   const [showCompleted, setShowCompleted] = useState(false); // New state to manage CompletedSection visibility
@@ -68,63 +69,70 @@ const MyGame: React.FC = () => {
     <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
       <div className="hidden md:flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
 
-        <audio 
-          ref={audioRef} 
-          src="/audio/game/All_Change.wav" 
-          preload="auto" 
-          loop={false}
-          onEnded={handleAudioEnd} // Handle the audio end event
-        >
-          <track kind="captions" srcLang="en" label="English captions" />
-        </audio>
+        {loading && <div className="loading-spinner">Loading...</div>}
         
-        {showIntro && (
-          <IntroSection 
-            setShowIntro={setShowIntro} 
-            setShowInstructions={setShowInstructions}
-            setGameStarted={setGameStarted} 
-            setGamePaused={setGamePaused} 
-            audioRef={audioRef}
-            player={player}
-            floorPlatforms={floorPlatforms}
-            audioManager={audioManager || undefined} // Pass audioManager only if defined
-            canvasRef={canvasRef}
-          />
-        )}
+        {!loading && (
+          <div className="game-container">
+             <audio 
+                ref={audioRef} 
+                src="/audio/game/All_Change.wav" 
+                preload="auto" 
+                loop={false}
+                onEnded={handleAudioEnd} // Handle the audio end event
+              >
+                <track kind="captions" srcLang="en" label="English captions" />
+              </audio>
+              
+              {showIntro && (
+                <IntroSection 
+                  setShowIntro={setShowIntro} 
+                  setShowInstructions={setShowInstructions}
+                  setGameStarted={setGameStarted} 
+                  setGamePaused={setGamePaused} 
+                  setLoading={setLoading}
+                  audioRef={audioRef}
+                  player={player}
+                  floorPlatforms={floorPlatforms}
+                  audioManager={audioManager || undefined} // Pass audioManager only if defined
+                  canvasRef={canvasRef}
+                />
+              )}
 
-        {!showIntro && showInstructions && !gameStarted && audioManager && (
-          <InstructionsSection 
-            setShowIntro={setShowIntro} 
-            setShowInstructions={setShowInstructions}
-          />
-        )}
+              {!showIntro && showInstructions && !gameStarted && audioManager && (
+                <InstructionsSection 
+                  setShowIntro={setShowIntro} 
+                  setShowInstructions={setShowInstructions}
+                />
+              )}
 
-        {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
+              {gameStarted && !gamePaused && <canvas ref={canvasRef} id="gameCanvas" width="800" height="600" className=""></canvas>}
 
-        {gamePaused && audioManager && (
-          <GamePausedSection
-            setGamePaused={setGamePaused}
-            setIsPowerUpActive={setIsPowerUpActive}
-            animationFrameIdRef={animationFrameIdRef}
-            audioRef={audioRef}
-            gameLoopFunctionRef={gameLoopFunctionRef}
-            setCurrentSection={setCurrentSection}
-            player={player}
-            obstacles={obstacles}
-            powerUps={powerUps}
-            floorPlatforms={floorPlatforms}
-            checkpointLines={checkpointLines}
-            platformSpeedRef={platformSpeedRef}
-            initialPlatformSpeed={initialPlatformSpeed}
-            audioManager={audioManager}
-            canvasWidth={canvasRef.current?.width || 0} 
-            canvasHeight={canvasRef.current?.height || 0}
-          />             
-        )}
+              {gamePaused && audioManager && (
+                <GamePausedSection
+                  setGamePaused={setGamePaused}
+                  setIsPowerUpActive={setIsPowerUpActive}
+                  animationFrameIdRef={animationFrameIdRef}
+                  audioRef={audioRef}
+                  gameLoopFunctionRef={gameLoopFunctionRef}
+                  setCurrentSection={setCurrentSection}
+                  player={player}
+                  obstacles={obstacles}
+                  powerUps={powerUps}
+                  floorPlatforms={floorPlatforms}
+                  checkpointLines={checkpointLines}
+                  platformSpeedRef={platformSpeedRef}
+                  initialPlatformSpeed={initialPlatformSpeed}
+                  audioManager={audioManager}
+                  canvasWidth={canvasRef.current?.width || 0} 
+                  canvasHeight={canvasRef.current?.height || 0}
+                />             
+              )}
 
-        {showCompleted && (
-          <CompletedSection />
-        )}
+              {showCompleted && (
+                <CompletedSection />
+              )}
+          </div>
+        )}       
 
       </div>
     </section>
