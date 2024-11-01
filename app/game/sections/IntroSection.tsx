@@ -2,7 +2,7 @@
 import React from 'react';
 import SlideFadeIn from "@/app/components/SlideFadeIn";
 import TypewriterEffect from '@/app/components/TypewriterEffect';
-import { startGame, resumeGame } from '../GameStateManager';
+import { startGame } from '../GameStateManager';
 import { Player } from '../entities/Player/Player';
 import { FloorPlatform } from '../entities/FloorPlatforms/FloorPlatforms';
 import AudioManager from '../audio/AudioManager';
