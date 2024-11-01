@@ -1,5 +1,5 @@
-"use client"
-import React from 'react';
+"use client";
+import React, { useEffect, useState } from 'react';
 import Header from './sections/Header';
 import Homepage from './sections/Homepage';
 import AboutMe from './sections/AboutMe';
@@ -9,6 +9,25 @@ import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
 
 const Home: React.FC = () => {
+  const [showFooter, setShowFooter] = useState(true);
+
+  useEffect(() => {
+    const checkViewportHeight = () => {
+      setShowFooter(window.innerHeight >= 702);
+    };
+
+    // Check viewport height on mount
+    checkViewportHeight();
+
+    // Add resize event listener
+    window.addEventListener('resize', checkViewportHeight);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', checkViewportHeight);
+    };
+  }, []);
+
   return (
     <GlobalProvider>
       <main className="background-light flex justify-center">
@@ -18,7 +37,7 @@ const Home: React.FC = () => {
           <AboutMe />
           <MyBook />
           <MyGame />
-          <Footer />
+          {showFooter && <Footer />}
         </div>
       </main>
     </GlobalProvider>
