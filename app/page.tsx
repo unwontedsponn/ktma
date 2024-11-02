@@ -35,14 +35,22 @@ const Home: React.FC = () => {
   return (
     <GlobalProvider>
       <main className="background-light flex justify-center">
-        <div className="h-screen overflow-y-auto overflow-x-hidden max-w-screen-2xl scroll-snap-y scroll-snap-mandatory">
+        {/* Use conditional classes to apply different layouts for different viewport sizes */}
+        <div
+          className={`w-full max-w-screen-2xl ${
+            isSmallViewport
+              ? 'overflow-auto' // Standard scrolling for smaller viewports
+              : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory' // Single-page scroll for larger viewports
+          }`}
+        >
           <Header />
+          {/* Render components normally without scroll-snap */}
           <Homepage />
           <AboutMe />
           <MyBook />
           <MyGame onPlayChange={handleGamePlayChange} />
-          {/* Only show footer if `showFooter` is true and viewport is `md` or larger */}
-          {showFooter && !isSmallViewport && <Footer />}
+          {/* Show the footer unless it's hidden due to gameplay or viewport */}
+          {showFooter && <Footer />}
         </div>
       </main>
     </GlobalProvider>
