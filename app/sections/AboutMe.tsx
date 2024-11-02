@@ -38,14 +38,7 @@ const AboutMe: React.FC = () => {
                   target="_blank" 
                   rel="noopener noreferrer"
                   > LinkedIn
-                </a> | 
-                <a 
-                  href="https://sponn.itch.io/keep-the-music-alive" 
-                  className="hover:underline"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  > KTMA
-                </a> |
+                </a> |                 
                 <a 
                   href="https://medium.com/@benspooner" 
                   className="hover:underline"
