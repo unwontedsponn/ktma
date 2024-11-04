@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
-import TypewriterEffect from '../components/TypewriterEffect';
 
 const Homepage: React.FC = () => {
   const [isSmallViewport, setIsSmallViewport] = useState(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check  
-
-  const [showRotatingWords, setShowRotatingWords] = useState(false);
+  
   const words = ["things", "websites", "music", "books", "films", "games", "sketches"];
 
   // Check for height (used for detecting bookmark bar presence)
