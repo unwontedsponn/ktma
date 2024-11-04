@@ -48,9 +48,12 @@ html {scroll-behavior: smooth;}
 .background-light {background-color: #f5faf9;}
 .color-blue {color: #acddfb;}
 .color-dark-blue {color: #334862;}
+.color-strong-blue {color: #407dbf;}
 .color-dark {color: #3f423e;}
 .color-green {color: #5f9251;}
+.color-dark-green {color: #4a713f;}
 .color-pink {color: #c15564;}
+.color-light-pink {color: #e39ba6;}
 .bold {font-weight: bold;}
 .underline {text-decoration: underline;}
 .underline-nav {

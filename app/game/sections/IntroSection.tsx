@@ -58,7 +58,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({
   };
 
   return (
-    <div className="space-y-4 text-center">
+    <div className="space-y-6 md:space-y-4 text-center">
       <SlideFadeIn direction="left" className="font-gopher-mono-semi leading-none text-7xl md:text-11xl relative">
         <h1 className="opacity-40 color-blue ">myGame</h1>
         
@@ -77,15 +77,15 @@ const IntroSection: React.FC<IntroSectionProps> = ({
 
       <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-3vw md:text-3xl md:pl-32">
         <p><TypewriterEffect text="Keep The Music Alive..." /></p>
+      </SlideFadeIn>      
+
+      <SlideFadeIn direction="down" className="font-gopher-mono">
+        <p className={`md:w-[40vw]`}>...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
       </SlideFadeIn>
 
       {/* This text is only visible on screens smaller than md */}
       <SlideFadeIn direction="down" className="md:hidden text-center font-gopher-mono text-xl color-dark">
         <p>Only playable on larger screens (min-width: 820px)</p>
-      </SlideFadeIn>
-
-      <SlideFadeIn direction="down" className="hidden md:block font-gopher-mono">
-        <p className={`${isSmallViewport ? 'hidden' : 'block'} w-[60vw] 2xl:w-[40vw]`}>...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
       </SlideFadeIn>
 
       <div className="hidden md:flex flex-col items-center space-y-4">

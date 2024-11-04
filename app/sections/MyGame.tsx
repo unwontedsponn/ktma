@@ -88,9 +88,9 @@ const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
   }, []);
 
   return (
-    <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
+    <section id="myGame" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
 
-      <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
+      <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8 px-4 sm:px-8 bg-darker-green bg-opacity-10 py-16' : 'overflow-hidden'}`}>
 
         {loading && (
           <div className="fixed inset-0 font-gopher-mono flex items-center justify-center color-dark text-2xl">

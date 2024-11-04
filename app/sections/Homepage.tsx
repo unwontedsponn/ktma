@@ -42,8 +42,8 @@ const Homepage: React.FC = () => {
   }, []);
 
   return (
-    <section id="homepage" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
-      <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
+    <section id="homepage" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
+      <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
       
         {/* Styling for devices wider than md (768px) */}
         {!isNarrowViewport ? (
@@ -81,12 +81,8 @@ const Homepage: React.FC = () => {
             </SlideFadeIn>   
           </>          
         ) : (
-          <div className="space-y-6 px-4 sm:px-8 text-center">
-            {/* Styling for small devices */}
-            <SlideFadeIn direction="down" className="text-base sm:text-lg color-green font-gopher-mono-semi tracking-normal sm:tracking-wide">
-              <p>I like to get things done</p>
-            </SlideFadeIn>
-
+          <div className="space-y-6 px-4 sm:px-8 text-center py-16">
+            {/* Styling for small devices */}            
             <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-tight text-4xl sm:text-6xl">
               <p className="opacity-40">Hello,</p>
             </SlideFadeIn>
@@ -98,13 +94,8 @@ const Homepage: React.FC = () => {
             <SlideFadeIn direction="right" className="text-md sm:text-lg color-dark-blue font-gopher-mono underline tracking-wide sm:tracking-wider">
               <p>and I like making...</p>
               <RotatingWords words={words} />
-            </SlideFadeIn>            
+            </SlideFadeIn>   
 
-            <SlideFadeIn direction="up" className="text-sm sm:text-base text-dark-500 font-gopher-mono tracking-tight sm:tracking-normal max-w-full leading-relaxed">
-              {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
-              <span className="italic">getting things done</span>
-            </SlideFadeIn>
-            
             <SlideFadeIn className="flex justify-center" direction="right"> 
               <Image
                 src='/images/homepage-pic.jpeg'
@@ -114,7 +105,16 @@ const Homepage: React.FC = () => {
                 className="border-3 border-thick-border-gray"           
                 priority
               />
+            </SlideFadeIn>                           
+
+            <SlideFadeIn direction="up" className="text-sm sm:text-base text-dark-500 font-gopher-mono tracking-tight sm:tracking-normal max-w-full leading-relaxed">
+              {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
+              <span className="italic">getting things done</span>
             </SlideFadeIn>      
+
+            <SlideFadeIn direction="down" className="text-base sm:text-lg color-green font-gopher-mono-semi tracking-normal sm:tracking-wide">
+              <p>I like to get things done</p>
+            </SlideFadeIn>                
           </div>          
         )}                      
       </div>         

@@ -23,9 +23,9 @@ const AboutMe: React.FC = () => {
   }, []);
 
   return (
-    <section id="aboutMe" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
+    <section id="aboutMe" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
 
-      <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
+      <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8  items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
         
         {/* Styling for devices wider than md (768px) */}
         {!isNarrowViewport ? (
@@ -82,9 +82,9 @@ const AboutMe: React.FC = () => {
             </SlideFadeIn>
           </>
         ) : (
-          <div className="space-y-6 px-4 sm:px-8 text-center">
+          <div className="space-y-6 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-16">
             {/* Heading */}
-            <SlideFadeIn direction="left" className="text-5xl sm:text-6xl leading-none font-gopher-mono-semi color-blue mb-2">
+            <SlideFadeIn direction="left" className="text-5xl sm:text-6xl leading-none font-gopher-mono-semi color-blue">
               <h1 className="opacity-40">aboutMe</h1>
             </SlideFadeIn>
 
