@@ -58,7 +58,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 text-center">
       <SlideFadeIn direction="left" className="font-gopher-mono-semi leading-none text-7xl md:text-11xl relative">
         <h1 className="opacity-40 color-blue ">myGame</h1>
         

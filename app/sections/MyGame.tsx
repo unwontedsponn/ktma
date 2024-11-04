@@ -29,6 +29,7 @@ const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
     initialPlatformSpeed,
   } = useGameLogic();  
 
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check
   const [loading, setLoading] = useState(false);
   const [showIntro, setShowIntro] = useState(true);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -70,9 +71,27 @@ const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
     setShowCompleted(true);
   };
 
+  // Check for width (used for responsive small device layout)
+  useEffect(() => {
+    const updateViewportWidth = () => {
+      setIsNarrowViewport(window.innerWidth < 768);
+    };
+
+    // Check initial width
+    updateViewportWidth();
+
+    // Add resize event listener
+    window.addEventListener('resize', updateViewportWidth);
+
+    // Clean up event listener on component unmount
+    return () => window.removeEventListener('resize', updateViewportWidth);
+  }, []);
+
   return (
-    <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full h-screen overflow-hidden">
-      <div className="flex flex-col justify-center gap-x-8 px-32 items-center h-screen overflow-hidden">
+    <section id="myGame" className="pt-[var(--header-height)] pb-[var(--footer-height)] flex flex-col w-full md:h-screen">
+
+      <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
+
         {loading && (
           <div className="fixed inset-0 font-gopher-mono flex items-center justify-center color-dark text-2xl">
             Loading...

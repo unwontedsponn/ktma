@@ -76,7 +76,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <section id="header" className="fixed inset-x-0 top-0 z-10 pt-4 text-lg">
+      <section id="header" className={`${isSmallViewport ? 'relative' : 'fixed'} inset-x-0 top-0 z-10 pt-4 text-lg`}>
         <div className={`flex items-center ${isSmallViewport ? 'justify-center space-x-4' : 'justify-between'} mx-auto px-4 py-2 max-w-screen-xl border-b-2 border-custom-border-color`}>
           {/* Logo */}
           <div 
