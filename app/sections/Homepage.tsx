@@ -82,21 +82,17 @@ const Homepage: React.FC = () => {
           </>          
         ) : (
           <div className="space-y-6 px-4 sm:px-8 text-center py-16">
-            {/* Styling for small devices */}            
-            <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-tight text-4xl sm:text-6xl">
-              <p className="opacity-40">Hello,</p>
-            </SlideFadeIn>
-            
-            <SlideFadeIn direction="left" className="font-gopher-mono-semi color-blue leading-tight text-5xl sm:text-7xl">
-              <p className="opacity-40">I&apos;m Ben</p>
-            </SlideFadeIn>
+            {/* Styling for small devices */}                        
+            <p className="font-gopher-mono-semi color-blue leading-tight text-4xl sm:text-6xl opacity-40">Hello,</p>            
+                        
+            <p className="font-gopher-mono-semi color-blue leading-tight text-5xl sm:text-7xl opacity-40">I&apos;m Ben</p>            
 
-            <SlideFadeIn direction="right" className="text-md sm:text-lg color-dark-blue font-gopher-mono underline tracking-wide sm:tracking-wider">
+            <div className="text-md sm:text-lg color-dark-blue font-gopher-mono underline tracking-wide sm:tracking-wider">
               <p>and I like making...</p>
               <RotatingWords words={words} />
-            </SlideFadeIn>   
+            </div>   
 
-            <SlideFadeIn className="flex justify-center" direction="right"> 
+            <SlideFadeIn direction="right" className="flex justify-center"> 
               <Image
                 src='/images/homepage-pic.jpeg'
                 alt="homepage picture"
@@ -107,14 +103,14 @@ const Homepage: React.FC = () => {
               />
             </SlideFadeIn>                           
 
-            <SlideFadeIn direction="up" className="text-sm sm:text-base text-dark-500 font-gopher-mono tracking-tight sm:tracking-normal max-w-full leading-relaxed">
+            <p className="text-sm sm:text-base text-dark-500 font-gopher-mono tracking-tight sm:tracking-normal max-w-full leading-relaxed">
               {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
               <span className="italic">getting things done</span>
-            </SlideFadeIn>      
+            </p>      
 
-            <SlideFadeIn direction="down" className="text-base sm:text-lg color-green font-gopher-mono-semi tracking-normal sm:tracking-wide">
-              <p>I like to get things done</p>
-            </SlideFadeIn>                
+            <p className="text-base sm:text-lg color-green font-gopher-mono-semi tracking-normal sm:tracking-wide">
+              I like to get things done
+            </p>                
           </div>          
         )}                      
       </div>         

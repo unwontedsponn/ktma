@@ -82,52 +82,43 @@ const AboutMe: React.FC = () => {
             </SlideFadeIn>
           </>
         ) : (
-          <div className="space-y-6 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-16">
-            {/* Heading */}
-            <SlideFadeIn direction="left" className="text-5xl sm:text-6xl leading-none font-gopher-mono-semi color-blue">
-              <h1 className="opacity-40">aboutMe</h1>
-            </SlideFadeIn>
+          <div className="space-y-6 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-16">                        
+            <h1 className="text-5xl sm:text-6xl leading-none font-gopher-mono-semi color-blue opacity-40">aboutMe</h1>            
+                        
+            <p className='text-xl sm:text-2xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap px-4 sm:px-10 color-dark-blue text-decoration-color'><TypewriterEffect text="A little bit about me..." /></p>              
 
-            {/* Subheading with TypewriterEffect */}
-            <SlideFadeIn direction="right" className="text-xl sm:text-2xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap px-4 sm:px-10 color-dark-blue text-decoration-color">
-              <p><TypewriterEffect text="A little bit about me..." /></p>
-            </SlideFadeIn>
-
-            {/* Description */}
-            <SlideFadeIn direction="up">
-              <div className="pt-4 sm:pt-6 px-4 sm:px-24 text-sm sm:text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
-                <p>
-                  ...I&apos;m Ben, a 34-year-old musician and JavaScript / TypeScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music, I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
-                </p>
-                <p className="pt-3">
-                  <span className="font-gopher-mono-semi">Extra Links:</span>
-                  <a 
-                    href="https://github.com/unwontedsponn" 
-                    className="hover:underline ml-1"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  > GitHub
-                  </a> | 
-                  <a 
-                    href="https://www.linkedin.com/in/ben-spooner-12aab937/" 
-                    className="hover:underline ml-1"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  > LinkedIn
-                  </a> | 
-                  <a 
-                    href="https://medium.com/@benspooner" 
-                    className="hover:underline ml-1"
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                  > Blog
-                  </a>
-                </p>
-              </div>            
-            </SlideFadeIn>    
+            <div className="pt-4 sm:pt-6 px-4 sm:px-24 text-sm sm:text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
+              <p>
+                ...I&apos;m Ben, a 34-year-old musician and JavaScript / TypeScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music, I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+              </p>
+              <p className="pt-3">
+                <span className="font-gopher-mono-semi">Extra Links:</span>
+                <a 
+                  href="https://github.com/unwontedsponn" 
+                  className="hover:underline ml-1"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                > GitHub
+                </a> | 
+                <a 
+                  href="https://www.linkedin.com/in/ben-spooner-12aab937/" 
+                  className="hover:underline ml-1"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                > LinkedIn
+                </a> | 
+                <a 
+                  href="https://medium.com/@benspooner" 
+                  className="hover:underline ml-1"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                > Blog
+                </a>
+              </p>
+            </div>                        
 
             {/* Image */}
-            <SlideFadeIn className="flex justify-center" direction="right"> 
+            <SlideFadeIn direction="left" className="flex justify-center"> 
               <Image 
                 src="/images/piano.png"            
                 alt="Piano"

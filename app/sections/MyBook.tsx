@@ -119,30 +119,19 @@ const MyBook: React.FC = () => {
           </>
           ) : (      
             <div className="space-y-6 text-center bg-dark-blue bg-opacity-10 py-16 px-10">
-              {/* Section Title */}
-              <SlideFadeIn direction="left" className="text-5xl sm:text-6xl font-gopher-mono-semi color-blue">
-                <h1 className="opacity-40">myBook</h1>
-              </SlideFadeIn>
-            
-              {/* Subheading */}
-              <SlideFadeIn direction="right" className="text-2xl sm:text-3xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap">
-                <p>Beginner To Composer...</p>
-              </SlideFadeIn>
-            
-              {/* Subtitle with TypewriterEffect */}
-              <SlideFadeIn direction="right" className="text-xl sm:text-2xl font-gopher-mono underline color-dark-blue tracking-wide">
-                <p><TypewriterEffect text="in 14 days" /></p>
-              </SlideFadeIn>
-            
-              {/* Description */}
-              <SlideFadeIn direction="left" className="text-xs sm:text-sm font-gopher-mono text-dark leading-relaxed max-w-xl sm:max-w-2xl">
-                <p>
-                  {`Beginner To Composer In 14 Days is delightfully different. Moving swiftly from theory to action, Ben emerges as the teacher you always wished you'd had, championing radical creative freedom, improvisation and composition - even for beginners. Especially for beginners in fact. "Students need freedom to truly fall in love with their instrument" he writes, "frameworks that pique their curiosity over and over again so that practice becomes play". Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
-                </p>
-              </SlideFadeIn>
+                            
+              <h1 className="text-5xl sm:text-6xl font-gopher-mono-semi color-blue opacity-40">myBook</h1>              
+                                        
+              <p className='text-2xl sm:text-3xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap'>Beginner To Composer...</p>              
+                                        
+              <p className="text-xl sm:text-2xl font-gopher-mono underline color-dark-blue tracking-wide"><TypewriterEffect text="in 14 days" /></p>              
+                                        
+              <p className="text-xs sm:text-sm font-gopher-mono text-dark leading-relaxed max-w-xl sm:max-w-2xl">
+                {`Beginner To Composer In 14 Days is delightfully different. Moving swiftly from theory to action, Ben emerges as the teacher you always wished you'd had, championing radical creative freedom, improvisation and composition - even for beginners. Especially for beginners in fact. "Students need freedom to truly fall in love with their instrument" he writes, "frameworks that pique their curiosity over and over again so that practice becomes play". Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
+              </p>              
             
               {/* Buy Now Links */}
-              <SlideFadeIn direction="up" className="flex flex-col mt-4 text-sm sm:text-base font-gopher-mono text-center space-y-2">
+              <div className="flex flex-col mt-4 text-sm sm:text-base font-gopher-mono text-center space-y-2">
                 <p className="font-bold color-dark">BUY NOW</p>
                 <div className="hover:cursor-pointer hover:font-gopher-mono-semi">
                   <span
@@ -171,7 +160,7 @@ const MyBook: React.FC = () => {
                 >
                   Apple Books↑
                 </a>
-              </SlideFadeIn>
+              </div>
             
               {/* Book Component */}
               <div className="flex justify-center">
