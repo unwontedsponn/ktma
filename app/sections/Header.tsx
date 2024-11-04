@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useGlobalContext } from '../contexts/GlobalContext';
 import Link from 'next/link';
 import Contact from '../modals/Contact';
 import Cart from '../modals/Cart';
 import { FiMenu, FiX } from 'react-icons/fi'; // Import icons for the hamburger menu
 import ShoppingCartIcon from '../components/ShoppingCartIcon';
 
-const Header: React.FC = () => {
-  const { cartCount } = useGlobalContext();
+const Header: React.FC = () => {  
   const [showModal, setShowModal] = useState<boolean>(false);
   const [showCartModal, setShowCartModal] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
