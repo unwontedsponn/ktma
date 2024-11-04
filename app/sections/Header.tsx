@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Contact from '../modals/Contact';
 import Cart from '../modals/Cart';
 import { FiMenu, FiX } from 'react-icons/fi'; // Import icons for the hamburger menu
+import ShoppingCartIcon from '../components/ShoppingCartIcon';
 
 const Header: React.FC = () => {
   const { cartCount } = useGlobalContext();
@@ -78,6 +79,7 @@ const Header: React.FC = () => {
     <>
       <section id="header" className={`fixed inset-x-0 top-0 z-10 pt-4 text-lg`}>
         <div className={`flex items-center ${isSmallViewport ? 'justify-center space-x-4' : 'justify-between'} border-b-2 border-custom-border-color mx-auto px-4 pb-4 md:py-2 max-w-screen-xl`}>
+          
           {/* Logo */}
           <div 
             className={`flex items-center ${isSmallViewport ? '' : 'border-r-2 border-custom-border-color pr-4'}`}            
@@ -92,11 +94,23 @@ const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Hamburger icon for small screens */}
+          {/* Hamburger and cart icon for small screens */}
           {isSmallViewport ? (
-            <button onClick={toggleMobileMenu} className="md:hidden">
-              {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-            </button>
+            <div className="flex items-center gap-x-4">
+              <button onClick={toggleMobileMenu} className="md:hidden">
+                {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+              </button>
+              <div
+                id="cart"
+                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
+                onClick={toggleCartModal}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCartModal(); }}
+                tabIndex={0}
+                role="button"
+              >
+                <ShoppingCartIcon />
+              </div>
+            </div>            
           ) : (
             // Desktop navigation
             <nav className="hidden md:flex space-x-4 font-gopher-mono">
@@ -138,17 +152,7 @@ const Header: React.FC = () => {
                 tabIndex={0}
                 role="button"
               >
-                {/* Cart SVG */}
-                <svg className="cart-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#3f423e">
-                  <path d="M7 4h-2c-.55 0-1 .45-1 1s.45 1 1 1h2l1.68 8.59c.09.46.48.79.95.79h7.5c.47 0 .86-.33.95-.79L20 6H8.25L7 4zm0 2h11.24l-1.31 6.5H9.06L7 6zm0 9c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm10-3c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
-                  {cartCount > 0 && (
-                    <>
-                      <circle className='cart-icon-circle' cx="18" cy="6" r="6" fill="#c15564" />
-                      <text x="18" y="7" fontFamily="Gopher Mono" fontSize="8" fill="white" textAnchor="middle" alignmentBaseline="middle" dominantBaseline="middle">{cartCount}</text>
-                    </>
-                  )}
-                  <line x1="2" y1="22" x2="22" y2="22" stroke="#c15564" strokeWidth="3" className="cart-underline" />
-                </svg>
+                <ShoppingCartIcon />
               </div>
               <button
                 id="contactNav"
@@ -163,13 +167,14 @@ const Header: React.FC = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden flex flex-col items-center space-y-2 mt-2 bg-white shadow-lg py-4">
+          <div className="md:hidden flex flex-col items-center space-y-2 bg-white-ish border-b-3 border-custom-border-color  py-4">
             <div 
               onClick={() => scrollToSection('aboutMe')} 
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe'); }}
               tabIndex={0}
               role="menuitem"
               className="cursor-pointer"
+              id="aboutMeNavMobile"
             >
               aboutMe
             </div>
@@ -179,19 +184,17 @@ const Header: React.FC = () => {
               tabIndex={0}
               role="menuitem"
               className="cursor-pointer"
+              id='myBookNavMobile'
             >
               myBook
-            </div>
-            <div 
-              onClick={() => scrollToSection('myGame')} 
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame'); }}
-              tabIndex={0}
-              role="menuitem"
+            </div>            
+            <button 
+              onClick={toggleModal} 
               className="cursor-pointer"
+              id="contactMeNavMobile"
             >
-              myBook
-            </div>
-            <button onClick={toggleModal} className="cursor-pointer">contactMe</button>
+              contactMe
+            </button>
           </div>
         )}
       </section>

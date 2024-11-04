@@ -82,12 +82,12 @@ const AboutMe: React.FC = () => {
             </SlideFadeIn>
           </>
         ) : (
-          <div className="space-y-6 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-16">                        
-            <h1 className="text-5xl sm:text-6xl leading-none font-gopher-mono-semi color-blue opacity-40">aboutMe</h1>            
+          <div className="space-y-8 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-24 border-b-3 border-thick-border-gray">                        
+            <h1 className="text-8xl sm:text-9xl leading-none font-gopher-mono-semi color-blue opacity-40">aboutMe</h1>            
                         
-            <p className='text-xl sm:text-2xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap px-4 sm:px-10 color-dark-blue text-decoration-color'><TypewriterEffect text="A little bit about me..." /></p>              
+            <p className='text-2xl sm:text-3xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap color-dark-blue text-decoration-color'><TypewriterEffect text="A little bit about me..." /></p>              
 
-            <div className="pt-4 sm:pt-6 px-4 sm:px-24 text-sm sm:text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
+            <div className="px-4 text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
               <p>
                 ...I&apos;m Ben, a 34-year-old musician and JavaScript / TypeScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music, I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
               </p>
@@ -98,21 +98,21 @@ const AboutMe: React.FC = () => {
                   className="hover:underline ml-1"
                   target="_blank" 
                   rel="noopener noreferrer"
-                > GitHub
+                > GitHub↑
                 </a> | 
                 <a 
                   href="https://www.linkedin.com/in/ben-spooner-12aab937/" 
                   className="hover:underline ml-1"
                   target="_blank" 
                   rel="noopener noreferrer"
-                > LinkedIn
+                > LinkedIn↑
                 </a> | 
                 <a 
                   href="https://medium.com/@benspooner" 
                   className="hover:underline ml-1"
                   target="_blank" 
                   rel="noopener noreferrer"
-                > Blog
+                > Blog↑
                 </a>
               </p>
             </div>                        

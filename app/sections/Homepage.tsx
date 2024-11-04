@@ -81,9 +81,9 @@ const Homepage: React.FC = () => {
             </SlideFadeIn>   
           </>          
         ) : (
-          <div className="space-y-6 px-4 sm:px-8 text-center py-16">
+          <div className="space-y-8 px-4 sm:px-8 text-center py-16 border-b-3 border-thick-border-gray">
             {/* Styling for small devices */}                        
-            <p className="font-gopher-mono-semi color-blue leading-tight text-6xl sm:text-7xl opacity-40">Hello,</p>            
+            <p className="font-gopher-mono-semi color-blue leading-tight text-7xl sm:text-8xl opacity-40">Hello,</p>            
                         
             <p className="font-gopher-mono-semi color-blue leading-tight text-7xl sm:text-8xl opacity-40">I&apos;m Ben</p>                                   
 
