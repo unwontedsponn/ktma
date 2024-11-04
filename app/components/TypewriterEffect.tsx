@@ -4,11 +4,12 @@ import { useInView } from 'react-intersection-observer';
 
 interface TypewriterEffectProps {
     text: string;
+    onComplete?: () => void; // Callback function to trigger after typing finishes
 }
 
-const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text }) => {
+const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text, onComplete }) => {
     const [typingEffect, setTypingEffect] = useState('');
-    const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 }); // Consider using triggerOnce: true if you want the effect to run only once
+    const { ref, inView } = useInView({ triggerOnce: false, threshold: 0.2 });
 
     useEffect(() => {
         if (inView) { // Only start typing when the element is in view
@@ -20,6 +21,8 @@ const TypewriterEffect: React.FC<TypewriterEffectProps> = ({ text }) => {
                     setTypingEffect(currentText);
                     index++;
                     setTimeout(typeLetter, 70);
+                } else if (onComplete) {
+                    onComplete(); // Trigger callback after typing is complete
                 }
             };
             typeLetter();

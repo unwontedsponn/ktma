@@ -4,9 +4,10 @@ import React, { useState, useEffect } from 'react';
 interface RotatingWordsProps{
   words: string[];
   intervalDuration?: number;
+  className?: string;
 }
 
-const RotatingWords: React.FC<RotatingWordsProps> = ({ words, intervalDuration = 1500 }) => {
+const RotatingWords: React.FC<RotatingWordsProps> = ({ words, intervalDuration = 1500, className }) => {
   const [currentWord, setCurrentWord] = useState(0);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ const RotatingWords: React.FC<RotatingWordsProps> = ({ words, intervalDuration =
   if (words.length === 0) return null; // Return null if words array is empty
 
   return (
-    <p>
+    <p className={className}>
       {words[currentWord]}
     </p>
   );
