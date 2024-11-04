@@ -164,9 +164,33 @@ const Header: React.FC = () => {
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden flex flex-col items-center space-y-2 mt-2 bg-white shadow-lg py-4">
-            <div onClick={() => scrollToSection('aboutMe')} className="cursor-pointer">aboutMe</div>
-            <div onClick={() => scrollToSection('myBook')} className="cursor-pointer">myBook</div>
-            <div onClick={() => scrollToSection('myGame')} className="cursor-pointer">myGame</div>
+            <div 
+              onClick={() => scrollToSection('aboutMe')} 
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe'); }}
+              tabIndex={0}
+              role="menuitem"
+              className="cursor-pointer"
+            >
+              aboutMe
+            </div>
+            <div 
+              onClick={() => scrollToSection('myBook')} 
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook'); }}
+              tabIndex={0}
+              role="menuitem"
+              className="cursor-pointer"
+            >
+              myBook
+            </div>
+            <div 
+              onClick={() => scrollToSection('myGame')} 
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame'); }}
+              tabIndex={0}
+              role="menuitem"
+              className="cursor-pointer"
+            >
+              myBook
+            </div>
             <button onClick={toggleModal} className="cursor-pointer">contactMe</button>
           </div>
         )}
@@ -176,6 +200,4 @@ const Header: React.FC = () => {
     </>
   );
 };
-
 export default Header;
-``
