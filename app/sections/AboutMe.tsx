@@ -85,7 +85,7 @@ const AboutMe: React.FC = () => {
           <div className="space-y-8 px-4 sm:px-8 text-center bg-pink bg-opacity-10 py-24 border-b-3 border-thick-border-gray">                        
             <h1 className="text-7xl sm:text-9xl leading-none font-gopher-mono-semi color-blue opacity-40">aboutMe</h1>            
                         
-            <p className='text-2xl sm:text-3xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap color-dark-blue text-decoration-color'><TypewriterEffect text="A little bit about me..." /></p>              
+            <p className='text-xl sm:text-3xl font-gopher-mono underline tracking-wide sm:tracking-large whitespace-nowrap color-dark-blue text-decoration-color'><TypewriterEffect text="A little bit about me..." /></p>              
 
             <div className="px-4 text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
               <p>
