@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Contact from '../modals/Contact';
@@ -141,7 +142,14 @@ const Header: React.FC = () => {
                 role="button"
               >
                 myGame
-              </div>
+              </div>              
+              <Link 
+                href='/blog'
+                id="myWritingsNav"
+                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"   
+              >
+                myWritings
+              </Link>
               <div
                 id="cart"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
