@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useInView } from 'react-intersection-observer';
 import SlideFadeIn from './SlideFadeIn';
 import Breadcrumb from './Breadcrumb';
+import Arrow from './Arrow';
 
 interface BookComponentProps {
   width: number;
@@ -43,33 +44,39 @@ const BookComponent: React.FC<BookComponentProps> = ({ width, height, direction 
     }
   }, [inView]); // Dependency on inView
 
+  const prevPage = () => {
+    setCurrentPage((current) => (current - 1 + bookPages.length) % bookPages.length);
+  };
+  
   const nextPage = () => {
     setCurrentPage((current) => (current + 1) % bookPages.length);
   };
 
   return (
-    <div ref={ref} className={`md:hidden xl:flex`}>
-      <div className="flex flex-col w-full text-center xl:text-right px-2">
-        <SlideFadeIn className="border-3 border-thick-border-gray" direction={direction}>
-          <div 
-            className="cursor-pointer"
-            role="button"
-            tabIndex={0}
-            onClick={nextPage}
-            onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') nextPage}}
-          >
-            <Image 
-              src={bookPages[currentPage]} 
-              alt="My Book" 
-              width={width} 
-              height={height}
-              priority
-            />
-          </div>
-        </SlideFadeIn>
-        <SlideFadeIn direction="left">
-          <Breadcrumb currentIndex={currentPage} itemCount={bookPages.length} onBreadcrumbClick={setCurrentPage} />
-        </SlideFadeIn>
+    <div ref={ref} className="md:hidden xl:flex items-center justify-center space-x-4">
+      <div className="flex items-center">
+        {/* Left Arrow */}
+        <Arrow direction="left" onClick={prevPage} width={40} height={40} />
+
+        <div className="flex flex-col w-full text-center xl:text-right px-2">
+          <SlideFadeIn className="border-3 border-thick-border-gray" direction={direction}>
+            <div className="flex justify-center items-center">
+              <Image 
+                src={bookPages[currentPage]} 
+                alt="My Book" 
+                width={width} 
+                height={height}
+                priority
+              />
+            </div>
+          </SlideFadeIn>
+          <SlideFadeIn direction="left">
+            <Breadcrumb currentIndex={currentPage} itemCount={bookPages.length} onBreadcrumbClick={setCurrentPage} />
+          </SlideFadeIn>
+        </div>
+
+        {/* Right Arrow */}
+        <Arrow direction="right" onClick={nextPage} width={40} height={40} />
       </div>
     </div>
   );

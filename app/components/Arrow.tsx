@@ -2,7 +2,7 @@ import React from 'react';
 
 interface ArrowProps {
   direction: 'left' | 'right';
-  onClick?: () => void;
+  onClick: () => void;
   width: number;
   height: number;
   hide?: string;
