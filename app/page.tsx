@@ -37,9 +37,9 @@ const Home: React.FC = () => {
       <main className="background-light flex justify-center">
         {/* Use conditional classes to apply different layouts for different viewport sizes */}
         <div
-          className={`w-full max-w-screen-2xl ${
+          className={`${
             isSmallViewport
-              ? 'overflow-auto' // Standard scrolling for smaller viewports
+              ? 'overflow-y-auto overflow-x-hidden' // Standard scrolling for smaller viewports
               : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory' // Single-page scroll for larger viewports
           }`}
         >
