@@ -80,7 +80,7 @@ const IntroSection: React.FC<IntroSectionProps> = ({
       </SlideFadeIn>      
 
       <SlideFadeIn direction="down" className="font-gopher-mono">
-        <p className={`md:w-[40vw]`}>...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
+        <p className={`px-10 w-lg`}>...tells the story of a budding composer, eager to make his mark. To pass each level he must keep moving and overcome obstacles to finish writing his masterpiece. This retro 2D platform game is music-led, where the player shapes the soundtrack in real-time as they play, blurring the boundaries between being a listener and an active creator of this album.</p>
       </SlideFadeIn>
 
       {/* This text is only visible on screens smaller than md */}
