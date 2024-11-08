@@ -127,14 +127,16 @@ const Header: React.FC = () => {
           ) : (
             // Desktop navigation
             <nav className="hidden md:flex space-x-4 font-gopher-mono">
-              <Link
-                href="/#aboutMe"
+              <div                
                 id="aboutMeNav"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={() => scrollToSection('aboutMe')}                
+                onClick={() => scrollToSection('aboutMe')}     
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook'); }}
+                tabIndex={0}
+                role="button"           
               >
                 aboutMe
-              </Link>
+              </div>
               <div
                 id="myBookNav"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
@@ -155,13 +157,16 @@ const Header: React.FC = () => {
               >
                 myGame
               </div>              
-              <Link 
-                href='/blog'
+              <div                 
                 id="myWritingsNav"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"   
+                onClick={() => scrollToSection('myWritings')}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame'); }}
+                tabIndex={0}
+                role="button"
               >
                 myWritings
-              </Link>
+              </div>
               <div
                 id="cart"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
@@ -205,6 +210,16 @@ const Header: React.FC = () => {
               id='myBookNavMobile'
             >
               myBook
+            </div>    
+            <div 
+              onClick={() => scrollToSection('myWritings')} 
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myWritings'); }}
+              tabIndex={0}
+              role="menuitem"
+              className="cursor-pointer"
+              id='myWritingsNavMobile'
+            >
+              myWritings
             </div>            
             <button 
               onClick={toggleModal} 

@@ -51,7 +51,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <small>{metadata.date}</small>
               </p>
 
-              <Link href='/blog' className='font-gopher-mono' id="back-to-blogs">Back To Blogs</Link>
+              <Link href="/?scrollTo=myWritings" className="font-gopher-mono" id="back-to-blogs">
+                Back To Blogs
+              </Link>
 
               {/* Markdown content */}
               <ReactMarkdown className="markdown-content" remarkPlugins={[remarkGfm, remarkBreaks]}>

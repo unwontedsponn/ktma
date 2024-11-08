@@ -1,16 +1,20 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Header from './sections/Header';
 import Homepage from './sections/Homepage';
 import AboutMe from './sections/AboutMe';
 import MyBook from './sections/MyBook';
 import MyGame from './sections/MyGame';
+import MyWritings from './sections/MyWritings';
 import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
 
 const Home: React.FC = () => {
   const [showFooter, setShowFooter] = useState(true);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
+  const searchParams = useSearchParams();
+  const scrollToSection = searchParams.get('scrollTo');
 
   useEffect(() => {
     const checkViewportWidth = () => {
@@ -32,6 +36,16 @@ const Home: React.FC = () => {
     setShowFooter(!playing && !isSmallViewport);
   };
 
+  // For scrolling to MyWritings from a blog
+  useEffect(() => {
+    if (scrollToSection === 'myWritings') {
+      const myWritingsSection = document.getElementById('myWritings');
+      if (myWritingsSection) {
+        myWritingsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [scrollToSection]);
+
   return (
     <GlobalProvider>
       <main className="background-light flex justify-center">
@@ -49,6 +63,7 @@ const Home: React.FC = () => {
           <AboutMe />
           <MyBook />
           <MyGame onPlayChange={handleGamePlayChange} />
+          <MyWritings id="myWritings"/>
           {/* Show the footer unless it's hidden due to gameplay or viewport */}
           {showFooter && <Footer />}
         </div>

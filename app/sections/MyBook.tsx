@@ -118,7 +118,7 @@ const MyBook: React.FC = () => {
             <BookComponent width={300} height={300} direction="right"/>      
           </>
           ) : (      
-            <div className="space-y-6 text-center py-24 px-10">
+            <div className="space-y-6 text-center py-24 px-10 border-b-3 border-thick-border-gray">
                             
               <h1 className="text-7xl sm:text-8xl font-gopher-mono-semi color-blue opacity-40">myBook</h1>              
                                         
