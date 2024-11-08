@@ -3,7 +3,11 @@ import Image from 'next/image';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import RotatingWords from '../components/RotatingWords';
 
-const Homepage: React.FC = () => {
+interface HomepageProps {
+  id?: string;
+}
+
+const Homepage: React.FC<HomepageProps> = ({ id }) => {
   const [isSmallViewport, setIsSmallViewport] = useState(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check  
   
@@ -42,7 +46,7 @@ const Homepage: React.FC = () => {
   }, []);
 
   return (
-    <section id="homepage" className="pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
+    <section id={id} className="pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
       <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
       
         {/* Styling for devices wider than md (768px) */}

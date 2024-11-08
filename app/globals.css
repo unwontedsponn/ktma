@@ -99,6 +99,13 @@ html {scroll-behavior: smooth;}
   cursor: pointer;
 }
 
+#homepageMobileNav {  
+  text-decoration: underline;
+  text-decoration-color: #c15564;
+  text-decoration-thickness: 3px;
+  cursor: pointer;
+}
+
 .text-decoration-color {text-decoration-color: #c15564;}
 
 #cart:hover .cart-icon {fill: #c15564;}
@@ -162,6 +169,13 @@ html {scroll-behavior: smooth;}
   font-family: 'Gopher Mono Semi';
 }
 
+.markdown-content h3 {  
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.3rem;
+  font-family: 'Gopher Mono Semi';  
+}
+
 .markdown-content p {
   margin-bottom: 1rem;
   font-size: 1rem;
@@ -189,13 +203,43 @@ html {scroll-behavior: smooth;}
   border-left: 4px solid #ddd;
   padding-left: 1rem;
   color: #555;
-  margin-bottom: 1rem;
-}
-
-.markdown-content blockquote {
-  border-left: 4px solid #ddd;
-  padding-left: 1rem;
-  color: #555;
+  margin-top: 1rem;
   margin-bottom: 1rem;
   font-style: italic;
+}
+
+.markdown-content img {
+  max-width: 100%; /* Ensures images don’t exceed the container width */
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: auto;
+}
+
+.markdown-content .references {
+  font-size: 0.65rem; /* Adjust size as needed */
+  opacity: 0.5;  
+  line-height: 1.4; /* Optional: Adjust line height for readability */
+}
+
+
+/**
+* Responsive Video Styling
+*/
+/*--------------------------------------------------------------------------------------------------------------------*/
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  background: #000;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

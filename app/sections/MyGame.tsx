@@ -8,9 +8,10 @@ import { stopGameLoop } from '../game/AnimationFrameManager';
 
 interface MyGameProps {
   onPlayChange: (playing: boolean) => void;
+  id?: string;
 }
 
-const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
+const MyGame: React.FC<MyGameProps> = ({ onPlayChange, id }) => {
   const {
     canvasRef,
     audioRef,
@@ -88,7 +89,7 @@ const MyGame: React.FC<MyGameProps> = ({ onPlayChange }) => {
   }, []);
 
   return (
-    <section id="myGame" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] hidden md:flex flex-col w-screen md:h-screen">
+    <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] hidden md:flex flex-col w-screen md:h-screen">
 
       <div className={`flex flex-col md:flex-row justify-center items-center gap-x-8 px-4 md:px-0 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8 px-4 sm:px-8 bg-darker-green bg-opacity-10 py-16' : 'overflow-hidden'}`}>
 

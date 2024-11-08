@@ -5,6 +5,7 @@ import matter from 'gray-matter';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
+import rehypeRaw from 'rehype-raw';
 import Header from '@/app/sections/Header';
 import Footer from '@/app/sections/Footer';
 import { GlobalProvider } from '@/app/contexts/GlobalContext';
@@ -56,7 +57,19 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               </Link>
 
               {/* Markdown content */}
-              <ReactMarkdown className="markdown-content" remarkPlugins={[remarkGfm, remarkBreaks]}>
+              <ReactMarkdown
+                className="markdown-content"
+                remarkPlugins={[remarkGfm, remarkBreaks]}
+                rehypePlugins={[rehypeRaw]} // Add rehypeRaw here
+                components={{
+                  // Handle the iframe for embedding videos
+                  iframe: ({ node, ...props }) => (
+                    <div className="video-container">
+                      <iframe {...props} />
+                    </div>
+                  ),
+                }}
+              >
                 {content}
               </ReactMarkdown>
             </div>

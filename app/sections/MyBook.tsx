@@ -5,7 +5,11 @@ import TypewriterEffect from '@/app/components/TypewriterEffect';
 import BookComponent from '@/app/components/BookComponent';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 
-const MyBook: React.FC = () => {    
+interface MyBookProps {
+  id?: string;
+}
+
+const MyBook: React.FC<MyBookProps> = ({ id }) => {    
   const { cartItems, setCartItems, setCartCount, userId } = useGlobalContext();
   const [inCart, setInCart] = useState<boolean>(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check
@@ -63,7 +67,7 @@ const MyBook: React.FC = () => {
   }, []);
 
   return (
-    <section id="myBook" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
+    <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
 
       <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8 items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
 

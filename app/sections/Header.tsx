@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame'];
+    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame', 'myWritings'];
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -64,15 +64,7 @@ const Header: React.FC = () => {
 
     // Clean up event listener on component unmount
     return () => window.removeEventListener('resize', checkViewportWidth);
-  }, []);
-
-  const scrollToSection = (sectionId: string) => {
-    const section = document.getElementById(sectionId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false); // Close the menu after clicking a link
-    }
-  };
+  }, []);  
 
   return (
     <>
@@ -84,13 +76,12 @@ const Header: React.FC = () => {
             className={`flex items-center ${isSmallViewport ? 'hidden' : 'border-r-2 border-custom-border-color pr-4'}`}            
           >
             <Link
-              href="/"
-              className="font-gopher-mono-semi"              
-              onClick={() => scrollToSection('homepage')}
+              href="/?scrollTo=homepage"
+              className="font-gopher-mono-semi"                            
               id="homepageNav"
             >
               benSpooner
-            </Link>
+            </Link>            
           </div>
 
           {/* Hamburger and cart icon for small screens */}
@@ -99,10 +90,9 @@ const Header: React.FC = () => {
               {/* Logo and Cart */}
               <div className="flex items-center space-x-2 border-b border-custom-border-color pb-4">
                 <Link
-                  href="/"
-                  className="font-gopher-mono-semi text-lg text-center"              
-                  onClick={() => scrollToSection('homepage')}
-                  id="homepageNav"
+                  href="/?scrollTo=homepage"
+                  className="font-gopher-mono-semi text-lg text-center"                                
+                  id="homepageMobileNav"
                 >
                   benSpooner
                 </Link>  
@@ -126,47 +116,19 @@ const Header: React.FC = () => {
             </div>          
           ) : (
             // Desktop navigation
-            <nav className="hidden md:flex space-x-4 font-gopher-mono">
-              <div                
-                id="aboutMeNav"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={() => scrollToSection('aboutMe')}     
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook'); }}
-                tabIndex={0}
-                role="button"           
-              >
+            <nav className="hidden md:flex space-x-4 font-gopher-mono">            
+              <Link href="/?scrollTo=aboutMe" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="aboutMeNav">
                 aboutMe
-              </div>
-              <div
-                id="myBookNav"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={() => scrollToSection('myBook')}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook'); }}
-                tabIndex={0}
-                role="button"
-              >
+              </Link>
+              <Link href="/?scrollTo=myBook" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myBookNav">
                 myBook
-              </div>
-              <div
-                id="myGameNav"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={() => scrollToSection('myGame')}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame'); }}
-                tabIndex={0}
-                role="button"
-              >
+              </Link>
+              <Link href="/?scrollTo=myGame" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myGameNav">
                 myGame
-              </div>              
-              <div                 
-                id="myWritingsNav"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"   
-                onClick={() => scrollToSection('myWritings')}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myGame'); }}
-                tabIndex={0}
-                role="button"
-              >
+              </Link>            
+              <Link href="/?scrollTo=myWritings" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myWritingsNav">
                 myWritings
-              </div>
+              </Link> 
               <div
                 id="cart"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
@@ -191,36 +153,15 @@ const Header: React.FC = () => {
         {/* Mobile menu */}
         {isMobileMenuOpen && (
           <div className="md:hidden flex flex-col items-center space-y-2 bg-white-ish py-2">
-            <div 
-              onClick={() => scrollToSection('aboutMe')} 
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe'); }}
-              tabIndex={0}
-              role="menuitem"
-              className="cursor-pointer"
-              id="aboutMeNavMobile"
-            >
+            <Link href="/?scrollTo=aboutMe" id="aboutMeNavMobile">
               aboutMe
-            </div>
-            <div 
-              onClick={() => scrollToSection('myBook')} 
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myBook'); }}
-              tabIndex={0}
-              role="menuitem"
-              className="cursor-pointer"
-              id='myBookNavMobile'
-            >
+            </Link>            
+            <Link href="/?scrollTo=myBook" id="myBookNavMobile">
               myBook
-            </div>    
-            <div 
-              onClick={() => scrollToSection('myWritings')} 
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('myWritings'); }}
-              tabIndex={0}
-              role="menuitem"
-              className="cursor-pointer"
-              id='myWritingsNavMobile'
-            >
+            </Link>  
+            <Link href="/?scrollTo=myWritings" id="myWritingsNavMobile">
               myWritings
-            </div>            
+            </Link>                                    
             <button 
               onClick={toggleModal} 
               className="cursor-pointer"

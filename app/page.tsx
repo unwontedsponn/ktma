@@ -18,53 +18,46 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     const checkViewportWidth = () => {
-      setIsSmallViewport(window.innerWidth < 768); // `md` breakpoint in Tailwind is typically 768px
+      setIsSmallViewport(window.innerWidth < 768);
     };
 
-    // Check initial width
     checkViewportWidth();
-
-    // Add resize event listener
     window.addEventListener('resize', checkViewportWidth);
-
-    // Clean up event listener on component unmount
     return () => window.removeEventListener('resize', checkViewportWidth);
   }, []);
 
   const handleGamePlayChange = (playing: boolean) => {
-    // Conditionally hide footer based on playing state and viewport width
     setShowFooter(!playing && !isSmallViewport);
   };
 
-  // For scrolling to MyWritings from a blog
   useEffect(() => {
-    if (scrollToSection === 'myWritings') {
-      const myWritingsSection = document.getElementById('myWritings');
-      if (myWritingsSection) {
-        myWritingsSection.scrollIntoView({ behavior: 'smooth' });
-      }
+    if (scrollToSection) {
+      // Delay the scroll to allow time for the component to mount
+      setTimeout(() => {
+        const sectionElement = document.getElementById(scrollToSection);
+        if (sectionElement) {
+          sectionElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
     }
   }, [scrollToSection]);
 
   return (
     <GlobalProvider>
       <main className="background-light flex justify-center">
-        {/* Use conditional classes to apply different layouts for different viewport sizes */}
         <div
           className={`${
             isSmallViewport
-              ? 'overflow-y-auto overflow-x-hidden' // Standard scrolling for smaller viewports
-              : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory' // Single-page scroll for larger viewports
+              ? 'overflow-y-auto overflow-x-hidden'
+              : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory'
           }`}
         >
           <Header />
-          {/* Render components normally without scroll-snap */}
-          <Homepage />
-          <AboutMe />
-          <MyBook />
-          <MyGame onPlayChange={handleGamePlayChange} />
-          <MyWritings id="myWritings"/>
-          {/* Show the footer unless it's hidden due to gameplay or viewport */}
+          <Homepage id='homepage'/>
+          <AboutMe id="aboutMe" />
+          <MyBook id="myBook" />
+          <MyGame id="myGame" onPlayChange={handleGamePlayChange} />
+          <MyWritings id="myWritings" />
           {showFooter && <Footer />}
         </div>
       </main>

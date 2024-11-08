@@ -3,7 +3,11 @@ import TypewriterEffect from '@/app/components/TypewriterEffect';
 import SlideFadeIn from '@/app/components/SlideFadeIn';
 import Image from 'next/image';
 
-const AboutMe: React.FC = () => {
+interface AboutMeProps {
+  id?: string;
+}
+
+const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
   const [isNarrowViewport, setIsNarrowViewport] = useState(false); // For width check
 
   // Check for width (used for responsive small device layout)
@@ -23,7 +27,7 @@ const AboutMe: React.FC = () => {
   }, []);
 
   return (
-    <section id="aboutMe" className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
+    <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
 
       <div className={`flex flex-col md:flex-row justify-center items-center md:gap-x-8  items-center h-auto md:h-screen ${isNarrowViewport ? 'space-y-8' : 'overflow-hidden'}`}>
         
