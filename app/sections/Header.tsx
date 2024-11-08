@@ -53,7 +53,7 @@ const Header: React.FC = () => {
   // Track viewport width for mobile menu visibility
   useEffect(() => {
     const checkViewportWidth = () => {
-      setIsSmallViewport(window.innerWidth < 768); // `md` breakpoint is 768px
+      setIsSmallViewport(window.innerWidth < 1024); // `md` breakpoint is 768px
     };
 
     // Check initial width
@@ -77,11 +77,11 @@ const Header: React.FC = () => {
   return (
     <>
       <section id="header" className={`fixed inset-x-0 top-0 z-10 pt-4 text-lg`}>
-        <div className={`flex items-center ${isSmallViewport ? 'justify-center space-x-4' : 'justify-between'} border-b-2 border-custom-border-color mx-auto px-4 pb-4 md:py-2 max-w-screen-xl`}>
+        <div className={`flex items-center ${isSmallViewport ? 'justify-center space-x-4' : 'justify-between border-b-2 border-custom-border-color'} mx-auto px-4 pb-4 md:py-2 lg:max-w-screen-lg xl:max-w-screen-xl`}>
           
           {/* Logo */}
           <div 
-            className={`flex items-center ${isSmallViewport ? '' : 'border-r-2 border-custom-border-color pr-4'}`}            
+            className={`flex items-center ${isSmallViewport ? 'hidden' : 'border-r-2 border-custom-border-color pr-4'}`}            
           >
             <Link
               href="/"
@@ -95,34 +95,46 @@ const Header: React.FC = () => {
 
           {/* Hamburger and cart icon for small screens */}
           {isSmallViewport ? (
-            <div className="flex items-center gap-x-4">
-              <button onClick={toggleMobileMenu} className="md:hidden">
-                {isMobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-              </button>
-              <div
-                id="cart"
-                className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={toggleCartModal}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCartModal(); }}
-                tabIndex={0}
-                role="button"
-              >
-                <ShoppingCartIcon />
+            <div className="flex flex-col items-center space-y-2 w-screen">
+              {/* Logo and Cart */}
+              <div className="flex items-center space-x-2 border-b border-custom-border-color pb-4">
+                <Link
+                  href="/"
+                  className="font-gopher-mono-semi text-lg text-center"              
+                  onClick={() => scrollToSection('homepage')}
+                  id="homepageNav"
+                >
+                  benSpooner
+                </Link>  
+                {/* Cart Icon */}
+                <div
+                  id="cart"
+                  className="cursor-pointer"
+                  onClick={toggleCartModal}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') toggleCartModal(); }}
+                  tabIndex={0}
+                  role="button"
+                >
+                  <ShoppingCartIcon />
+                </div>    
               </div>
-            </div>            
+              
+              {/* Hamburger Menu Icon */}
+              <button onClick={toggleMobileMenu} className="p-2">
+                {isMobileMenuOpen ? <FiX id="FiX" size={24} /> : <FiMenu id="FiMenu" size={24} />}
+              </button>                            
+            </div>          
           ) : (
             // Desktop navigation
             <nav className="hidden md:flex space-x-4 font-gopher-mono">
-              <div
+              <Link
+                href="/#aboutMe"
                 id="aboutMeNav"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
-                onClick={() => scrollToSection('aboutMe')}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe'); }}
-                tabIndex={0}
-                role="button"
+                onClick={() => scrollToSection('aboutMe')}                
               >
                 aboutMe
-              </div>
+              </Link>
               <div
                 id="myBookNav"
                 className="border-l-2 border-custom-border-color pl-6 cursor-pointer"
@@ -173,7 +185,7 @@ const Header: React.FC = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden flex flex-col items-center space-y-2 bg-white-ish border-b-3 border-custom-border-color  py-4">
+          <div className="md:hidden flex flex-col items-center space-y-2 bg-white-ish py-2">
             <div 
               onClick={() => scrollToSection('aboutMe')} 
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') scrollToSection('aboutMe'); }}
