@@ -46,7 +46,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
               <SlideFadeIn direction="up">
                 <div className="pt-6 px-24 md:px-0 md:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
                   <p>
-                    ...I&apos;m Ben, a 34-year-old musician and JavaScript / TypeScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+                    ...I&apos;m Ben, a 34-year-old musician and TypeScript/Javascript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a music podcast platform (MMN), a piano method and a drumming app. In music I&apos;ve performed with artists such as Joy Crookes, toured at places like the Edinburgh Fringe Festival, taught ABRSM, examined for RSL, and composed for short films - such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
                   </p>
                   <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Extra Links:</span>
                     <a 

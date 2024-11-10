@@ -52,8 +52,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 <small>{metadata.date}</small>
               </p>
 
-              <Link href="/?scrollTo=myWritings" className="font-gopher-mono" id="back-to-blogs">
-                Back To Blogs
+              <Link href="/blog" className="font-gopher-mono border-b-2 mb-6" id="back-to-blogs">
+                Read More of MyWritings
               </Link>
 
               {/* Markdown content */}
