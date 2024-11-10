@@ -16,6 +16,7 @@ export async function GET() {
       title: data.title,
       description: data.description,
       date: data.date,
+      isFeatured: data.isFeatured || false, // Add isFeatured with a fallback
     };
   });
 
