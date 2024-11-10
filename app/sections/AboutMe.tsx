@@ -54,21 +54,14 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
                       className="hover:underline"
                       target="_blank" 
                       rel="noopener noreferrer"
-                      > GitHub
+                      > GitHub↑
                     </a> | 
                     <a 
                       href="https://www.linkedin.com/in/ben-spooner-12aab937/" className="hover:underline"
                       target="_blank" 
                       rel="noopener noreferrer"
-                      > LinkedIn
-                    </a> |                 
-                    <a 
-                      href="https://medium.com/@benspooner" 
-                      className="hover:underline"
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      > Blog
-                    </a>
+                      > LinkedIn↑
+                    </a>                                
                   </p>
                 </div>            
               </SlideFadeIn>              
@@ -110,14 +103,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
                   target="_blank" 
                   rel="noopener noreferrer"
                 > LinkedIn↑
-                </a> | 
-                <a 
-                  href="https://medium.com/@benspooner" 
-                  className="hover:underline ml-1"
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                > Blog↑
-                </a>
+                </a>                
               </p>
             </div>                        
 
