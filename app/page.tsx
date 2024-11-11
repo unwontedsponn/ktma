@@ -1,20 +1,36 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Header from './sections/Header';
 import Homepage from './sections/Homepage';
 import AboutMe from './sections/AboutMe';
 import MyBook from './sections/MyBook';
 import MyGame from './sections/MyGame';
-import MyWritings from './sections/MyWritings';
+import MyMusings from './sections/MyMusings';
 import Footer from './sections/Footer';
 import { GlobalProvider } from './contexts/GlobalContext';
+
+const ScrollHandler = () => {
+  const searchParams = useSearchParams();
+  const scrollToSection = searchParams.get('scrollTo');
+
+  useEffect(() => {
+    if (scrollToSection) {
+      setTimeout(() => {
+        const sectionElement = document.getElementById(scrollToSection);
+        if (sectionElement) {
+          sectionElement.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [scrollToSection]);
+
+  return null;
+};
 
 const Home: React.FC = () => {
   const [showFooter, setShowFooter] = useState(true);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
-  const searchParams = useSearchParams();
-  const scrollToSection = searchParams.get('scrollTo');
 
   useEffect(() => {
     const checkViewportWidth = () => {
@@ -29,18 +45,6 @@ const Home: React.FC = () => {
   const handleGamePlayChange = (playing: boolean) => {
     setShowFooter(!playing && !isSmallViewport);
   };
-
-  useEffect(() => {
-    if (scrollToSection) {
-      // Delay the scroll to allow time for the component to mount
-      setTimeout(() => {
-        const sectionElement = document.getElementById(scrollToSection);
-        if (sectionElement) {
-          sectionElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, [scrollToSection]);
 
   return (
     <GlobalProvider>
@@ -57,9 +61,12 @@ const Home: React.FC = () => {
           <AboutMe id="aboutMe" />
           <MyBook id="myBook" />
           <MyGame id="myGame" onPlayChange={handleGamePlayChange} />
-          <MyWritings id="myWritings" />
+          <MyMusings id="myMusings" />
           {showFooter && <Footer />}
         </div>
+        <Suspense fallback={null}>
+          <ScrollHandler />
+        </Suspense>
       </main>
     </GlobalProvider>
   );

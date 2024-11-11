@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     const headerHeight = document.querySelector<HTMLDivElement>('#header')?.offsetHeight || 0;
     document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
-    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame', 'myWritings'];
+    const sections = ['homepage', 'aboutMe', 'myBook', 'myGame', 'myMusings'];
     const observerOptions = {
       root: null,
       rootMargin: '0px',
@@ -126,8 +126,8 @@ const Header: React.FC = () => {
               <Link href="/?scrollTo=myGame" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myGameNav">
                 myGame
               </Link>            
-              <Link href="/?scrollTo=myWritings" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myWritingsNav">
-                myWritings
+              <Link href="/?scrollTo=myMusings" className="border-l-2 border-custom-border-color pl-6 cursor-pointer" id="myMusingsNav">
+                myMusings
               </Link> 
               <div
                 id="cart"
@@ -159,8 +159,8 @@ const Header: React.FC = () => {
             <Link href="/?scrollTo=myBook" id="myBookNavMobile">
               myBook
             </Link>  
-            <Link href="/?scrollTo=myWritings" id="myWritingsNavMobile">
-              myWritings
+            <Link href="/?scrollTo=myMusings" id="myMusingsNavMobile">
+            myMusings
             </Link>                                    
             <button 
               onClick={toggleModal} 

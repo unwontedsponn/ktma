@@ -11,13 +11,13 @@ interface Post {
   isFeatured?: boolean;
 }
 
-interface MyWritingsProps {
+interface MyMusingsListProps {
   id?: string;
 }
 
-const MyWritingsFull: React.FC<MyWritingsProps> = ({ id }) => {
+const MyMusingsList: React.FC<MyMusingsListProps> = ({ id }) => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [, setIsNarrowViewport] = useState(false);
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -37,11 +37,11 @@ const MyWritingsFull: React.FC<MyWritingsProps> = ({ id }) => {
   }, []);  
 
   return (        
-    <section id={id} className="pt-[var(--header-height)] flex flex-col w-screen">
+    <section id={id} className={`pt-[var(--header-height)] flex flex-col w-screen ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''}`}>
       <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg space-y-4">                                 
         
         <SlideFadeIn direction="up">
-          <div className={`grid grid-cols-1 gap-8`}>          
+          <div className={`grid grid-cols-1 gap-8 ${isNarrowViewport ? 'mt-10' : ''}`}>          
             {posts.map((post) => (
               <div key={post.slug} className="transition-transform hover:scale-105">
                 <Link href={`/blog/${post.slug}`} className="block p-4 border-3 border-thick-border-gray">
@@ -57,4 +57,4 @@ const MyWritingsFull: React.FC<MyWritingsProps> = ({ id }) => {
     </section>    
   );
 };
-export default MyWritingsFull;
+export default MyMusingsList;

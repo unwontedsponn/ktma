@@ -91,7 +91,7 @@ html {scroll-behavior: smooth;}
 * :Hover and Text decoration
 */
 /*--------------------------------------------------------------------------------------------------------------------*/
-#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myGameNav:hover, #contactNav:hover, .footer-buttons:hover, #aboutMeNavMobile:hover, #myBookNavMobile:hover, #contactMeNavMobile:hover, #myWritingsNav:hover, #back-to-blogs:hover, #FiX:hover, #FiMenu:hover, #myWritingsNavMobile:hover {
+#homepageNav:hover, #aboutMeNav:hover, #myBookNav:hover, #myGameNav:hover, #contactNav:hover, .footer-buttons:hover, #aboutMeNavMobile:hover, #myBookNavMobile:hover, #contactMeNavMobile:hover, #myMusingsNav:hover, #back-to-blogs:hover, #FiX:hover, #FiMenu:hover, #myMusingsNavMobile:hover {
   color: #e39ba6;
   text-decoration: underline;
   text-decoration-color: #c15564;

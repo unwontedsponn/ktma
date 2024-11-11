@@ -11,7 +11,7 @@ interface Post {
   isFeatured?: boolean;
 }
 
-interface MyWritingsProps {
+interface MyMusingsProps {
   id?: string;
 }
 
@@ -26,9 +26,9 @@ const BlogPost: React.FC<{ post: Post }> = ({ post }) => (
   </div>
 );
 
-const MyWritings: React.FC<MyWritingsProps> = ({ id }) => {
+const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [, setIsNarrowViewport] = useState(false);
+  const [isNarrowViewport, setIsNarrowViewport] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -49,7 +49,7 @@ const MyWritings: React.FC<MyWritingsProps> = ({ id }) => {
   }, []);
 
   return (
-    <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
+    <section id={id} className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''}`}>
       <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg space-y-4 md:space-y-0">
         
         {/* Title Section */}
@@ -95,4 +95,4 @@ const MyWritings: React.FC<MyWritingsProps> = ({ id }) => {
   );
 };
 
-export default MyWritings;
+export default MyMusings;

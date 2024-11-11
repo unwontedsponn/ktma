@@ -2,7 +2,7 @@
 import React from 'react';
 import Header from '../sections/Header';
 import { GlobalProvider } from '../contexts/GlobalContext';
-import MyWritingsFull from './MyWritingsFull';
+import MyWritingsFull from './MyMusingsList';
 
 const MyWritingsFullPage: React.FC = () => {    
 
