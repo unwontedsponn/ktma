@@ -20,7 +20,7 @@ const BlogPost: React.FC<{ post: Post }> = ({ post }) => (
   <div className="transition-transform hover:scale-105">
     <Link href={`/blog/${post.slug}`} className="block p-4 border-3 border-thick-border-gray">
       <h2 className="font-gopher-mono-semi text-xl color-dark mb-1">{post.title}</h2>
-      <p className="font-gopher-mono text-sm color-dark mb-2">{post.description}</p>
+      <p className="font-gopher-mono text-xs lg:text-sm color-dark mb-2">{post.description}</p>
       <small className="font-gopher-mono color-green">{post.date}</small>
     </Link>
   </div>
@@ -59,37 +59,45 @@ const MyWritings: React.FC<MyWritingsProps> = ({ id }) => {
 
   return (
     <section id={id} className="md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen">
-      <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg">
+      <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg space-y-4 md:space-y-0">
         
         {/* Title Section */}
-        <SlideFadeIn direction="left" className="text-center text-7xl md:text-8xl lg:text-9xl xl-text-10xl font-gopher-mono-semi color-blue">
-          <h1 className="opacity-40">myWritings</h1>
-        </SlideFadeIn>
+        <div className="text-center font-gopher-mono-semi color-blue">
+          {/* Larger Screens with SlideFadeIn */}
+          <div className="hidden md:block">
+            <SlideFadeIn direction="left" className="text-7xl md:text-8xl lg:text-9xl xl-text-10xl">
+              <h1 className="opacity-40">myMusings</h1>
+            </SlideFadeIn>
+            <SlideFadeIn direction="right" className="font-gopher-mono underline text-decoration-color tracking-largep text-xl lg:text-2xl color-dark-blue mb-4">
+              <p><TypewriterEffect text="Featured pieces..." /></p>
+            </SlideFadeIn>
+          </div>
 
-        <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-3vw md:text-2xl mb-4">
-          <p><TypewriterEffect text="some of my lessons learned..." /></p>
-        </SlideFadeIn>
+          {/* Smaller Screens without SlideFadeIn */}
+          <div className="md:hidden space-y-4">
+            <h1 className="text-7xl opacity-40">myWritings</h1>
+            <p className="text-2xl sm:text-3xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap text-decoration-color">
+              <TypewriterEffect text="Featured pieces..." />
+            </p>
+          </div>
+        </div>                                                                                 
 
         {/* Small Devices Posts Section */}
-        <SlideFadeIn direction="down" >
-          {isNarrowViewport ? (
-            <BlogPostsList posts={posts} />
-          ) : (
-            <div className="hidden md:block gap-2">
-              <div className="grid grid-cols-1 gap-2">
-                {posts
-                  .filter(post => post.isFeatured)
-                  .map((post, index) => (
-                    <BlogPost key={`${post.slug}-${index}`} post={post} />
-                  ))}
-              </div>
-              <Link href="/blog" className="flex justify-center mt-4">
-                <button className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75">
-                  Read More
-                </button>
-              </Link>
+        <SlideFadeIn direction="up" >          
+          <div className="gap-2">
+            <div className="grid grid-cols-1 gap-2">
+              {posts
+                .filter(post => post.isFeatured)
+                .map((post, index) => (
+                  <BlogPost key={`${post.slug}-${index}`} post={post} />
+                ))}
             </div>
-          )}
+            <Link href="/blog" className="flex justify-center mt-4">
+              <button className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base md:text-xs lg:text-base">
+                Read More
+              </button>
+            </Link>
+          </div>          
         </SlideFadeIn>
       </div>
     </section>

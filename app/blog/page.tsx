@@ -1,6 +1,5 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import React from 'react';
 import Header from '../sections/Header';
 import { GlobalProvider } from '../contexts/GlobalContext';
 import MyWritingsFull from './MyWritingsFull';

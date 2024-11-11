@@ -7,18 +7,8 @@ import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeRaw from 'rehype-raw';
 import Header from '@/app/sections/Header';
-import Footer from '@/app/sections/Footer';
 import { GlobalProvider } from '@/app/contexts/GlobalContext';
 import Link from 'next/link';
-
-interface BlogPostProps {
-  content: string;
-  metadata: {
-    title: string;
-    date: string;
-    description?: string;
-  };
-}
 
 async function getBlogPost(slug: string) {
   const filePath = path.join(process.cwd(), 'app/blog/blogData', `${slug}.md`);
@@ -60,20 +50,18 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               <ReactMarkdown
                 className="markdown-content"
                 remarkPlugins={[remarkGfm, remarkBreaks]}
-                rehypePlugins={[rehypeRaw]} // Add rehypeRaw here
+                rehypePlugins={[rehypeRaw]}
                 components={{
-                  // Handle the iframe for embedding videos
-                  iframe: ({ node, ...props }) => (
+                  iframe: ({ ...props }) => (
                     <div className="video-container">
-                      <iframe {...props} />
+                      <iframe {...props} title="Embedded video" />
                     </div>
                   ),
                 }}
               >
                 {content}
               </ReactMarkdown>
-            </div>
-            {/* <Footer /> */}
+            </div>            
           </section>
         </div>
       </main>
