@@ -26,18 +26,9 @@ const BlogPost: React.FC<{ post: Post }> = ({ post }) => (
   </div>
 );
 
-// Component to display the list of posts
-const BlogPostsList: React.FC<{ posts: Post[] }> = ({ posts }) => (
-  <div className="grid grid-cols-1 gap-8">
-    {posts.map((post) => (
-      <BlogPost key={post.slug} post={post} />
-    ))}
-  </div>
-);
-
 const MyWritings: React.FC<MyWritingsProps> = ({ id }) => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [isNarrowViewport, setIsNarrowViewport] = useState(false);
+  const [, setIsNarrowViewport] = useState(false);
 
   useEffect(() => {
     const fetchPosts = async () => {
