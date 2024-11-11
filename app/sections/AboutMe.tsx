@@ -86,7 +86,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
 
             <div className="px-4 text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
               <p>
-                ...I&apos;m Ben, a 34-year-old musician and JavaScript / TypeScript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a Snapchat filter, a music podcast platform, and a drumming app. In music, I&apos;ve performed with Joy Crookes, toured at the Edinburgh Festival, taught ABRSM, examined for RSL, and composed for short films, such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+              ...I&apos;m Ben, a 34-year-old musician and TypeScript/Javascript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a music podcast platform (MMN), a piano method and a drumming app. In music I&apos;ve performed with artists such as Joy Crookes, toured at places like the Edinburgh Fringe Festival, taught ABRSM, examined for RSL, and composed for short films - such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
               </p>
               <p className="pt-3">
                 <span className="font-gopher-mono-semi">Extra Links:</span>

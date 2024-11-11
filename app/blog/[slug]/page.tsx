@@ -26,7 +26,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
         <div className="overflow-y-auto overflow-x-hidden">
           <section id="" className="pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen">
             <Header />
-            <div className="w-full px-4 sm:px-8 py-8 md:py-16 text-dark-500 mx-auto max-w-screen-sm sm:max-w-screen-md lg:max-w-screen-lg">
+            <div className="pt-14 w-full px-4 sm:px-8 py-8 md:py-16 text-dark-500 mx-auto max-w-screen-sm sm:max-w-screen-md lg:max-w-screen-lg">
               {/* Blog title */}
               <h1 className="font-gopher-mono-semi text-4xl md:text-6xl leading-tight text-grey-black-brown mb-4">
                 {metadata.title}
@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
               </p>
 
               <Link href="/blog" className="font-gopher-mono border-b-2 mb-6" id="back-to-blogs">
-                Read More of MyWritings
+                Read More of myMusings
               </Link>
 
               {/* Markdown content */}
