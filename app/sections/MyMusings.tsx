@@ -49,11 +49,14 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
   }, []);
 
   return (
-    <section id={id} className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''}`}>
-      <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg space-y-4 md:space-y-0">
+    <section
+      id={id}
+      className={`md:pt-[var(--header-height)] md:pb-[var(--footer-height)] flex flex-col w-screen md:h-screen ${isNarrowViewport ? 'bg-pink bg-opacity-10' : ''} overflow-x-hidden`}
+    >
+      <div className="flex flex-col items-center px-4 sm:px-8 md:px-20 py-8 md:py-16 mx-auto max-w-screen-lg w-full space-y-4 md:space-y-0">
         
         {/* Title Section */}
-        <div className="text-center font-gopher-mono-semi color-blue">
+        <div className="text-center font-gopher-mono-semi color-blue max-w-full">
           {/* Larger Screens with SlideFadeIn */}
           <div className="hidden md:block">
             <SlideFadeIn direction="left" className="text-8xl lg:text-9xl xl-text-10xl">
@@ -74,8 +77,8 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
         </div>                                                                                 
 
         {/* Small Devices Posts Section */}
-        <SlideFadeIn direction="right" >          
-          <div className="gap-2 px-4 w-screen">
+        <SlideFadeIn direction="right">
+          <div className="gap-2 px-4 w-full max-w-[95%] mx-auto">
             <div className="grid grid-cols-1 gap-2">
               {posts
                 .filter(post => post.isFeatured)
@@ -83,12 +86,14 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
                   <BlogPost key={`${post.slug}-${index}`} post={post} />
                 ))}
             </div>
-            <Link href="/blog" className="flex justify-center mt-4">
-              <button className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base md:text-xs lg:text-base">
-                Read More
-              </button>
-            </Link>
-          </div>          
+            <div className="flex justify-center mt-4">
+              <Link href="/blog">
+                <button className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base md:text-xs lg:text-base">
+                  Read More
+                </button>
+              </Link>
+            </div>
+          </div>
         </SlideFadeIn>
       </div>
     </section>
