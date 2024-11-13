@@ -74,7 +74,7 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
         </div>                                                                                 
 
         {/* Small Devices Posts Section */}
-        <SlideFadeIn direction="up" >          
+        <SlideFadeIn direction="right" >          
           <div className="gap-2">
             <div className="grid grid-cols-1 gap-2">
               {posts
