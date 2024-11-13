@@ -56,7 +56,7 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
         <div className="text-center font-gopher-mono-semi color-blue">
           {/* Larger Screens with SlideFadeIn */}
           <div className="hidden md:block">
-            <SlideFadeIn direction="left" className="text-7xl md:text-8xl lg:text-9xl xl-text-10xl">
+            <SlideFadeIn direction="left" className="text-8xl lg:text-9xl xl-text-10xl">
               <h1 className="opacity-40">myMusings</h1>
             </SlideFadeIn>
             <SlideFadeIn direction="right" className="font-gopher-mono underline text-decoration-color tracking-largep text-xl lg:text-2xl color-dark-blue mb-4">
@@ -66,8 +66,8 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
 
           {/* Smaller Screens without SlideFadeIn */}
           <div className="md:hidden space-y-4">
-            <h1 className="text-7xl opacity-40">myWritings</h1>
-            <p className="text-2xl sm:text-3xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap text-decoration-color">
+            <h1 className="text-6xl opacity-40">myMusings</h1>
+            <p className="text-xl sm:text-2xl font-gopher-mono underline color-dark-blue tracking-wide sm:tracking-large whitespace-nowrap text-decoration-color">
               <TypewriterEffect text="Featured pieces..." />
             </p>
           </div>
@@ -75,7 +75,7 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
 
         {/* Small Devices Posts Section */}
         <SlideFadeIn direction="right" >          
-          <div className="gap-2">
+          <div className="gap-2 px-4 w-screen">
             <div className="grid grid-cols-1 gap-2">
               {posts
                 .filter(post => post.isFeatured)

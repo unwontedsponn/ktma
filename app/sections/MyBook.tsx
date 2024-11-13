@@ -83,41 +83,50 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
               </SlideFadeIn>
               <SlideFadeIn direction="right" className="color-dark-blue font-gopher-mono underline text-decoration-color tracking-largep text-3vw md:text-2xl md:pl-32">
                 <p><TypewriterEffect text="in 14 days" /></p>
+              </SlideFadeIn>              
+              <SlideFadeIn direction="left" className="w-[80vw] xl:w-[50vw] text-sm color-dark font-gopher-mono pt-4">
+                {`Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
               </SlideFadeIn>
-              <SlideFadeIn direction="left" className="w-[80vw] xl:w-[50vw] text-xs color-dark font-gopher-mono pt-4">
+              <SlideFadeIn direction="left" className="hidden w-[80vw] xl:w-[50vw] text-xs color-dark font-gopher-mono pt-4">
                 {`Beginner To Composer In 14 Days is delightfully different. Moving swiftly from theory to action, Ben emerges as the teacher you always wished you'd had, championing radical creative freedom, improvisation and composition - even for beginners. Especially for beginners in fact. "Students need freedom to truly fall in love with their instrument" he writes, "frameworks that pique their curiosity over and over again so that practice becomes play". Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
               </SlideFadeIn>
 
               {/* Buy Now Links */}
-              <SlideFadeIn direction="up" className={`flex flex-col mt-4 text-sm font-gopher-mono`}>
-                <p className="bold color-dark">BUY NOW</p>                
-                <div className='hover:cursor-pointer hover:font-gopher-mono-semi'>
-                  <span className="hidden xl:inline">- </span>
-                  <span
-                    className="inline underline color-green"
-                    role="button"
-                    tabIndex={0}
-                    onClick={inCart ? removeFromCart : addToCart}
-                    onKeyDown={(e) => {if (e.key === 'Enter' || e.key === ' ') removeFromCart : addToCart}}
-                  >
-                    {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
-                  </span>
-                </div>
-                <a 
-                  href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
-                  target="_blank" 
+              <SlideFadeIn direction="up" className="flex flex-row items-center mt-4 text-sm font-gopher-mono space-x-4">                                                
+                {/* Add to Cart / Remove from Cart Button */}
+                <button
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
+                  onClick={inCart ? removeFromCart : addToCart}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      inCart ? removeFromCart() : addToCart();
+                    }
+                  }}
+                >
+                  {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
+                </button>
+                
+                {/* Amazon Button */}
+                <a
+                  href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className='inline hover:font-gopher-mono-semi'>           
-                    <span className="hidden xl:inline">- </span><span className="underline color-green">Amazon↑</span>
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
+                >
+                  Amazon↑
                 </a>
-                <a 
-                  href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 
-                  target="_blank" 
+
+                {/* Apple Books Button */}
+                <a
+                  href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className='inline hover:font-gopher-mono-semi'>      
-                    <span className="hidden xl:inline">- </span><span className="underline color-green">Apple Books↑</span>
-                </a>
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
+                >
+                  Apple Books↑
+                </a>                
               </SlideFadeIn>
+
             </div>        
             <BookComponent width={300} height={300} direction="right"/>      
           </>
@@ -131,40 +140,44 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
               <p className="text-xl sm:text-2xl font-gopher-mono underline color-dark-blue tracking-wide text-decoration-color"><TypewriterEffect text="in 14 days" /></p>              
                                         
               <p className="text-base font-gopher-mono text-dark leading-relaxed max-w-xl sm:max-w-2xl">
-                {`Beginner To Composer In 14 Days is delightfully different. Moving swiftly from theory to action, Ben emerges as the teacher you always wished you'd had, championing radical creative freedom, improvisation and composition - even for beginners. Especially for beginners in fact. "Students need freedom to truly fall in love with their instrument" he writes, "frameworks that pique their curiosity over and over again so that practice becomes play". Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
+                {`Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Suitable for adults and a useful resource for teachers. Complements graded and traditional approaches to learning.`}
               </p>              
             
               {/* Buy Now Links */}
-              <div className="flex flex-col mt-4 text-sm sm:text-base font-gopher-mono text-center space-y-2">
-                <p className="text-2xl font-gopher-mono-semi color-dark">BUY NOW</p>
-                <div className="hover:cursor-pointer hover:font-gopher-mono-semi">
-                  <span
-                    className="inline underline color-green"
-                    role="button"
-                    tabIndex={0}
-                    onClick={inCart ? removeFromCart : addToCart}
-                    onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') inCart ? removeFromCart() : addToCart() }}
-                  >
-                    {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
-                  </span>
-                </div>
-                <a 
-                  href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1" 
-                  target="_blank" 
+              <SlideFadeIn direction="up" className="flex flex-col items-center mt-4 text-sm font-gopher-mono space-y-4">                                
+                {/* Add to Cart / Remove from Cart Button */}
+                <button
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
+                  onClick={inCart ? removeFromCart : addToCart}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      inCart ? removeFromCart() : addToCart();
+                    }
+                  }}
+                >
+                  {inCart ? 'Remove PDF From Cart' : 'Add PDF To Cart'}
+                </button>
+                
+                {/* Amazon Button */}
+                <a
+                  href="https://www.amazon.co.uk/Ben-Spooners-Beginner-Composer-Days/dp/139996769X/ref=sr_1_1?crid=WO4S5PFXTGBM&keywords=beginner+to+composer+in+14+days&qid=1697134011&sprefix=beginner+to+compo%2Caps%2C75&sr=8-1"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:font-gopher-mono-semi underline color-green"
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
                 >
                   Amazon↑
                 </a>
-                <a 
-                  href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191" 
-                  target="_blank" 
+
+                {/* Apple Books Button */}
+                <a
+                  href="https://books.apple.com/gb/book/ben-spooners-beginner-to-composer-in-14-days/id6468330191"
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:font-gopher-mono-semi underline color-green"
+                  className="font-gopher-mono border-3 border-thick-border-gray py-2 px-4 hover:cursor-pointer hover:opacity-75 text-base"
                 >
                   Apple Books↑
-                </a>
-              </div>
+                </a>                
+              </SlideFadeIn>
             
               {/* Book Component */}
               <div className="flex justify-center">
