@@ -16,11 +16,11 @@ interface MyMusingsProps {
 }
 
 // Component to display a single blog post
-const BlogPost: React.FC<{ post: Post }> = ({ post }) => (
+const BlogPost: React.FC<{ post: Post; isSmallViewport: boolean }> = ({ post, isSmallViewport }) => (
   <div className="transition-transform hover:scale-105">
     <Link href={`/blog/${post.slug}`} className="block p-4 border-3 border-thick-border-gray">
       <h2 className="font-gopher-mono-semi text-xl color-dark mb-1">{post.title}</h2>
-      <p className="font-gopher-mono text-xs lg:text-sm color-dark mb-2">{post.description}</p>
+      <p className={`${isSmallViewport ? 'hidden' : 'block'} font-gopher-mono text-xs lg:text-sm color-dark mb-2`}>{post.description}</p>
       <small className="font-gopher-mono color-green">{post.date}</small>
     </Link>
   </div>
@@ -28,8 +28,21 @@ const BlogPost: React.FC<{ post: Post }> = ({ post }) => (
 
 const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [isSmallViewport, setIsSmallViewport] = useState(false);
   const [isNarrowViewport, setIsNarrowViewport] = useState(false);
 
+  // Check for height (used for detecting bookmark bar presence)
+  useEffect(() => {
+    const updateViewportHeight = () => {
+      setIsSmallViewport(window.innerHeight <= 700);
+    };
+
+    updateViewportHeight();    
+    window.addEventListener('resize', updateViewportHeight);
+    
+    return () => window.removeEventListener('resize', updateViewportHeight);
+  }, []);
+  
   useEffect(() => {
     const fetchPosts = async () => {
       const res = await fetch('/api/getBlogPosts');
@@ -78,12 +91,12 @@ const MyMusings: React.FC<MyMusingsProps> = ({ id }) => {
 
         {/* Small Devices Posts Section */}
         <SlideFadeIn direction="right">
-          <div className="gap-2 px-4 w-full max-w-[95%] mx-auto">
+          <div className={`gap-2 px-4 w-full ${isSmallViewport ? 'max-w-[100%]' : 'max-w-[95%]'} mx-auto`}>
             <div className="grid grid-cols-1 gap-2">
               {posts
                 .filter(post => post.isFeatured)
                 .map((post, index) => (
-                  <BlogPost key={`${post.slug}-${index}`} post={post} />
+                  <BlogPost key={`${post.slug}-${index}`} post={post} isSmallViewport={isSmallViewport} />
                 ))}
             </div>
             <div className="flex justify-center mt-4">

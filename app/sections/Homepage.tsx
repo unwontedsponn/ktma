@@ -19,13 +19,9 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
       setIsSmallViewport(window.innerHeight <= 700);
     };
 
-    // Check initial height
-    updateViewportHeight();
-
-    // Add resize event listener
+    updateViewportHeight();    
     window.addEventListener('resize', updateViewportHeight);
-
-    // Clean up event listener on component unmount
+    
     return () => window.removeEventListener('resize', updateViewportHeight);
   }, []);
 
@@ -33,15 +29,10 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
   useEffect(() => {
     const updateViewportWidth = () => {
       setIsNarrowViewport(window.innerWidth < 768);
-    };
-
-    // Check initial width
+    };    
     updateViewportWidth();
-
-    // Add resize event listener
     window.addEventListener('resize', updateViewportWidth);
-
-    // Clean up event listener on component unmount
+    
     return () => window.removeEventListener('resize', updateViewportWidth);
   }, []);
 
