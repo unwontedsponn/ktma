@@ -94,8 +94,8 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
               <p>
               ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I&apos;ve taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
               </p>
-              <p className="pt-3">
-                <span className="font-gopher-mono-semi">Extra Links:</span>
+              <p className="">
+                <span className="font-gopher-mono-semi flex flex-col mt-10">Extra Links</span>
                 <a 
                   href="https://github.com/unwontedsponn" 
                   className="hover:underline ml-1"
