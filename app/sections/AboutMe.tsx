@@ -46,7 +46,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
               <SlideFadeIn direction="up">
                 <div className="pt-6 px-24 md:px-0 md:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
                   <p>
-                    ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I've taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
+                    ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I&apos;ve taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
                   </p>
                   <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Extra Links:</span>
                     <a 
@@ -92,7 +92,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
 
             <div className="px-4 text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
               <p>
-              ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I've taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
+              ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I&apos;ve taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
               </p>
               <p className="pt-3">
                 <span className="font-gopher-mono-semi">Extra Links:</span>
