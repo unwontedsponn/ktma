@@ -93,7 +93,7 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                   <p>
                   {`"Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Complements graded and traditional approaches to learning."`}
                   </p>
-                  <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Buy Now:</span>
+                  <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Buy Now: </span>
                     <div 
                       className="inline underline color-green"
                       role="button"
