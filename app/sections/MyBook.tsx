@@ -93,7 +93,7 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                   <p>
                   {`"Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Complements graded and traditional approaches to learning."`}
                   </p>
-                  <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Buy Now: </span>
+                  <div className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Buy Now: </span>
                     <div 
                       className="inline underline color-green"
                       role="button"
@@ -115,7 +115,7 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                       rel="noopener noreferrer"
                       > Apple Books↑
                     </a>                                
-                  </p>
+                  </div>
                 </div>            
               </SlideFadeIn>     
 
@@ -136,7 +136,7 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                   <p>
                   {`"Whether you're a complete beginner or have a little knowledge up your sleeve, you'll adore this dynamic and intimate guide to learning the piano, peppered with evocative vignettes of a life lived with music at its heart. Best of all, you'll come away with a method you can use time and time again to create your very own music, captured on professional quality lead sheets you can share with other musicians, to bring your work to life. Complements graded and traditional approaches to learning."`}
                   </p>
-                  <p className="pt-2"><span className="font-gopher-mono-semi flex flex-col mt-10">Buy Now</span>
+                  <div className="pt-2"><span className="font-gopher-mono-semi flex flex-col mt-10">Buy Now</span>
                     <div 
                       className="inline underline color-green"
                       role="button"
@@ -158,7 +158,7 @@ const MyBook: React.FC<MyBookProps> = ({ id }) => {
                       rel="noopener noreferrer"
                       > Apple Books↑
                     </a>                                
-                  </p>
+                  </div>
                 </div>            
               </SlideFadeIn>   
             
