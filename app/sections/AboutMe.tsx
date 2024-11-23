@@ -46,7 +46,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
               <SlideFadeIn direction="up">
                 <div className="pt-6 px-24 md:px-0 md:pr-2 text-right text-3vw md:text-sm font-gopher-mono text-dark max-w-3xl">
                   <p>
-                    ...I&apos;m Ben, a 34-year-old musician and TypeScript/Javascript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a music podcast platform (MMN), a piano method and a drumming app. In music I&apos;ve performed with artists such as Joy Crookes, toured at places like the Edinburgh Fringe Festival, taught ABRSM, examined for RSL, and composed for short films - such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+                    ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I've taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
                   </p>
                   <p className="hidden md:block pt-2"><span className="font-gopher-mono-semi">Extra Links:</span>
                     <a 
@@ -61,6 +61,12 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
                       target="_blank" 
                       rel="noopener noreferrer"
                       > LinkedIn↑
+                    </a> | 
+                    <a 
+                      href="https://www.youtube.com/@BenSpooner" className="hover:underline"
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      > YouTube↑
                     </a>                                
                   </p>
                 </div>            
@@ -86,7 +92,7 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
 
             <div className="px-4 text-base font-gopher-mono text-dark max-w-xl sm:max-w-3xl mx-auto leading-relaxed">
               <p>
-              ...I&apos;m Ben, a 34-year-old musician and TypeScript/Javascript developer. I specialize in sound and tech projects using Next.js, Tailwind CSS, and Vercel. My projects include a music podcast platform (MMN), a piano method and a drumming app. In music I&apos;ve performed with artists such as Joy Crookes, toured at places like the Edinburgh Fringe Festival, taught ABRSM, examined for RSL, and composed for short films - such as the award-winning &apos;When We Fell&apos;, which received international acclaim. Currently, I release music independently as Sponn and Green and Pine.
+              ...Hello, I&apos;m Ben, a 34-year-old TypeScript/Javascript developer and musician. My tech stack for this website is Next.js, Tailwind CSS, Vercel & Stripe. In music I&apos;ve performed with artists such as Joy Crookes and recorded in venues like Abbey Road. I've taught syllabuses such as ABRSM, examined for Yamaha, and composed for short films - such as the award-winning &apos;When We Fell&apos;. Currently, I release music independently as Sponn and Green and Pine.
               </p>
               <p className="pt-3">
                 <span className="font-gopher-mono-semi">Extra Links:</span>
@@ -103,7 +109,13 @@ const AboutMe: React.FC<AboutMeProps> = ({ id }) => {
                   target="_blank" 
                   rel="noopener noreferrer"
                 > LinkedIn↑
-                </a>                
+                </a> | 
+                <a 
+                  href="https://www.youtube.com/@BenSpooner" className="hover:underline"
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  > YouTube↑
+                </a>                  
               </p>
             </div>                        
 

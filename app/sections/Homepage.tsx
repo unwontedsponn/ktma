@@ -61,8 +61,8 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
               </SlideFadeIn>
 
               <SlideFadeIn direction="up" className="hidden md:block pl-28 text-dark-500 font-gopher-mono tracking-smallphomepage text-xs max-w-2xl">
-                {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
-                <span className="italic">getting things done</span>
+                {`I thrive on bringing ideas to life. From creating myBook to myGame, to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
+                <span className="italic color-green">getting things done.</span>
               </SlideFadeIn>
             </div>
               <SlideFadeIn className={`${isNarrowViewport ? "max-w-sm": "" } md:hidden xl:block max-w-sm border-3 border-thick-border-gray`} direction="right"> 
@@ -98,7 +98,7 @@ const Homepage: React.FC<HomepageProps> = ({ id }) => {
             </div>                     
 
             <p className="text-sm sm:text-base text-dark-500 font-gopher-mono tracking-tight sm:tracking-normal max-w-full leading-relaxed">
-              {`I thrive on bringing ideas to life. From creating books and games to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
+              {`I thrive on bringing ideas to life. From creating myBook to myGame, to websites and musical pieces, I'm fueled by a passion for creative endeavors, and `}
               <span className="italic color-green">getting things done.</span>
             </p>                  
           </div>          
