@@ -110,7 +110,7 @@ const Header: React.FC = () => {
               </div>
               
               {/* Hamburger Menu Icon */}
-              <button onClick={toggleMobileMenu} className="p-2">
+              <button onClick={toggleMobileMenu} className="p-2 min-[768px]:hidden">
                 {isMobileMenuOpen ? <FiX id="FiX" size={24} /> : <FiMenu id="FiMenu" size={24} />}
               </button>                            
             </div>          
@@ -152,18 +152,33 @@ const Header: React.FC = () => {
 
         {/* Mobile menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden flex flex-col items-center space-y-2 bg-white-ish py-2">
-            <Link href="/?scrollTo=aboutMe" id="aboutMeNavMobile">
+          <div className="flex flex-col items-center space-y-2 bg-white-ish py-2">
+            <Link 
+              href="/?scrollTo=aboutMe" 
+              id="aboutMeNavMobile"
+              onClick={toggleMobileMenu}
+            >
               aboutMe
             </Link>            
-            <Link href="/?scrollTo=myBook" id="myBookNavMobile">
+            <Link 
+              href="/?scrollTo=myBook" 
+              id="myBookNavMobile"
+              onClick={toggleMobileMenu}
+            >
               myBook
             </Link>  
-            <Link href="/?scrollTo=myMusings" id="myMusingsNavMobile">
-            myMusings
+            <Link 
+              href="/?scrollTo=myMusings" 
+              id="myMusingsNavMobile"
+              onClick={toggleMobileMenu} 
+            >
+              myMusings
             </Link>                                    
             <button 
-              onClick={toggleModal} 
+              onClick={() => {
+                toggleModal(); 
+                toggleMobileMenu();
+              }} 
               className="cursor-pointer"
               id="contactMeNavMobile"
             >
