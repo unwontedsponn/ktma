@@ -1,9 +1,9 @@
 "use client";
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import MyGame from './sections/MyGame';
 
 const Home: React.FC = () => {
-  // const [showFooter, setShowFooter] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Home: React.FC = () => {
   }, []);
 
   const handleGamePlayChange = (playing: boolean) => {
-    // setShowFooter(!playing && !isSmallViewport);
+    setIsPlaying(playing);
   };
 
   return (    
