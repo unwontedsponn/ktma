@@ -7,8 +7,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Ben Spooner Portfolio Website",
-  description: "Providing a selection of my projects.",
+  title: "Keep The Music Alive",
+  description: "A retro 2D platform game where your moves shape a jazz/classical soundtrack in real-time.",
 };
 
 interface RootLayoutProps {

@@ -1,14 +1,7 @@
 "use client";
 import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Header from './sections/Header';
-import Homepage from './sections/Homepage';
-import AboutMe from './sections/AboutMe';
-import MyBook from './sections/MyBook';
 import MyGame from './sections/MyGame';
-import MyMusings from './sections/MyMusings';
-import Footer from './sections/Footer';
-import { GlobalProvider } from './contexts/GlobalContext';
 
 const ScrollHandler = () => {
   const searchParams = useSearchParams();
@@ -46,30 +39,21 @@ const Home: React.FC = () => {
     setShowFooter(!playing && !isSmallViewport);
   };
 
-  return (
-    <GlobalProvider>
-      <main className="background-light flex justify-center">
-        <div
-          className={`${
-            isSmallViewport
-              ? 'overflow-y-auto overflow-x-hidden'
-              : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory'
-          }`}
-        >
-          <Header />
-          <Homepage id='homepage'/>
-          <AboutMe id="aboutMe" />
-          <MyBook id="myBook" />
-          <MyGame id="myGame" onPlayChange={handleGamePlayChange} />
-          <MyMusings id="myMusings" />
-          {showFooter && <Footer />}
-        </div>
-        <Suspense fallback={null}>
-          <ScrollHandler />
-        </Suspense>
-      </main>
-    </GlobalProvider>
+  return (    
+    <main className="background-light flex justify-center">
+      <div
+        className={`${
+          isSmallViewport
+            ? 'overflow-y-auto overflow-x-hidden'
+            : 'h-screen overflow-y-auto scroll-snap-y scroll-snap-mandatory'
+        }`}
+      >          
+        <MyGame id="myGame" onPlayChange={handleGamePlayChange} />        
+      </div>
+      <Suspense fallback={null}>
+        <ScrollHandler />
+      </Suspense>
+    </main>    
   );
 };
-
 export default Home;
