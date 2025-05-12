@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import MyGame from './sections/MyGame';
 
 const Home: React.FC = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [, setIsPlaying] = useState(false);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   useEffect(() => {
