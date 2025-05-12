@@ -1,28 +1,9 @@
 "use client";
 import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
 import MyGame from './sections/MyGame';
 
-const ScrollHandler = () => {
-  const searchParams = useSearchParams();
-  const scrollToSection = searchParams.get('scrollTo');
-
-  useEffect(() => {
-    if (scrollToSection) {
-      setTimeout(() => {
-        const sectionElement = document.getElementById(scrollToSection);
-        if (sectionElement) {
-          sectionElement.scrollIntoView({ behavior: 'smooth' });
-        }
-      }, 100);
-    }
-  }, [scrollToSection]);
-
-  return null;
-};
-
 const Home: React.FC = () => {
-  const [showFooter, setShowFooter] = useState(true);
+  // const [showFooter, setShowFooter] = useState(true);
   const [isSmallViewport, setIsSmallViewport] = useState(false);
 
   useEffect(() => {
@@ -36,7 +17,7 @@ const Home: React.FC = () => {
   }, []);
 
   const handleGamePlayChange = (playing: boolean) => {
-    setShowFooter(!playing && !isSmallViewport);
+    // setShowFooter(!playing && !isSmallViewport);
   };
 
   return (    
@@ -49,10 +30,7 @@ const Home: React.FC = () => {
         }`}
       >          
         <MyGame id="myGame" onPlayChange={handleGamePlayChange} />        
-      </div>
-      <Suspense fallback={null}>
-        <ScrollHandler />
-      </Suspense>
+      </div>      
     </main>    
   );
 };
